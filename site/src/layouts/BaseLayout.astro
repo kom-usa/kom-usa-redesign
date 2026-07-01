@@ -1,0 +1,78 @@
+---
+import "@fontsource/nunito-sans/400.css";
+import "@fontsource/nunito-sans/500.css";
+import "@fontsource/nunito-sans/700.css";
+import "@fontsource/nunito-sans/800.css";
+import "../styles/global.css";
+
+import Seo from "../components/seo/Seo.astro";
+import Header from "../components/layout/Header.astro";
+import Footer from "../components/layout/Footer.astro";
+import MobileStickyBar from "../components/layout/MobileStickyBar.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  noindex?: boolean;
+  includeBusinessGraph?: boolean;
+}
+
+const { title, description, ogImage, noindex, includeBusinessGraph } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      // Enables .reveal scroll animations only when JS runs (see global.css).
+      document.documentElement.classList.add("js");
+    </script>
+    <Seo {title} {description} {ogImage} {noindex} {includeBusinessGraph} />
+  </head>
+  <body class="pb-20 md:pb-0">
+    <a
+      href="#main"
+      class="bg-primary text-primary-foreground focus-visible:ring-primary/50 sr-only rounded-md px-4 py-2 font-bold focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-100"
+    >
+      Skip to main content
+    </a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <MobileStickyBar />
+    <script>
+      // Scroll-reveal observer, matching kom-usa-redesign-preview.netlify.app:
+      // reveal once at 12% visibility, then stop observing.
+      const targets = document.querySelectorAll(".reveal");
+      if (
+        targets.length &&
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+        "IntersectionObserver" in window
+      ) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("in");
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.12 },
+        );
+        for (const target of targets) {
+          if (!target.classList.contains("in")) observer.observe(target);
+        }
+      } else {
+        for (const target of targets) target.classList.add("in");
+      }
+    </script>
+  </body>
+</html>

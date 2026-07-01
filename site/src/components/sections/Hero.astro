@@ -1,0 +1,61 @@
+---
+import { Image } from "astro:assets";
+import Phone from "@tabler/icons/outline/phone.svg";
+import MapPin from "@tabler/icons/outline/map-pin.svg";
+
+import Button from "../starwind/button/Button.astro";
+import Roofline from "../common/Roofline.astro";
+import { business } from "../../data/business";
+import heroImage from "../../assets/images/home-exterior.jpg";
+---
+
+<section class="section-pad">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+    <div class="reveal">
+      <p class="text-primary flex items-center gap-2 text-xs font-bold tracking-[0.18em] uppercase">
+        <MapPin class="size-4" aria-hidden="true" />
+        Serving all of Metro Detroit
+      </p>
+      <h1 class="text-kom-charcoal mt-4 text-4xl font-extrabold text-balance sm:text-5xl lg:text-[3.4rem] lg:leading-[1.08]">
+        One local crew for your home, rental, or property.
+      </h1>
+      <p class="text-muted-foreground mt-5 max-w-xl text-lg leading-relaxed sm:text-xl">
+        KOM USA handles construction and remodeling, property maintenance, locksmith service,
+        and chimney care — so you make one call instead of five.
+      </p>
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <Button href={business.phoneHref} variant="primary" size="lg" class="font-bold">
+          <Phone aria-hidden="true" />
+          Call {business.phone}
+        </Button>
+        <Button href="#request-service" variant="outline" size="lg" class="font-bold">
+          Request service
+        </Button>
+      </div>
+      <p class="text-muted-foreground mt-5 text-sm">
+        Locked out? Call now — house and unit unlocks are <span class="text-kom-charcoal font-bold">$129</span> standard pricing.
+      </p>
+      <Roofline class="text-kom-sage mt-8" />
+    </div>
+
+    <figure class="reveal relative" style="--rd: 120ms">
+      <div class="border-border overflow-hidden rounded-xl border bg-white p-2 shadow-card">
+        <Image
+          src={heroImage}
+          alt="Two-story home with a peaked roof and wraparound porch on a green lawn"
+          class="h-full w-full rounded-lg object-cover"
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+      <figcaption
+        class="border-border absolute -bottom-4 left-4 rounded-lg border bg-white px-4 py-2.5 shadow-card sm:left-6"
+      >
+        <p class="text-kom-charcoal text-sm font-bold">Build · Fix · Maintain · Secure</p>
+        <p class="text-muted-foreground text-xs">One number: {business.phone}</p>
+      </figcaption>
+    </figure>
+  </div>
+</section>

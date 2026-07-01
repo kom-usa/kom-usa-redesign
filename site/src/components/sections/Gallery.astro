@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+
+import SectionHeader from "../common/SectionHeader.astro";
+
+import kitchen from "../../assets/images/kitchen-remodel.jpg";
+import bathroom from "../../assets/images/bathroom-remodel.jpg";
+import painting from "../../assets/images/painting-drywall.jpg";
+import renovation from "../../assets/images/interior-renovation.jpg";
+import concrete from "../../assets/images/concrete-work.jpg";
+import framing from "../../assets/images/construction-framing.jpg";
+
+/**
+ * Temporary stock photos, clearly labeled below. Replace each entry with real
+ * KOM USA project photos (before/after pairs work well) as they're collected.
+ */
+const gallery = [
+  { image: kitchen, label: "Kitchen remodeling", alt: "Remodeled kitchen with white cabinets and gas range (stock photo)" },
+  { image: bathroom, label: "Bathroom remodeling", alt: "Renovated bathroom with glass shower and double vanity (stock photo)" },
+  { image: renovation, label: "Interior renovation", alt: "Contractor finishing a ceiling during an interior renovation (stock photo)" },
+  { image: painting, label: "Painting & drywall", alt: "Roller applying fresh paint to an interior wall (stock photo)" },
+  { image: concrete, label: "Concrete & structural", alt: "Crew working with rebar on a concrete pour (stock photo)" },
+  { image: framing, label: "New construction", alt: "Construction crew reviewing a framed build site (stock photo)" },
+];
+---
+
+<section id="projects" class="section-pad scroll-mt-20">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader
+      eyebrow="Our work"
+      title="The kind of projects we take on."
+      lead="Temporary stock photos shown for now — real KOM USA project photos are being collected and will replace these."
+    />
+
+    <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        gallery.map((item, index) => (
+          <li
+            class="reveal group border-border relative overflow-hidden rounded-lg border shadow-card"
+            style={`--rd: ${(index % 3) * 70}ms`}
+          >
+            <Image
+              src={item.image}
+              alt={item.alt}
+              class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+              widths={[480, 800]}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              loading="lazy"
+            />
+            <p class="bg-kom-charcoal/85 absolute inset-x-0 bottom-0 px-4 py-2.5 text-sm font-bold text-white">
+              {item.label}
+              <span class="block text-xs font-medium text-white/70">Sample photo</span>
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

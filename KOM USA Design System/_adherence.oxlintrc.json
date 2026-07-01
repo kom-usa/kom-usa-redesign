@@ -1,0 +1,269 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/core/**",
+              "components/forms/**",
+              "components/navigation/**",
+              "ui_kits/website/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Nunito Sans))/i]",
+        "message": "Font not provided by the design system. Available: Nunito Sans."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:tone|children|key|ref|className|style|children)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: tone, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='tone'] > Literal[value!=/^(?:neutral|green|brass|inverse)$/]",
+        "message": "<Badge> tone must be one of 'neutral' | 'green' | 'brass' | 'inverse'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|size|children|icon|disabled|onClick|type|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: variant, size, children, icon, disabled, onClick, type."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|ghost)$/]",
+        "message": "<Button> variant must be one of 'primary' | 'secondary' | 'ghost'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:sm|md|lg)$/]",
+        "message": "<Button> size must be one of 'sm' | 'md' | 'lg'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='type'] > Literal[value!=/^(?:button|submit|reset)$/]",
+        "message": "<Button> type must be one of 'button' | 'submit' | 'reset'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:children|padded|style|key|ref|className|style|children)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: children, padded, style."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Input'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|placeholder|type|value|onChange|name|required|key|ref|className|style|children)$/]",
+        "message": "<Input> doesn't accept that prop. Declared props: label, placeholder, type, value, onChange, name, required."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='NavBar'] > JSXAttribute > JSXIdentifier[name!=/^(?:logo|links|cta|key|ref|className|style|children)$/]",
+        "message": "<NavBar> doesn't accept that prop. Declared props: logo, links, cta."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Badge": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "Input": {
+        "replaces": []
+      },
+      "NavBar": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--accent-premium",
+      "--accent-secondary-icon",
+      "--action-on-primary",
+      "--action-primary",
+      "--action-primary-hover",
+      "--action-primary-press",
+      "--border-default",
+      "--border-focus",
+      "--border-strong",
+      "--container-max",
+      "--container-pad",
+      "--font-main",
+      "--kom-brass",
+      "--kom-charcoal",
+      "--kom-charcoal-hover",
+      "--kom-concrete",
+      "--kom-green",
+      "--kom-green-dark",
+      "--kom-green-dark-hover",
+      "--kom-green-dark-press",
+      "--kom-green-tint",
+      "--kom-steel",
+      "--kom-warm-white",
+      "--kom-white",
+      "--letter-spacing-button",
+      "--letter-spacing-tight",
+      "--radius-lg",
+      "--radius-md",
+      "--radius-pill",
+      "--radius-sm",
+      "--shadow-card",
+      "--shadow-color",
+      "--shadow-none",
+      "--shadow-soft",
+      "--space-1",
+      "--space-10",
+      "--space-12",
+      "--space-16",
+      "--space-2",
+      "--space-20",
+      "--space-24",
+      "--space-3",
+      "--space-32",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-8",
+      "--surface-accent-soft",
+      "--surface-card",
+      "--surface-inverse",
+      "--surface-page",
+      "--surface-sunken",
+      "--text-body-line",
+      "--text-body-size",
+      "--text-caption-line",
+      "--text-caption-size",
+      "--text-display-line",
+      "--text-display-size",
+      "--text-h1-line",
+      "--text-h1-size",
+      "--text-h2-line",
+      "--text-h2-size",
+      "--text-h3-line",
+      "--text-h3-size",
+      "--text-inverse",
+      "--text-lead-line",
+      "--text-lead-size",
+      "--text-link",
+      "--text-primary",
+      "--text-secondary",
+      "--text-small-line",
+      "--text-small-size",
+      "--weight-body",
+      "--weight-body-medium",
+      "--weight-bold",
+      "--weight-display"
+    ],
+    "tokenKinds": {
+      "--kom-green": "color",
+      "--kom-green-dark": "color",
+      "--kom-charcoal": "color",
+      "--kom-warm-white": "color",
+      "--kom-concrete": "color",
+      "--kom-steel": "color",
+      "--kom-brass": "color",
+      "--kom-white": "color",
+      "--kom-green-dark-hover": "color",
+      "--kom-green-dark-press": "color",
+      "--kom-green-tint": "color",
+      "--kom-charcoal-hover": "color",
+      "--surface-page": "color",
+      "--surface-card": "color",
+      "--surface-sunken": "color",
+      "--surface-inverse": "color",
+      "--surface-accent-soft": "color",
+      "--text-primary": "font",
+      "--text-secondary": "font",
+      "--text-inverse": "font",
+      "--text-link": "font",
+      "--border-default": "color",
+      "--border-strong": "color",
+      "--border-focus": "color",
+      "--action-primary": "color",
+      "--action-primary-hover": "color",
+      "--action-primary-press": "color",
+      "--action-on-primary": "color",
+      "--accent-premium": "color",
+      "--accent-secondary-icon": "color",
+      "--shadow-color": "shadow",
+      "--font-main": "font",
+      "--weight-body": "font",
+      "--weight-body-medium": "font",
+      "--weight-bold": "font",
+      "--weight-display": "font",
+      "--text-display-size": "font",
+      "--text-display-line": "font",
+      "--text-h1-size": "font",
+      "--text-h1-line": "font",
+      "--text-h2-size": "font",
+      "--text-h2-line": "font",
+      "--text-h3-size": "font",
+      "--text-h3-line": "font",
+      "--text-lead-size": "font",
+      "--text-lead-line": "font",
+      "--text-body-size": "font",
+      "--text-body-line": "font",
+      "--text-small-size": "font",
+      "--text-small-line": "font",
+      "--text-caption-size": "font",
+      "--text-caption-line": "font",
+      "--letter-spacing-tight": "font",
+      "--letter-spacing-button": "font",
+      "--space-1": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-8": "spacing",
+      "--space-10": "spacing",
+      "--space-12": "spacing",
+      "--space-16": "spacing",
+      "--space-20": "spacing",
+      "--space-24": "spacing",
+      "--space-32": "spacing",
+      "--radius-sm": "radius",
+      "--radius-md": "radius",
+      "--radius-lg": "radius",
+      "--radius-pill": "radius",
+      "--shadow-soft": "shadow",
+      "--shadow-card": "shadow",
+      "--shadow-none": "shadow",
+      "--container-max": "spacing",
+      "--container-pad": "spacing"
+    },
+    "fontFamilies": [
+      "Nunito Sans"
+    ]
+  }
+}

@@ -1,0 +1,88 @@
+---
+import { Image } from "astro:assets";
+import InfoCircle from "@tabler/icons/outline/info-circle.svg";
+import Phone from "@tabler/icons/outline/phone.svg";
+
+import Button from "../starwind/button/Button.astro";
+import SectionHeader from "../common/SectionHeader.astro";
+import { business, locksmithNotes, locksmithPricing } from "../../data/business";
+import lockImage from "../../assets/images/door-lock.jpg";
+---
+
+<section id="locksmith-pricing" class="section-pad scroll-mt-20 bg-white">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader
+      eyebrow="Locksmith services"
+      title="Standard pricing, published upfront."
+      lead="Typical service pricing for Metro Detroit homes, units, and rentals. Final pricing may vary based on lock hardware, door condition, and service details."
+    />
+
+    <div class="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+      <div class="reveal border-border overflow-hidden rounded-lg border shadow-card">
+        <table class="w-full text-left">
+          <caption class="sr-only">Locksmith services standard pricing</caption>
+          <thead>
+            <tr class="bg-kom-charcoal text-white">
+              <th scope="col" class="px-5 py-3.5 text-sm font-bold">Service</th>
+              <th scope="col" class="px-5 py-3.5 text-right text-sm font-bold">Standard price</th>
+            </tr>
+          </thead>
+          <tbody class="divide-border divide-y bg-white">
+            {
+              locksmithPricing.map((item) => (
+                <tr>
+                  <td class="px-5 py-3.5">
+                    <p class="text-kom-charcoal text-sm font-bold">{item.service}</p>
+                    {item.detail && (
+                      <p class="text-muted-foreground mt-0.5 text-xs">{item.detail}</p>
+                    )}
+                  </td>
+                  <td class="text-primary px-5 py-3.5 text-right text-lg font-extrabold whitespace-nowrap">
+                    {item.price}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="reveal flex flex-col gap-6" style="--rd: 90ms">
+        <figure class="border-border overflow-hidden rounded-lg border bg-white shadow-card">
+          <Image
+            src={lockImage}
+            alt="Smart lock on a unit door controlled from a phone (temporary stock photo)"
+            class="aspect-[16/10] w-full object-cover"
+            widths={[480, 800]}
+            sizes="(min-width: 1024px) 33vw, 100vw"
+            loading="lazy"
+          />
+          <figcaption class="p-5">
+            <p class="text-kom-charcoal text-sm font-bold">
+              Smart keypads for modern property access
+            </p>
+            <p class="text-muted-foreground mt-1 text-sm">
+              Keyless convenience, authorized user codes, and audit trails on select models —
+              a favorite for landlords and short-term rentals.
+            </p>
+          </figcaption>
+        </figure>
+
+        <div class="bg-kom-sage-tint rounded-lg p-5">
+          <h3 class="text-kom-charcoal flex items-center gap-2 text-sm font-bold">
+            <InfoCircle class="text-primary size-4.5" aria-hidden="true" />
+            Before you book
+          </h3>
+          <ul class="text-kom-charcoal/90 mt-3 space-y-2 text-sm leading-relaxed">
+            {locksmithNotes.map((note) => <li>{note}</li>)}
+          </ul>
+        </div>
+
+        <Button href={business.phoneHref} variant="primary" size="lg" class="w-full font-bold">
+          <Phone aria-hidden="true" />
+          Locked out? Call {business.phone}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>

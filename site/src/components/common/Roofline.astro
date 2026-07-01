@@ -1,0 +1,24 @@
+---
+/**
+ * Signature brand motif: the peaked roof + chimney silhouette from the KOM USA
+ * logo, drawn as a thin divider line. Purely decorative.
+ */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 120 22"
+  class:list={["h-5 w-28", className]}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <path d="M2 20 L44 20 L74 4 L82 8.5 L82 3 L90 3 L90 12.8 L104 20 L118 20" />
+</svg>

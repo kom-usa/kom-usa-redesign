@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Landing Page" description="KOM USA marketing landing page — hero, trust strip, services, testimonial, CTA, footer" -->
+<helmet>
+  <script src="./ds-base.js"></script>
+</helmet>
+
+<div style="background: var(--surface-page); font-family: var(--font-main);">
+
+  <!-- Nav -->
+  <header style="display:flex; align-items:center; justify-content:space-between; padding:16px var(--container-pad); background:var(--kom-white); border-bottom:1px solid var(--border-default);">
+    <img src="../../assets/logos/kom-usa-logo-primary-charcoal.svg" alt="KOM USA" style="height:34px;" />
+    <nav style="display:flex; gap:28px;">
+      <a href="#services" style="font-weight:700; font-size:15px; color:var(--text-primary); text-decoration:none;">Services</a>
+      <a href="#about" style="font-weight:700; font-size:15px; color:var(--text-primary); text-decoration:none;">About</a>
+      <a href="#contact" style="font-weight:700; font-size:15px; color:var(--text-primary); text-decoration:none;">Contact</a>
+    </nav>
+    <x-import component-from-global-scope="KOMUSADesignSystem_8f04d7.Button" hint-size="150px,40px" size="sm">Get a Free Estimate</x-import>
+  </header>
+
+  <!-- Hero -->
+  <section style="max-width:var(--container-max); margin:0 auto; padding:var(--space-24) var(--container-pad); display:grid; grid-template-columns:1.1fr 1fr; gap:var(--space-16); align-items:center;">
+    <div>
+      <x-import component-from-global-scope="KOMUSADesignSystem_8f04d7.Badge" hint-size="260px,26px" tone="green">Licensed &amp; Insured · Serving the tri-county area</x-import>
+      <h1 style="font-size:52px; font-weight:800; line-height:1.08; margin:var(--space-4) 0 var(--space-4);">
+        Local craftsmanship you can trust.
+      </h1>
+      <p style="font-size:20px; line-height:1.5; color:var(--text-secondary); margin-bottom:var(--space-6);">
+        KOM USA has helped neighborhood homeowners with roofing, remodels, and repairs for over two decades. We show up on time and stand behind every job.
+      </p>
+      <div style="display:flex; gap:12px;">
+        <x-import component-from-global-scope="KOMUSADesignSystem_8f04d7.Button" hint-size="200px,52px" size="lg">Get a Free Estimate</x-import>
+        <x-import component-from-global-scope="KOMUSADesignSystem_8f04d7.Button" hint-size="170px,52px" size="lg" variant="secondary">See Our Services</x-import>
+      </div>
+    </div>
+    <div style="height:380px; width:100%; border-radius:var(--radius-md); background:linear-gradient(135deg, rgba(120,168,102,0.35), rgba(47,107,59,0.55)); display:flex; align-items:flex-end; padding:16px; color:#fff; font-size:13px; font-weight:600;">
+      <span style="opacity:0.9;">📷 Finished roofing project — real project photo goes here</span>
+    </div>
+  </section>
+
+  <!-- Trust strip -->
+  <section style="background:var(--surface-accent-soft); padding:var(--space-8) var(--container-pad);">
+    <div style="max-width:var(--container-max); margin:0 auto; display:flex; justify-content:space-around; flex-wrap:wrap; gap:16px; font-weight:700; color:var(--kom-green-dark);">
+      <span>20+ Years Local</span>
+      <span>Licensed &amp; Insured</span>
+      <span>500+ Projects Completed</span>
+      <span>Free On-Site Estimates</span>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" style="max-width:var(--container-max); margin:0 auto; padding:var(--space-24) var(--container-pad);">
+    <h2 style="margin-bottom:var(--space-2);">Our services</h2>
+    <p style="color:var(--text-secondary); font-size:17px; margin-bottom:var(--space-10);">Practical work, done right the first time.</p>
+    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--space-6);">
+      <x-import component-from-global-scope="KOMUSADesignSystem_8f04d7.ServiceCard" hint-size="100%,220px" title="Roofing" description="Repairs, replacements, and inspections built to last through every season." icon="🏠"></x-import>
+      <x-import component-from-global-scope="KOMUSADesignSystem_8f04d7.ServiceCard" hint-size="100%,220px" title="Remodeling" description="Kitchens, baths, and additions planned around how your family actually lives." icon="🛠️"></x-import>
+      <x-import component-from-global-scope="KOMUSADesignSystem_8f04d7.ServiceCard" hint-size="100%,220px" title="Repairs" description="Fast, honest fixes for the everyday things that need a trusted local hand." icon="🔧"></x-import>
+    </div>
+  </section>
+
+  <!-- Testimonial -->
+  <section style="background:var(--surface-inverse); color:var(--text-inverse); padding:var(--space-20) var(--container-pad);">
+    <div style="max-width:760px; margin:0 auto; text-align:center;">
+      <p style="font-size:26px; line-height:1.4; font-weight:700; margin-bottom:var(--space-4);">
+        "KOM USA replaced our roof in two days and left the yard cleaner than they found it. Real hometown service."
+      </p>
+      <p style="color:rgba(255,255,255,0.7); font-size:15px;">— Marcy T., homeowner since 2019</p>
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <section id="contact" style="max-width:var(--container-max); margin:0 auto; padding:var(--space-20) var(--container-pad); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+    <div>
+      <h2 style="margin-bottom:6px;">Ready to get started?</h2>
+      <p style="color:var(--text-secondary);">Estimates are free, and there's never any pressure.</p>
+    </div>
+    <x-import component-from-global-scope="KOMUSADesignSystem_8f04d7.Button" hint-size="220px,52px" size="lg">Request a Free Estimate</x-import>
+  </section>
+
+  <!-- Footer -->
+  <footer id="about" style="background:var(--surface-inverse); color:var(--text-inverse); padding:var(--space-16) var(--container-pad);">
+    <div style="display:flex; gap:var(--space-16); flex-wrap:wrap; max-width:var(--container-max); margin:0 auto;">
+      <div style="flex:1 1 220px;">
+        <img src="../../assets/logos/kom-usa-logo-white.svg" alt="KOM USA" style="height:30px;" />
+      </div>
+      <div style="flex:1 1 160px;">
+        <div style="font-weight:700; margin-bottom:12px; font-size:14px;">Services</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <a href="#" style="color:rgba(255,255,255,0.75); font-size:14px; text-decoration:none;">Roofing</a>
+          <a href="#" style="color:rgba(255,255,255,0.75); font-size:14px; text-decoration:none;">Remodeling</a>
+          <a href="#" style="color:rgba(255,255,255,0.75); font-size:14px; text-decoration:none;">Repairs</a>
+        </div>
+      </div>
+      <div style="flex:1 1 160px;">
+        <div style="font-weight:700; margin-bottom:12px; font-size:14px;">Company</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <a href="#" style="color:rgba(255,255,255,0.75); font-size:14px; text-decoration:none;">About</a>
+          <a href="#" style="color:rgba(255,255,255,0.75); font-size:14px; text-decoration:none;">Careers</a>
+          <a href="#" style="color:rgba(255,255,255,0.75); font-size:14px; text-decoration:none;">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+</body>
+</html>

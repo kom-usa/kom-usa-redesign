@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/starwind/button/Button.astro";
+import { business } from "../data/business";
+---
+
+<BaseLayout
+  title="Page not found | KOM USA"
+  description="That page doesn't exist. Head back to the KOM USA homepage for construction, maintenance, locksmith, and chimney services in Metro Detroit."
+  noindex
+>
+  <section class="section-pad">
+    <div class="mx-auto max-w-xl px-4 text-center sm:px-6">
+      <p class="text-primary text-xs font-bold tracking-[0.18em] uppercase">404</p>
+      <h1 class="text-kom-charcoal mt-3 text-3xl font-extrabold sm:text-4xl">
+        This page doesn't exist.
+      </h1>
+      <p class="text-muted-foreground mt-4 text-lg leading-relaxed">
+        The page may have moved during our site update. Everything we offer is on the homepage —
+        or just call {business.phone}.
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-3">
+        <Button href="/" variant="primary" size="lg" class="font-bold">
+          Go to homepage
+        </Button>
+        <Button href={business.phoneHref} variant="outline" size="lg" class="font-bold">
+          Call {business.phone}
+        </Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,55 @@
+---
+import Phone from "@tabler/icons/outline/phone.svg";
+import Mail from "@tabler/icons/outline/mail.svg";
+
+import Button from "../starwind/button/Button.astro";
+import { business } from "../../data/business";
+import logo from "../../assets/logos/kom-usa-logo-primary-charcoal.svg";
+
+const nav = [
+  { label: "Services", href: "#services" },
+  { label: "Property managers", href: "#property-management" },
+  { label: "Locksmith pricing", href: "#locksmith-pricing" },
+  { label: "Service area", href: "#service-area" },
+  { label: "FAQ", href: "#faq" },
+];
+---
+
+<header class="bg-background/95 sticky top-0 z-50 border-b backdrop-blur-sm">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <a href="/" class="flex shrink-0 items-center gap-2" aria-label={`${business.name} home`}>
+      <img src={logo.src} alt={business.name} class="h-11 w-auto md:h-13" width="90" height="66" />
+    </a>
+
+    <nav aria-label="Main" class="hidden items-center gap-6 lg:flex">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class="text-foreground hover:text-primary rounded-sm text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-primary/50 focus-visible:outline-none"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a
+        href={business.emailHref}
+        class="text-muted-foreground hover:text-primary hidden items-center gap-1.5 rounded-sm text-sm font-medium transition-colors focus-visible:ring-3 focus-visible:ring-primary/50 focus-visible:outline-none xl:flex"
+      >
+        <Mail class="size-4" aria-hidden="true" />
+        {business.email}
+      </a>
+      <Button href={business.phoneHref} variant="outline" size="sm" class="font-bold">
+        <Phone aria-hidden="true" />
+        <span class="hidden sm:inline">{business.phone}</span>
+        <span class="sm:hidden">Call</span>
+      </Button>
+      <Button href="#request-service" variant="primary" size="sm" class="font-bold">
+        Request service
+      </Button>
+    </div>
+  </div>
+</header>

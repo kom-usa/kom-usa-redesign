@@ -1,0 +1,59 @@
+---
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
+import Check from "@tabler/icons/outline/check.svg";
+
+import Icon from "../common/Icon.astro";
+import SectionHeader from "../common/SectionHeader.astro";
+import { serviceCategories } from "../../data/business";
+---
+
+<section id="services" class="section-pad scroll-mt-20">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader
+      eyebrow="What we do"
+      title="Five trades. One phone call."
+      lead="Every service below is handled by our own local crew — from a $25 key copy to a full home addition."
+    />
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        serviceCategories.map((category, index) => (
+          <article
+            id={category.id}
+            class:list={[
+              "reveal border-border scroll-mt-24 rounded-lg border bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover",
+              index === 0 && "md:col-span-2 lg:col-span-1 lg:row-span-2",
+            ]}
+            style={`--rd: ${index * 70}ms`}
+          >
+            <span class="bg-kom-sage-tint text-primary flex size-11 items-center justify-center rounded-lg">
+              <Icon name={category.icon} class="size-6" />
+            </span>
+            <h3 class="text-kom-charcoal mt-4 text-xl font-bold">{category.title}</h3>
+            <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{category.blurb}</p>
+            <ul
+              class:list={[
+                "mt-4 gap-x-4 gap-y-2 text-sm",
+                index === 0 ? "grid grid-cols-2 lg:grid-cols-1" : "grid grid-cols-1 min-[420px]:grid-cols-2",
+              ]}
+            >
+              {category.items.map((item) => (
+                <li class="text-kom-charcoal/90 flex items-start gap-1.5">
+                  <Check class="text-kom-sage mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <a
+              href="#request-service"
+              class="text-primary hover:text-kom-field-hover mt-5 inline-flex items-center gap-1.5 rounded-sm text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-primary/50 focus-visible:outline-none"
+            >
+              Request this service
+              <ArrowRight class="size-4" aria-hidden="true" />
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

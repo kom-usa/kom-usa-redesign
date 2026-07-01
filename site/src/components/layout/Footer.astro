@@ -1,0 +1,100 @@
+---
+import Phone from "@tabler/icons/outline/phone.svg";
+import Mail from "@tabler/icons/outline/mail.svg";
+import MapPin from "@tabler/icons/outline/map-pin.svg";
+
+import { business, serviceCategories } from "../../data/business";
+import logoWhite from "../../assets/logos/kom-usa-logo-white.svg";
+
+const year = new Date().getFullYear();
+
+const quickLinks = [
+  { label: "Services", href: "#services" },
+  { label: "Locksmith pricing", href: "#locksmith-pricing" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Service area", href: "#service-area" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Request service", href: "#request-service" },
+];
+---
+
+<footer class="bg-kom-charcoal text-white">
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <div class="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+      <div>
+        <img src={logoWhite.src} alt={business.name} class="h-14 w-auto" width="95" height="70" />
+        <p class="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
+          A hometown crew for construction, property maintenance, locksmith service, and chimney
+          care across Metro Detroit. One call covers your home, rental, or portfolio.
+        </p>
+        <ul class="mt-6 space-y-2.5 text-sm">
+          <li>
+            <a
+              href={business.phoneHref}
+              class="flex items-center gap-2.5 font-bold text-white transition-colors hover:text-kom-sage focus-visible:ring-3 focus-visible:ring-kom-sage/60 focus-visible:outline-none rounded-sm"
+            >
+              <Phone class="size-4 text-kom-sage" aria-hidden="true" />
+              {business.phone}
+            </a>
+          </li>
+          <li>
+            <a
+              href={business.emailHref}
+              class="flex items-center gap-2.5 text-white/85 transition-colors hover:text-kom-sage focus-visible:ring-3 focus-visible:ring-kom-sage/60 focus-visible:outline-none rounded-sm"
+            >
+              <Mail class="size-4 text-kom-sage" aria-hidden="true" />
+              {business.email}
+            </a>
+          </li>
+          <li class="flex items-center gap-2.5 text-white/85">
+            <MapPin class="size-4 text-kom-sage" aria-hidden="true" />
+            Serving {business.serviceArea}, Michigan
+          </li>
+        </ul>
+      </div>
+
+      <nav aria-label="Services">
+        <h2 class="text-xs font-bold tracking-widest text-white/50 uppercase">Services</h2>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          {
+            serviceCategories.map((category) => (
+              <li>
+                <a
+                  href={`#${category.id}`}
+                  class="text-white/85 transition-colors hover:text-kom-sage focus-visible:ring-3 focus-visible:ring-kom-sage/60 focus-visible:outline-none rounded-sm"
+                >
+                  {category.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <nav aria-label="Quick links">
+        <h2 class="text-xs font-bold tracking-widest text-white/50 uppercase">Quick links</h2>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          {
+            quickLinks.map((link) => (
+              <li>
+                <a
+                  href={link.href}
+                  class="text-white/85 transition-colors hover:text-kom-sage focus-visible:ring-3 focus-visible:ring-kom-sage/60 focus-visible:outline-none rounded-sm"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+
+    <div
+      class="mt-12 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>© {year} {business.name}. All rights reserved.</p>
+      <p>Locksmith standard pricing shown on this site — final pricing may vary by job.</p>
+    </div>
+  </div>
+</footer>

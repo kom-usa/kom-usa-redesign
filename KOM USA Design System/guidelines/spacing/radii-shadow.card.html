@@ -1,0 +1,13 @@
+<!-- @dsCard group="Spacing" viewport="700x180" name="Radii & Shadow" subtitle="Square-to-lightly-rounded corners; soft shadow only" -->
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;padding:20px;background:var(--kom-warm-white);font-family:var(--font-main);}
+  .row{display:flex;gap:16px;}
+  .box{width:110px;height:80px;background:#fff;border:1px solid var(--border-default);display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font-size:11px;color:var(--text-secondary);}
+</style>
+<div class="row">
+  <div class="box" style="border-radius:var(--radius-sm);">radius-sm 4px</div>
+  <div class="box" style="border-radius:var(--radius-md);">radius-md 8px</div>
+  <div class="box" style="border-radius:var(--radius-lg);">radius-lg 12px</div>
+  <div class="box" style="border-radius:var(--radius-md);box-shadow:var(--shadow-card);border:none;">shadow-card</div>
+</div>

@@ -1,0 +1,20 @@
+<!-- @dsCard group="Components" viewport="700x260" name="Forms" subtitle="Input, Select, Checkbox" -->
+<link rel="stylesheet" href="../../styles.css">
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;padding:20px;background:var(--surface-page);font-family:var(--font-main);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:600px;}</style>
+<div id="root"></div>
+<script type="text/babel">
+  const { Input, Select, Checkbox } = window.KOMUSADesignSystem_8f04d7;
+  function Demo(){
+    return (
+      <div className="grid">
+        <Input label="Full name" placeholder="Jane Homeowner" />
+        <Select label="Service needed" options={["Roofing","Remodel","Repair","Painting"]} />
+        <Input label="Email" type="email" placeholder="jane@email.com" />
+        <div style={{display:'flex',alignItems:'flex-end'}}><Checkbox label="I'd like a callback" checked /></div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>

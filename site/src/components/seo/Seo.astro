@@ -1,0 +1,134 @@
+---
+import {
+  business,
+  faqs,
+  locksmithPricing,
+  serviceAreaCities,
+  serviceCategories,
+} from "../../data/business";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path to a 1200×630 image inside /public, e.g. "/og/home.jpg" */
+  ogImage?: string;
+  ogImageAlt?: string;
+  noindex?: boolean;
+  /** Include LocalBusiness + FAQ entities (homepage only). */
+  includeBusinessGraph?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImage = "/og/home.jpg",
+  ogImageAlt = `${business.name} — ${business.tagline}`,
+  noindex = false,
+  includeBusinessGraph = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL(business.url);
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImageUrl = new URL(ogImage, site).href;
+
+const ids = {
+  website: new URL("/#website", site).href,
+  business: new URL("/#business", site).href,
+  webpage: `${canonical}#webpage`,
+  faq: `${canonical}#faq`,
+  logo: new URL("/#logo", site).href,
+};
+
+const graph: Record<string, unknown>[] = [
+  {
+    "@type": "WebSite",
+    "@id": ids.website,
+    url: site.href,
+    name: business.name,
+    publisher: { "@id": ids.business },
+  },
+  {
+    "@type": "WebPage",
+    "@id": ids.webpage,
+    url: canonical,
+    name: title,
+    description,
+    isPartOf: { "@id": ids.website },
+    about: { "@id": ids.business },
+    primaryImageOfPage: { "@type": "ImageObject", url: ogImageUrl },
+  },
+];
+
+if (includeBusinessGraph) {
+  graph.push(
+    {
+      "@type": ["HomeAndConstructionBusiness", "Locksmith"],
+      "@id": ids.business,
+      name: business.name,
+      url: site.href,
+      telephone: business.phone,
+      email: business.email,
+      image: ogImageUrl,
+      logo: {
+        "@type": "ImageObject",
+        "@id": ids.logo,
+        url: new URL("/logo.svg", site).href,
+      },
+      areaServed: [
+        { "@type": "AdministrativeArea", name: "Metro Detroit, Michigan" },
+        ...serviceAreaCities.map((city) => ({
+          "@type": "City",
+          name: `${city}, MI`,
+        })),
+      ],
+      knowsAbout: serviceCategories.map((c) => c.title),
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Locksmith services — standard pricing",
+        itemListElement: locksmithPricing.map((item) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: item.service },
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            price: item.price.replace("$", ""),
+            priceCurrency: "USD",
+          },
+        })),
+      },
+    },
+    {
+      "@type": "FAQPage",
+      "@id": ids.faq,
+      mainEntity: faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer },
+      })),
+    },
+  );
+}
+
+const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={business.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImageUrl} />
+<meta property="og:image:alt" content={ogImageAlt} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImageUrl} />
+
+<script type="application/ld+json" set:html={jsonLd} />

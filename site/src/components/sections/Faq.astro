@@ -1,0 +1,29 @@
+---
+import Accordion from "../starwind/accordion/Accordion.astro";
+import AccordionItem from "../starwind/accordion/AccordionItem.astro";
+import AccordionTrigger from "../starwind/accordion/AccordionTrigger.astro";
+import AccordionContent from "../starwind/accordion/AccordionContent.astro";
+import SectionHeader from "../common/SectionHeader.astro";
+import { faqs } from "../../data/business";
+---
+
+<section id="faq" class="section-pad scroll-mt-20">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6">
+    <SectionHeader eyebrow="FAQ" title="Common questions, straight answers." />
+
+    <Accordion type="single" class="reveal mt-10">
+      {
+        faqs.map((faq, index) => (
+          <AccordionItem value={`faq-${index}`}>
+            <AccordionTrigger class="text-left text-base font-bold">
+              {faq.question}
+            </AccordionTrigger>
+            <AccordionContent>
+              <p class="text-muted-foreground leading-relaxed">{faq.answer}</p>
+            </AccordionContent>
+          </AccordionItem>
+        ))
+      }
+    </Accordion>
+  </div>
+</section>

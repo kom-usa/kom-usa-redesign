@@ -1,0 +1,27 @@
+<!-- @dsCard group="Components" viewport="700x380" name="Navigation" subtitle="NavBar and Footer" -->
+<link rel="stylesheet" href="../../styles.css">
+<script src="../../_ds_bundle.js"></script>
+<style>body{margin:0;background:var(--surface-page);font-family:var(--font-main);}</style>
+<div id="root"></div>
+<script type="text/babel">
+  const { NavBar, Footer, Button } = window.KOMUSADesignSystem_8f04d7;
+  function Demo(){
+    return (
+      <div>
+        <NavBar
+          logo={<div style={{fontWeight:800,fontSize:18,color:'var(--kom-charcoal)'}}>KOM USA</div>}
+          links={["Services","About","Contact"]}
+          cta={<Button size="sm">Get a Quote</Button>}
+        />
+        <Footer
+          logo={<div style={{fontWeight:800,fontSize:18,color:'#fff'}}>KOM USA</div>}
+          columns={[
+            {title:"Services", items:["Roofing","Remodeling","Repairs"]},
+            {title:"Company", items:["About","Careers","Contact"]},
+          ]}
+        />
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>

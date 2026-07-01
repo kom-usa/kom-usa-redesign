@@ -1,0 +1,68 @@
+---
+import { Image } from "astro:assets";
+import CircleCheck from "@tabler/icons/outline/circle-check.svg";
+
+import Button from "../starwind/button/Button.astro";
+import { business, serviceCategories } from "../../data/business";
+import turnoverImage from "../../assets/images/basement-interior.jpg";
+
+const pmServices =
+  serviceCategories.find((c) => c.id === "property-management")?.items ?? [];
+---
+
+<section id="property-management" class="section-pad scroll-mt-20 bg-kom-sage-tint">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14">
+    <figure class="reveal order-2 lg:order-1" style="--rd: 120ms">
+      <div class="border-border overflow-hidden rounded-xl border bg-white p-2 shadow-card">
+        <Image
+          src={turnoverImage}
+          alt="Clean, turnover-ready rental unit interior (temporary stock photo)"
+          class="w-full rounded-lg object-cover"
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 48vw, 100vw"
+          loading="lazy"
+        />
+      </div>
+      <figcaption class="text-muted-foreground mt-3 text-xs">
+        Temporary stock photo — real KOM USA turnover photos coming soon.
+      </figcaption>
+    </figure>
+
+    <div class="reveal order-1 lg:order-2">
+      <p class="text-primary text-xs font-bold tracking-[0.18em] uppercase">
+        Property managers · Landlords · Investors
+      </p>
+      <h2 class="text-kom-charcoal mt-2 text-3xl font-extrabold text-balance sm:text-4xl">
+        Your maintenance arm for every unit you manage.
+      </h2>
+      <p class="text-muted-foreground mt-4 text-lg leading-relaxed">
+        Turnovers, access, and upkeep across a portfolio shouldn't take five vendors. We already
+        handle locksmith work, maintenance, and repairs for Metro Detroit rentals — and we
+        coordinate it so you don't have to.
+      </p>
+
+      <ul class="mt-6 grid gap-x-6 gap-y-2.5 text-sm sm:grid-cols-2">
+        {
+          pmServices.map((item) => (
+            <li class="text-kom-charcoal flex items-start gap-2 font-medium">
+              <CircleCheck class="text-primary mt-0.5 size-4.5 shrink-0" aria-hidden="true" />
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <Button href="#request-service" variant="primary" size="lg" class="font-bold">
+          Set up recurring service
+        </Button>
+        <Button href={business.phoneHref} variant="outline" size="lg" class="font-bold">
+          Call {business.phone}
+        </Button>
+      </div>
+      <p class="text-muted-foreground mt-4 text-sm">
+        B2B locksmith pricing available for management companies and real estate teams.
+      </p>
+    </div>
+  </div>
+</section>

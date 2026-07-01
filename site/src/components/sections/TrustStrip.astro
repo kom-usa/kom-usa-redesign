@@ -1,0 +1,22 @@
+---
+import Icon from "../common/Icon.astro";
+import { trustPoints } from "../../data/business";
+---
+
+<section aria-label="Why choose KOM USA" class="border-y bg-white">
+  <ul class="mx-auto grid max-w-6xl gap-x-8 gap-y-6 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+    {
+      trustPoints.map((point, index) => (
+        <li class="reveal flex items-start gap-3" style={`--rd: ${index * 80}ms`}>
+          <span class="bg-kom-sage-tint text-primary flex size-10 shrink-0 items-center justify-center rounded-lg">
+            <Icon name={point.icon} class="size-5" />
+          </span>
+          <div>
+            <p class="text-kom-charcoal text-sm font-bold">{point.title}</p>
+            <p class="text-muted-foreground mt-0.5 text-sm">{point.description}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>

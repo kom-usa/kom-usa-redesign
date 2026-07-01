@@ -1,0 +1,43 @@
+:root {
+  /* Base palette — from KOM USA brand guide (do not round/rename) */
+  --kom-green: #78A866;        /* KOM Sage Green — soft backgrounds, accents */
+  --kom-green-dark: #2F6B3B;   /* KOM Field Green — buttons, links, strong CTAs */
+  --kom-charcoal: #33383E;     /* Graphite Charcoal — logo, headings, nav */
+  --kom-warm-white: #F7F7F2;   /* Warm White — main page background */
+  --kom-concrete: #E6E3DA;     /* Concrete Gray — borders, dividers, forms */
+  --kom-steel: #5E7480;        /* Steel Blue Gray — icons, secondary accents */
+  --kom-brass: #C59A42;        /* Brass Gold — small premium highlights */
+  --kom-white: #FFFFFF;
+
+  /* Tints/shades derived via oklch for hover/press states (not in source kit) */
+  --kom-green-dark-hover: oklch(from var(--kom-green-dark) calc(l - 0.06) c h);
+  --kom-green-dark-press: oklch(from var(--kom-green-dark) calc(l - 0.11) c h);
+  --kom-green-tint: oklch(from var(--kom-green) calc(l + 0.16) calc(c * 0.6) h);
+  --kom-charcoal-hover: oklch(from var(--kom-charcoal) calc(l + 0.08) c h);
+
+  /* Semantic aliases */
+  --surface-page: var(--kom-warm-white);
+  --surface-card: var(--kom-white);
+  --surface-sunken: var(--kom-concrete);
+  --surface-inverse: var(--kom-charcoal);
+  --surface-accent-soft: color-mix(in oklab, var(--kom-green) 16%, var(--kom-warm-white));
+
+  --text-primary: var(--kom-charcoal);
+  --text-secondary: var(--kom-steel);
+  --text-inverse: var(--kom-white);
+  --text-link: var(--kom-green-dark);
+
+  --border-default: var(--kom-concrete);
+  --border-strong: var(--kom-charcoal);
+  --border-focus: var(--kom-green-dark);
+
+  --action-primary: var(--kom-green-dark);
+  --action-primary-hover: var(--kom-green-dark-hover);
+  --action-primary-press: var(--kom-green-dark-press);
+  --action-on-primary: var(--kom-white);
+
+  --accent-premium: var(--kom-brass);
+  --accent-secondary-icon: var(--kom-steel);
+
+  --shadow-color: rgba(51, 56, 62, 0.12);
+}

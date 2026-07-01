@@ -1,0 +1,41 @@
+---
+import MapPin from "@tabler/icons/outline/map-pin.svg";
+
+import SectionHeader from "../common/SectionHeader.astro";
+import Roofline from "../common/Roofline.astro";
+import { business, serviceAreaCities, serviceAreaCounties } from "../../data/business";
+---
+
+<section id="service-area" class="section-pad scroll-mt-20 bg-white">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader
+      eyebrow="Service area"
+      title="Based in Metro Detroit. Working across it."
+      lead={`We serve homes, rentals, and portfolios throughout ${serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ", and $1")}.`}
+    />
+
+    <ul class="reveal mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-2.5">
+      {
+        serviceAreaCities.map((city) => (
+          <li class="border-border text-kom-charcoal flex items-center gap-1.5 rounded-full border bg-kom-warm-white px-3.5 py-1.5 text-sm font-medium">
+            <MapPin class="text-kom-steel size-3.5" aria-hidden="true" />
+            {city}
+          </li>
+        ))
+      }
+      <li class="text-muted-foreground flex items-center px-2 py-1.5 text-sm font-medium">
+        …and surrounding Metro Detroit communities
+      </li>
+    </ul>
+
+    <div class="reveal mt-10 flex flex-col items-center gap-3 text-center" style="--rd: 90ms">
+      <Roofline class="text-kom-sage" />
+      <p class="text-muted-foreground max-w-xl text-sm leading-relaxed">
+        Not sure if you're in our area? Call
+        <a href={business.phoneHref} class="text-primary font-bold hover:underline">{business.phone}</a>
+        — we'll tell you right away. Locksmith jobs over 25 miles from our location add a $50
+        distance fee.
+      </p>
+    </div>
+  </div>
+</section>

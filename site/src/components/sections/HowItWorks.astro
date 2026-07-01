@@ -1,0 +1,36 @@
+---
+import Icon from "../common/Icon.astro";
+import SectionHeader from "../common/SectionHeader.astro";
+import { howItWorks } from "../../data/business";
+---
+
+<section id="how-it-works" class="section-pad scroll-mt-20">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader
+      eyebrow="How it works"
+      title="From first call to finished job."
+    />
+
+    <ol class="mt-12 grid gap-6 md:grid-cols-3">
+      {
+        howItWorks.map((step, index) => (
+          <li
+            class="reveal border-border relative rounded-lg border bg-white p-6 shadow-card"
+            style={`--rd: ${index * 90}ms`}
+          >
+            <div class="flex items-center gap-3">
+              <span class="bg-kom-sage-tint text-primary flex size-11 items-center justify-center rounded-lg">
+                <Icon name={step.icon} class="size-6" />
+              </span>
+              <span class="text-kom-concrete text-4xl font-extrabold" aria-hidden="true">
+                {index + 1}
+              </span>
+            </div>
+            <h3 class="text-kom-charcoal mt-4 text-lg font-bold">{step.title}</h3>
+            <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

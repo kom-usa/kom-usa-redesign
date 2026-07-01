@@ -1,0 +1,74 @@
+@import "./starwind.css";
+
+@theme {
+  --font-sans:
+    "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+
+  /* KOM USA brand colors exposed as Tailwind utilities (bg-kom-sage, text-kom-steel, …) */
+  --color-kom-sage: #78a866;
+  --color-kom-field: #2f6b3b;
+  --color-kom-field-hover: #275a32;
+  --color-kom-field-press: #1f4928;
+  --color-kom-charcoal: #33383e;
+  --color-kom-charcoal-deep: #272b30;
+  --color-kom-warm-white: #f7f7f2;
+  --color-kom-concrete: #e6e3da;
+  --color-kom-steel: #5e7480;
+  --color-kom-brass: #c59a42;
+  --color-kom-sage-tint: #eaf0e2;
+
+  --shadow-card: 0 2px 8px rgba(51, 56, 62, 0.08);
+  --shadow-card-hover: 0 4px 14px rgba(51, 56, 62, 0.12);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--kom-sage);
+    color: var(--color-white);
+  }
+}
+
+/* Scroll-reveal animation (pattern from kom-usa-redesign-preview.netlify.app).
+   Elements with .reveal fade in and rise 20px when scrolled into view; stagger
+   siblings with `style="--rd: 80ms"`. Gated on html.js so content stays visible
+   without JavaScript, and on prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: var(--rd, 0s);
+    will-change: opacity, transform;
+  }
+
+  html.js .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility section-pad {
+  padding-block: --spacing(16);
+
+  @variant md {
+    padding-block: --spacing(24);
+  }
+}

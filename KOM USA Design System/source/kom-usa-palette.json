@@ -1,0 +1,45 @@
+{
+  "brand": "KOM USA",
+  "palette": {
+    "primary": {
+      "name": "KOM Sage Green",
+      "hex": "#78A866",
+      "usage": "Primary brand color, soft backgrounds, highlight accents"
+    },
+    "primaryDark": {
+      "name": "KOM Field Green",
+      "hex": "#2F6B3B",
+      "usage": "Buttons, links, hover states, high-contrast green"
+    },
+    "charcoal": {
+      "name": "Graphite Charcoal",
+      "hex": "#33383E",
+      "usage": "Logo, headings, body text, navigation"
+    },
+    "warmWhite": {
+      "name": "Warm White",
+      "hex": "#F7F7F2",
+      "usage": "Website background and light surfaces"
+    },
+    "concrete": {
+      "name": "Concrete Gray",
+      "hex": "#E6E3DA",
+      "usage": "Borders, dividers, cards, form fields"
+    },
+    "steel": {
+      "name": "Steel Blue Gray",
+      "hex": "#5E7480",
+      "usage": "Secondary accent, icons, captions"
+    },
+    "brass": {
+      "name": "Brass Gold",
+      "hex": "#C59A42",
+      "usage": "Small premium accents, ratings, certifications"
+    },
+    "white": {
+      "name": "White",
+      "hex": "#FFFFFF",
+      "usage": "Reverse logo, dark-section text"
+    }
+  }
+}

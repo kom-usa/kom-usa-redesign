@@ -1,0 +1,60 @@
+---
+import Star from "@tabler/icons/outline/star.svg";
+
+import Badge from "../starwind/badge/Badge.astro";
+import SectionHeader from "../common/SectionHeader.astro";
+import { business } from "../../data/business";
+
+/**
+ * No verified customer reviews were provided for phase one, so these cards are
+ * honest placeholders — never invent quotes. Swap in real, verified reviews
+ * (Google Business Profile is the natural source) as they're collected.
+ */
+const placeholders = [
+  "A verified customer review will appear here.",
+  "A verified customer review will appear here.",
+  "A verified customer review will appear here.",
+];
+---
+
+<section id="reviews" class="section-pad scroll-mt-20 bg-white">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader
+      eyebrow="Reviews"
+      title="What neighbors say about our work."
+      lead="We're collecting verified reviews from real KOM USA customers and will publish them here — no made-up quotes, ever."
+    />
+
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
+      {
+        placeholders.map((_, index) => (
+          <article
+            class="reveal border-border flex flex-col rounded-lg border border-dashed bg-kom-warm-white p-6"
+            style={`--rd: ${index * 80}ms`}
+          >
+            <Badge variant="outline" size="sm" class="self-start bg-white">
+              Placeholder — verified review coming soon
+            </Badge>
+            <div class="text-kom-concrete mt-4 flex gap-1" aria-hidden="true">
+              <Star class="size-5" />
+              <Star class="size-5" />
+              <Star class="size-5" />
+              <Star class="size-5" />
+              <Star class="size-5" />
+            </div>
+            <p class="text-muted-foreground mt-3 text-sm leading-relaxed">
+              A verified customer review will appear here once it's collected and confirmed.
+            </p>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="text-muted-foreground mt-8 text-center text-sm">
+      Worked with us? We'd love your feedback — call
+      <a href={business.phoneHref} class="text-primary font-bold hover:underline">{business.phone}</a>
+      or email
+      <a href={business.emailHref} class="text-primary font-bold hover:underline">{business.email}</a>.
+    </p>
+  </div>
+</section>

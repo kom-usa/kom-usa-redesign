@@ -1,0 +1,38 @@
+---
+/**
+ * Maps a data-driven icon name (see src/data/business.ts) to a Tabler outline icon.
+ */
+import BuildingCommunity from "@tabler/icons/outline/building-community.svg";
+import CalendarCheck from "@tabler/icons/outline/calendar-check.svg";
+import CircleCheck from "@tabler/icons/outline/circle-check.svg";
+import ClipboardCheck from "@tabler/icons/outline/clipboard-check.svg";
+import Flame from "@tabler/icons/outline/flame.svg";
+import Hammer from "@tabler/icons/outline/hammer.svg";
+import Key from "@tabler/icons/outline/key.svg";
+import MapPin from "@tabler/icons/outline/map-pin.svg";
+import Phone from "@tabler/icons/outline/phone.svg";
+import Tools from "@tabler/icons/outline/tools.svg";
+
+interface Props {
+  name: string;
+  class?: string;
+}
+
+const icons: Record<string, (props: Record<string, unknown>) => unknown> = {
+  "building-community": BuildingCommunity,
+  "calendar-check": CalendarCheck,
+  "circle-check": CircleCheck,
+  "clipboard-check": ClipboardCheck,
+  flame: Flame,
+  hammer: Hammer,
+  key: Key,
+  "map-pin": MapPin,
+  phone: Phone,
+  tools: Tools,
+};
+
+const { name, class: className } = Astro.props;
+const IconComponent = icons[name] ?? Tools;
+---
+
+<IconComponent class={className} aria-hidden="true" />

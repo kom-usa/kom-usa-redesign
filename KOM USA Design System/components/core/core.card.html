@@ -1,0 +1,35 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Core" subtitle="Button, Badge, Tag, Card, ServiceCard" -->
+<link rel="stylesheet" href="../../styles.css">
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body{margin:0;padding:20px;background:var(--surface-page);font-family:var(--font-main);}
+  .row{display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+</style>
+<div id="root"></div>
+<script type="text/babel">
+  const { Button, Badge, Tag, Card, ServiceCard } = window.KOMUSADesignSystem_8f04d7;
+  function Demo(){
+    return (
+      <div>
+        <div className="row">
+          <Button variant="primary">Get a Free Estimate</Button>
+          <Button variant="secondary">Learn More</Button>
+          <Button variant="ghost" size="sm">Cancel</Button>
+          <Button variant="primary" disabled>Disabled</Button>
+        </div>
+        <div className="row">
+          <Badge tone="green">Licensed &amp; Insured</Badge>
+          <Badge tone="brass">Top Rated</Badge>
+          <Badge tone="neutral">New</Badge>
+          <Tag onRemove={()=>{}}>Roofing</Tag>
+        </div>
+        <div className="grid">
+          <Card><strong>Plain card</strong><p style={{marginTop:8,color:'var(--text-secondary)'}}>Soft shadow, subtle border, 8px radius.</p></Card>
+          <ServiceCard title="Roof Repair" description="Fast, honest fixes done right the first time." icon={<span>🏠</span>} />
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script>
