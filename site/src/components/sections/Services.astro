@@ -1,110 +1,78 @@
 ---
-import { Image } from "astro:assets";
 import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
-import Check from "@tabler/icons/outline/check.svg";
+import Headset from "@tabler/icons/outline/headset.svg";
 
+import Icon from "../common/Icon.astro";
 import SectionHeader from "../common/SectionHeader.astro";
 import { serviceCategories } from "../../data/business";
 
-import kitchenRemodel from "../../assets/images/kitchen-remodel.jpg";
-import homeExterior from "../../assets/images/home-exterior.jpg";
-import doorLock from "../../assets/images/door-lock.jpg";
-import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
-import apartmentBuilding from "../../assets/images/apartment-building.jpg";
-
-const cardMeta: Record<string, { image: ImageMetadata; alt: string; cta: string; href: string }> = {
-  "construction-remodeling": {
-    image: kitchenRemodel,
-    alt: "Remodeled kitchen with white cabinets",
-    cta: "Request remodeling help",
-    href: "/#request-service",
-  },
-  "property-maintenance": {
-    image: homeExterior,
-    alt: "Well-kept two-story home with a wraparound porch",
-    cta: "Request maintenance",
-    href: "/#request-service",
-  },
-  locksmith: {
-    image: doorLock,
-    alt: "Smart lock installed on a unit door",
-    cta: "See upfront pricing",
-    href: "/locksmith",
-  },
-  "chimney-care": {
-    image: fireplaceChimney,
-    alt: "Fire burning in a brick fireplace",
-    cta: "Request chimney service",
-    href: "/#request-service",
-  },
-  "property-management": {
-    image: apartmentBuilding,
-    alt: "Apartment building with balconies",
-    cta: "Request portfolio service",
-    href: "/#request-service",
-  },
+const cardCta: Record<string, { label: string; href: string }> = {
+  "construction-remodeling": { label: "Request remodeling help", href: "/#request-service" },
+  "property-maintenance": { label: "Request maintenance", href: "/#request-service" },
+  locksmith: { label: "See upfront pricing", href: "/locksmith" },
+  "chimney-care": { label: "Request chimney service", href: "/#request-service" },
+  "property-management": { label: "Request portfolio service", href: "/#request-service" },
 };
 
-const maxJobs = 6;
+const maxJobs = 5;
 ---
 
-<section id="services" class="section-pad scroll-mt-16">
+<section id="services" class="section-pad scroll-mt-16 bg-kom-cream pt-0">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
-      title="Our Services"
-      lead="Five trades, one local crew — from a $25 key copy to a full home addition."
+      title="Professional help across five trades"
+      lead="From a $25 key copy to a full home addition — one local crew handles it."
     />
 
     <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {
         serviceCategories.map((category, index) => {
-          const meta = cardMeta[category.id];
+          const cta = cardCta[category.id];
           const jobs = category.items.slice(0, maxJobs);
-          const remaining = category.items.length - jobs.length;
           return (
             <li
               id={category.id}
-              class="reveal border-border flex scroll-mt-24 flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover"
+              class="reveal border-border flex scroll-mt-24 flex-col rounded-xl border bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover"
               style={`--rd: ${(index % 3) * 70}ms`}
             >
-              <div class="relative h-40">
-                <Image
-                  src={meta.image}
-                  alt={meta.alt}
-                  class="absolute inset-0 h-full w-full object-cover"
-                  widths={[480, 800]}
-                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-                  loading="lazy"
-                />
-              </div>
-              <div class="flex flex-1 flex-col p-5">
-                <h3 class="font-serif text-kom-ink text-xl font-bold">{category.title}</h3>
-                <p class="text-muted-foreground mt-1.5 text-sm leading-relaxed">{category.blurb}</p>
-                <ul class="mt-3 grid flex-1 grid-cols-1 gap-x-4 gap-y-1.5 text-sm min-[420px]:grid-cols-2">
-                  {jobs.map((item) => (
-                    <li class="text-kom-charcoal/90 flex items-start gap-1.5">
-                      <Check class="text-kom-field mt-0.5 size-4 shrink-0" aria-hidden="true" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                {remaining > 0 && (
-                  <p class="text-muted-foreground mt-2 text-xs font-medium">
-                    …plus {remaining} more — just ask.
-                  </p>
-                )}
-                <a
-                  href={meta.href}
-                  class="text-kom-field hover:text-kom-field-hover mt-4 inline-flex items-center gap-1.5 rounded-sm text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-                >
-                  {meta.cta}
-                  <ArrowRight class="size-4" aria-hidden="true" />
-                </a>
-              </div>
+              <span class="bg-kom-sage-tint text-kom-field flex size-13 items-center justify-center rounded-lg">
+                <Icon name={category.icon} class="size-7" />
+              </span>
+              <h3 class="text-kom-ink mt-5 text-xl font-bold">{category.title}</h3>
+              <p class="text-muted-foreground mt-1.5 text-sm leading-relaxed">{category.blurb}</p>
+              <p class="text-kom-charcoal/80 mt-3 flex-1 text-sm leading-relaxed">
+                {jobs.join(" · ")}
+                {category.items.length > maxJobs && " · and more"}
+              </p>
+              <a
+                href={cta.href}
+                class="text-kom-field hover:text-kom-field-hover mt-4 inline-flex items-center gap-1.5 rounded-sm text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+              >
+                {cta.label}
+                <ArrowRight class="size-4" aria-hidden="true" />
+              </a>
             </li>
           );
         })
       }
+
+      <li class="reveal bg-kom-field-deep flex flex-col rounded-xl p-6 text-white" style="--rd: 350ms">
+        <span class="flex size-13 items-center justify-center rounded-lg bg-white/15">
+          <Headset class="size-7" aria-hidden="true" />
+        </span>
+        <h3 class="mt-5 text-xl font-bold">Not sure who to call?</h3>
+        <p class="mt-1.5 flex-1 text-sm leading-relaxed text-white/75">
+          If it's on your property and on your list, ask us. If we can't do it, we'll say so —
+          no runaround.
+        </p>
+        <a
+          href="/#request-service"
+          class="text-kom-tan mt-4 inline-flex items-center gap-1.5 rounded-sm text-sm font-bold transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-white/40 focus-visible:outline-none"
+        >
+          Ask about your project
+          <ArrowRight class="size-4" aria-hidden="true" />
+        </a>
+      </li>
     </ul>
   </div>
 </section>

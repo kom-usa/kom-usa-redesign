@@ -1,0 +1,48 @@
+---
+import { Image } from "astro:assets";
+
+import Icon from "../common/Icon.astro";
+import { trustPoints } from "../../data/business";
+import workerElectrical from "../../assets/images/worker-electrical.jpg";
+
+const features = trustPoints.slice(0, 3);
+---
+
+<section class="section-pad bg-kom-cream">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-16">
+    <figure class="reveal">
+      <Image
+        src={workerElectrical}
+        alt="Technician in a hard hat servicing an electrical box"
+        class="aspect-[4/3] w-full rounded-xl object-cover shadow-card"
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1024px) 48vw, 100vw"
+        loading="lazy"
+      />
+    </figure>
+
+    <div class="reveal" style="--rd: 100ms">
+      <p class="text-kom-field text-sm font-bold tracking-[0.18em] uppercase">Why choose KOM</p>
+      <h2 class="text-kom-ink mt-2 text-3xl font-black tracking-tight text-balance sm:text-4xl lg:text-[44px] lg:leading-[1.1]">
+        One crew you can hand the whole list to.
+      </h2>
+      <div class="mt-8 space-y-7">
+        {
+          features.map((feature) => (
+            <div class="flex gap-4">
+              <span class="bg-kom-field flex size-12 shrink-0 items-center justify-center rounded-lg text-white">
+                <Icon name={feature.icon} class="size-6" />
+              </span>
+              <div>
+                <h3 class="text-kom-ink text-lg font-bold">{feature.title}</h3>
+                <p class="text-muted-foreground mt-1 text-sm leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

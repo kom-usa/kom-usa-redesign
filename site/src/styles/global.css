@@ -4,7 +4,11 @@
   --font-sans:
     "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  /* Headings use the brand sans at heavy weight (roofer-style look); the
+     serif alias stays mapped to it so existing font-serif markup follows. */
+  --font-serif:
+    "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 
   /* KOM USA brand colors exposed as Tailwind utilities (bg-kom-sage, text-kom-steel, …) */
   --color-kom-sage: #78a866;

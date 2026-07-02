@@ -5,7 +5,7 @@ import X from "@tabler/icons/outline/x.svg";
 
 import Button from "../starwind/button/Button.astro";
 import { business } from "../../data/business";
-import logoWhite from "../../assets/logos/kom-usa-logo-white.svg";
+import logo from "../../assets/logos/kom-usa-logo-primary-charcoal.svg";
 
 // Absolute paths so the nav works from /about and /locksmith too.
 const nav = [
@@ -18,22 +18,22 @@ const nav = [
 ];
 ---
 
-<header class="bg-kom-field sticky top-0 z-50">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
+<header class="sticky top-0 z-50 border-b bg-white/95 backdrop-blur-sm">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
     <a
       href="/"
-      class="flex shrink-0 items-center rounded-sm focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none"
+      class="flex shrink-0 items-center rounded-sm focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
       aria-label={`${business.name} home`}
     >
-      <img src={logoWhite.src} alt={business.name} class="h-10 w-auto md:h-11" width="78" height="57" />
+      <img src={logo.src} alt={business.name} class="h-10 w-auto md:h-11" width="78" height="57" />
     </a>
 
-    <nav aria-label="Main" class="hidden items-center gap-5 lg:flex">
+    <nav aria-label="Main" class="hidden items-center gap-6 lg:flex">
       {
         nav.map((item) => (
           <a
             href={item.href}
-            class="rounded-sm text-sm font-bold text-white/90 transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none"
+            class="text-kom-charcoal hover:text-kom-field rounded-sm text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
           >
             {item.label}
           </a>
@@ -42,20 +42,12 @@ const nav = [
     </nav>
 
     <div class="flex items-center gap-2">
-      <Button
-        href={business.phoneHref}
-        size="sm"
-        class="border border-white/40 bg-transparent font-bold text-white hover:bg-white/10 focus-visible:ring-white/40"
-      >
+      <Button href={business.phoneHref} variant="outline" size="sm" class="font-bold">
         <Phone aria-hidden="true" />
         <span class="hidden md:inline">Call {business.phone}</span>
         <span class="md:hidden">Call</span>
       </Button>
-      <Button
-        href="/#request-service"
-        size="sm"
-        class="text-kom-field bg-white font-bold hover:bg-white/90 focus-visible:ring-white/50"
-      >
+      <Button href="/#request-service" variant="primary" size="sm" class="font-bold">
         Request service
       </Button>
       <button
@@ -64,7 +56,7 @@ const nav = [
         aria-expanded="false"
         aria-controls="mobile-menu"
         aria-label="Open menu"
-        class="flex size-9 items-center justify-center rounded-md text-white transition-colors hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none lg:hidden"
+        class="text-kom-charcoal hover:bg-kom-cream flex size-9 items-center justify-center rounded-md transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none lg:hidden"
       >
         <Menu2 class="size-6" data-icon-open aria-hidden="true" />
         <X class="hidden size-6" data-icon-close aria-hidden="true" />
@@ -72,14 +64,14 @@ const nav = [
     </div>
   </div>
 
-  <nav id="mobile-menu" aria-label="Mobile" class="hidden border-t border-white/15 lg:hidden">
+  <nav id="mobile-menu" aria-label="Mobile" class="hidden border-t lg:hidden">
     <ul class="mx-auto max-w-6xl px-4 py-2 sm:px-6">
       {
         nav.map((item) => (
           <li>
             <a
               href={item.href}
-              class="block rounded-md px-2 py-2.5 text-sm font-bold text-white/90 transition-colors hover:bg-white/10 hover:text-white focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none"
+              class="text-kom-charcoal hover:bg-kom-cream hover:text-kom-field block rounded-md px-2 py-2.5 text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
             >
               {item.label}
             </a>
@@ -105,7 +97,6 @@ const nav = [
       toggle.addEventListener("click", () => {
         setOpen(toggle.getAttribute("aria-expanded") !== "true");
       });
-      // Close after choosing a destination or pressing Escape.
       menu.addEventListener("click", (event) => {
         if ((event.target as HTMLElement).closest("a")) setOpen(false);
       });

@@ -89,7 +89,7 @@
   --kom-cream-deep: #eae3d2;
   --kom-cream-border: #ddd4be;
 
-  --background: var(--kom-cream);
+  --background: var(--color-white);
   --foreground: var(--kom-charcoal);
   --card: var(--color-white);
   --card-foreground: var(--kom-charcoal);

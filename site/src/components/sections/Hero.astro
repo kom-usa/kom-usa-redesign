@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets";
+import { getImage } from "astro:assets";
 import Phone from "@tabler/icons/outline/phone.svg";
 import MapPin from "@tabler/icons/outline/map-pin.svg";
 import Key from "@tabler/icons/outline/key.svg";
@@ -7,64 +7,71 @@ import BuildingCommunity from "@tabler/icons/outline/building-community.svg";
 import Clock from "@tabler/icons/outline/clock.svg";
 
 import Button from "../starwind/button/Button.astro";
-import { business, serviceOptions } from "../../data/business";
-
-import workerElectrical from "../../assets/images/worker-electrical.jpg";
-import interiorRenovation from "../../assets/images/interior-renovation.jpg";
+import { business } from "../../data/business";
+import bannerImage from "../../assets/images/construction-framing.jpg";
 
 /**
- * Trust chips: "Licensed & insured" is intentionally absent until the owner
- * confirms it's accurate — never claim credentials that aren't verified.
+ * Full-bleed jobsite banner with a dark overlay and a big left-aligned
+ * headline. Trust chips: "Licensed & insured" stays absent until the owner
+ * confirms it's accurate.
  */
+const banner = await getImage({ src: bannerImage, width: 1920, format: "webp" });
+
 const chips = [
   { label: "Metro Detroit local", icon: MapPin },
   { label: "Upfront locksmith pricing", icon: Key, href: "/locksmith#pricing" },
   { label: "Property-manager friendly", icon: BuildingCommunity },
   { label: "Fast response", icon: Clock },
 ];
-
-const propertyTypes = ["House", "Apartment / unit", "Rental property", "Commercial", "Other"];
-
-const inputClass =
-  "h-11 w-full rounded-md border border-kom-cream-deep bg-white px-3 text-base text-kom-charcoal placeholder:text-kom-charcoal/50 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-kom-field";
 ---
 
-<section class="border-b bg-white">
-  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[1.5fr_1fr]">
-    <div class="reveal">
-      <h1 class="font-serif text-kom-ink text-3xl font-bold text-balance sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
+<section
+  class="relative bg-kom-ink bg-cover bg-center"
+  style={`background-image: url('${banner.src}')`}
+>
+  <div class="absolute inset-0 bg-kom-ink/70" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-6xl px-4 pt-20 pb-24 sm:px-6 lg:pt-28 lg:pb-32">
+    <div class="reveal max-w-3xl">
+      <p class="text-kom-sage text-sm font-bold tracking-[0.18em] uppercase">
+        One local crew · Metro Detroit
+      </p>
+      <h1 class="mt-4 text-4xl font-black text-balance text-white sm:text-5xl lg:text-[64px] lg:leading-[1.06] lg:tracking-tight">
         Construction, maintenance, locksmith, and turnover help across Metro Detroit.
       </h1>
-      <p class="text-muted-foreground mt-4 max-w-2xl text-lg leading-relaxed">
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl">
         One local crew for homeowners, landlords, and property managers across Wayne, Oakland,
         and Macomb counties.
       </p>
 
-      <div class="mt-6 flex flex-wrap items-center gap-3">
-        <Button href="#request-service" variant="primary" size="lg" class="font-bold">
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <Button href="/#request-service" variant="primary" size="lg" class="font-bold">
           Request service
         </Button>
-        <Button href={business.phoneHref} variant="outline" size="lg" class="font-bold">
+        <Button
+          href={business.phoneHref}
+          size="lg"
+          class="border-2 border-white/70 bg-transparent font-bold text-white hover:bg-white/10 focus-visible:ring-white/40"
+        >
           <Phone aria-hidden="true" />
           Call now
         </Button>
       </div>
 
-      <ul class="mt-6 flex flex-wrap gap-2">
+      <ul class="mt-10 flex flex-wrap gap-2.5">
         {
           chips.map((chip) => {
-            const Tag = chip.href ? "a" : "li";
+            const Tag = chip.href ? "a" : "span";
             return (
               <li class="contents">
                 <Tag
                   href={chip.href}
                   class:list={[
-                    "border-kom-cream-border text-kom-charcoal flex items-center gap-1.5 rounded-full border bg-kom-cream px-3 py-1.5 text-xs font-bold",
+                    "flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white",
                     chip.href &&
-                      "transition-colors hover:border-kom-field hover:text-kom-field focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none",
+                      "transition-colors hover:border-kom-sage hover:text-kom-sage focus-visible:ring-3 focus-visible:ring-white/40 focus-visible:outline-none",
                   ]}
                 >
-                  <chip.icon class="text-kom-field size-3.5" aria-hidden="true" />
+                  <chip.icon class="text-kom-sage size-3.5" aria-hidden="true" />
                   {chip.label}
                 </Tag>
               </li>
@@ -72,79 +79,6 @@ const inputClass =
           })
         }
       </ul>
-
-      <div class="mt-8 hidden gap-3 sm:grid sm:grid-cols-2">
-        <Image
-          src={workerElectrical}
-          alt="Technician in a hard hat servicing an electrical box"
-          class="aspect-[16/8] w-full rounded-xl object-cover"
-          widths={[480, 800]}
-          sizes="(min-width: 1024px) 30vw, 45vw"
-          loading="eager"
-          fetchpriority="high"
-        />
-        <Image
-          src={interiorRenovation}
-          alt="Contractor finishing a ceiling during an interior renovation"
-          class="aspect-[16/8] w-full rounded-xl object-cover"
-          widths={[480, 800]}
-          sizes="(min-width: 1024px) 30vw, 45vw"
-          loading="eager"
-        />
-      </div>
-    </div>
-
-    <div id="quick-quote" class="reveal bg-kom-tan scroll-mt-20 rounded-xl px-6 py-7 shadow-card sm:px-7" style="--rd: 100ms">
-      <h2 class="font-serif text-kom-ink text-2xl font-bold">Get your free quote today</h2>
-      <form
-        name="quick-quote"
-        method="POST"
-        action="/thank-you"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        class="mt-4 space-y-3"
-      >
-        <input type="hidden" name="form-name" value="quick-quote" />
-        <input type="hidden" name="subject" value="New quick quote request — kom.construction" />
-        <p class="hidden" aria-hidden="true">
-          <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-        </p>
-
-        <div>
-          <label for="qq-name" class="sr-only">Full name</label>
-          <input type="text" id="qq-name" name="name" required autocomplete="name" placeholder="Full name" class={inputClass} />
-        </div>
-        <div>
-          <label for="qq-phone" class="sr-only">Phone number</label>
-          <input type="tel" id="qq-phone" name="phone" required autocomplete="tel" placeholder="Phone number" class={inputClass} />
-        </div>
-        <div>
-          <label for="qq-email" class="sr-only">Email</label>
-          <input type="email" id="qq-email" name="email" required autocomplete="email" placeholder="Email" class={inputClass} />
-        </div>
-        <div>
-          <label for="qq-service" class="sr-only">Service needed</label>
-          <select id="qq-service" name="service" required class={inputClass}>
-            <option value="" disabled selected>Service needed</option>
-            {serviceOptions.map((option) => <option value={option}>{option}</option>)}
-          </select>
-        </div>
-        <div>
-          <label for="qq-property-type" class="sr-only">Property type</label>
-          <select id="qq-property-type" name="property-type" class={inputClass}>
-            <option value="" disabled selected>Property type</option>
-            {propertyTypes.map((option) => <option value={option}>{option}</option>)}
-          </select>
-        </div>
-
-        <Button type="submit" variant="primary" size="lg" class="w-full font-bold">
-          Request service
-        </Button>
-        <p class="text-kom-ink/70 text-center text-xs font-medium">
-          No spam — we only use this to respond to your request. Need more room for details? Use
-          the <a href="#request-service" class="font-bold underline">full request form</a>.
-        </p>
-      </form>
     </div>
   </div>
 </section>
