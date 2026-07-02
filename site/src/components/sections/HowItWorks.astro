@@ -2,23 +2,44 @@
 import Icon from "../common/Icon.astro";
 import SectionHeader from "../common/SectionHeader.astro";
 import { howItWorks } from "../../data/business";
+
+const steps = [
+  ...howItWorks,
+  {
+    title: "You're set",
+    description: "We close the loop, confirm the work is complete, and keep notes for next time.",
+    icon: "circle-check",
+  },
+];
 ---
 
-<section id="how-it-works" class="section-pad scroll-mt-16">
-  <div class="mx-auto max-w-5xl px-4 sm:px-6">
-    <SectionHeader title="How it works" />
+<section id="how-it-works" class="section-pad scroll-mt-16 bg-white">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <SectionHeader
+      title="Our process is simple"
+      lead="A clear request, a clear scope, and a crew that gets the property handled."
+    />
 
-    <ol class="mt-12 grid gap-10 text-center sm:grid-cols-3">
+    <ol class="relative mt-12 grid gap-8 text-center md:grid-cols-4">
       {
-        howItWorks.map((step, index) => (
-          <li class="reveal flex flex-col items-center" style={`--rd: ${index * 90}ms`}>
-            <span class="border-kom-ink/20 text-kom-ink flex size-16 items-center justify-center rounded-full border bg-white/60">
+        steps.map((step, index) => (
+          <li class="reveal relative flex flex-col items-center" style={`--rd: ${index * 90}ms`}>
+            {
+              index < steps.length - 1 && (
+                <span
+                  class="absolute top-8 left-1/2 hidden h-px w-full bg-kom-charcoal/15 md:block"
+                  aria-hidden="true"
+                />
+              )
+            }
+            <span class="text-kom-field relative z-1 flex size-16 items-center justify-center rounded-full bg-kom-warm-white shadow-sm ring-1 ring-kom-charcoal/10">
               <Icon name={step.icon} class="size-7" />
+              <span class="bg-kom-field absolute -top-1 -right-1 flex size-6 items-center justify-center rounded-full text-xs font-black text-white">
+                {index + 1}
+              </span>
             </span>
-            <h3 class="text-kom-ink mt-4 text-base font-bold">
-              {index + 1}. {step.title}
-            </h3>
-            <p class="text-muted-foreground mt-2 max-w-60 text-sm leading-relaxed">
+            <h3 class="text-kom-charcoal-deep mt-5 text-base font-black">{step.title}</h3>
+            <p class="text-muted-foreground mt-2 max-w-64 text-sm leading-relaxed">
               {step.description}
             </p>
           </li>

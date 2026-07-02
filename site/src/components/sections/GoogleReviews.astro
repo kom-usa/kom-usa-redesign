@@ -1,0 +1,55 @@
+---
+import StarFilled from "@tabler/icons/filled/star.svg";
+import ExternalLink from "@tabler/icons/outline/external-link.svg";
+
+import SectionHeader from "../common/SectionHeader.astro";
+import { googleReviews } from "../../data/business";
+---
+
+<section id="reviews" class="section-pad scroll-mt-16 bg-kom-warm-white">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <SectionHeader
+      eyebrow="Reviews"
+      title="What your neighbors say"
+      lead=""
+    />
+
+    <p class="reveal mt-6 flex items-center justify-center gap-3">
+      <span class="text-kom-charcoal-deep text-5xl font-black">{googleReviews.rating}</span>
+      <span>
+        <span class="flex text-kom-brass" aria-hidden="true">
+          {Array.from({ length: 5 }).map(() => <StarFilled class="size-5" />)}
+        </span>
+        <a href={googleReviews.url} target="_blank" rel="noopener" class="text-kom-field mt-1 block text-sm font-extrabold hover:underline">
+          {googleReviews.count} reviews on Google
+        </a>
+      </span>
+    </p>
+
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {
+        googleReviews.featured.map((review, index) => (
+          <figure class="reveal border-border flex flex-col rounded-xl border bg-white p-6 shadow-card" style={`--rd: ${index * 90}ms`}>
+            <span class="flex text-kom-brass" aria-hidden="true">
+              {Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}
+            </span>
+            <blockquote class="text-kom-charcoal mt-4 flex-1 text-sm leading-relaxed">
+              “{review.quote}”
+            </blockquote>
+            <figcaption class="text-kom-charcoal-deep mt-4 text-sm font-extrabold">
+              {review.name}
+              <span class="text-muted-foreground block text-xs font-medium">Google review</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+    <p class="reveal mt-8 text-center">
+      <a href={googleReviews.url} target="_blank" rel="noopener" class="text-kom-field inline-flex items-center gap-1.5 text-sm font-extrabold hover:underline focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none">
+        Read all {googleReviews.count} reviews on Google
+        <ExternalLink class="size-4" aria-hidden="true" />
+      </a>
+    </p>
+  </div>
+</section>

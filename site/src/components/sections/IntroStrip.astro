@@ -1,0 +1,36 @@
+---
+import { Image } from "astro:assets";
+import SectionHeader from "../common/SectionHeader.astro";
+import workerPortrait from "../../assets/images/worker-portrait.jpg";
+---
+
+<section class="section-pad bg-white">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr]">
+    <div class="reveal">
+      <SectionHeader
+        align="left"
+        eyebrow="Nice to meet you"
+        title="Small crew. Straight answers. Your neighborhood."
+        lead=""
+      />
+      <p class="text-muted-foreground mt-4 max-w-xl text-lg leading-relaxed">
+        KOM USA is a locally owned Metro Detroit crew. We keep our services focused —
+        locksmith work, water heaters, and chimney care — so we can do them well,
+        publish our prices, and pick up the phone when you call. No call centers,
+        no upsells, no mystery quotes.
+      </p>
+      <p class="text-muted-foreground mt-4 max-w-xl text-lg leading-relaxed">
+        Send the form above and a real person calls you back to talk through your
+        project and answer your questions. That's the whole process.
+      </p>
+    </div>
+    <Image
+      src={workerPortrait}
+      alt="KOM USA technician ready to help"
+      class="reveal h-full min-h-72 w-full rounded-xl object-cover shadow-card"
+      style="--rd: 120ms"
+      widths={[480, 720, 960]}
+      sizes="(min-width: 1024px) 40vw, 100vw"
+    />
+  </div>
+</section>

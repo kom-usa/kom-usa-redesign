@@ -2,9 +2,8 @@
 import {
   business,
   faqs,
-  locksmithPricing,
   serviceAreaCities,
-  serviceCategories,
+  services,
 } from "../../data/business";
 
 interface Props {
@@ -81,19 +80,21 @@ if (includeBusinessGraph) {
           name: `${city}, MI`,
         })),
       ],
-      knowsAbout: serviceCategories.map((c) => c.title),
+      knowsAbout: services.map((s) => s.title),
       hasOfferCatalog: {
         "@type": "OfferCatalog",
-        name: "Locksmith services — standard pricing",
-        itemListElement: locksmithPricing.map((item) => ({
-          "@type": "Offer",
-          itemOffered: { "@type": "Service", name: item.service },
-          priceSpecification: {
-            "@type": "PriceSpecification",
-            price: item.price.replace("$", ""),
-            priceCurrency: "USD",
-          },
-        })),
+        name: "KOM USA services — standard pricing",
+        itemListElement: services.flatMap((s) =>
+          s.pricing.map((item) => ({
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: `${s.title} — ${item.service}` },
+            priceSpecification: {
+              "@type": "PriceSpecification",
+              price: item.price.replace(/[^0-9.]/g, ""),
+              priceCurrency: "USD",
+            },
+          })),
+        ),
       },
     },
     {

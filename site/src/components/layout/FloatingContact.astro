@@ -16,27 +16,30 @@ const options = [
   { label: "Call us", detail: business.phone, href: business.phoneHref, icon: Phone },
   { label: "Text us", detail: business.phone, href: business.smsHref, icon: MessageCircle },
   { label: "Email us", detail: business.email, href: business.emailHref, icon: Mail },
-  { label: "Request service", detail: "Use the request form", href: "/#request-service", icon: ClipboardCheck },
+  { label: "Request service", detail: "Use the request form", href: "/contact", icon: ClipboardCheck },
 ];
 ---
 
 <div id="floating-contact" class="fixed right-5 bottom-5 z-50 hidden flex-col items-end gap-3 md:flex">
   <div
     id="floating-contact-panel"
-    class="border-border hidden w-64 overflow-hidden rounded-xl border bg-white shadow-card-hover"
+    class="hidden w-72 overflow-hidden rounded-lg border border-kom-charcoal/10 bg-white shadow-card-hover"
     role="region"
     aria-label="Contact options"
   >
-    <p class="bg-kom-field px-4 py-3 text-sm font-bold text-white">How can we help?</p>
-    <ul class="divide-border divide-y">
+    <div class="bg-kom-field-deep px-4 py-4 text-white">
+      <p class="text-sm font-black">Contact KOM</p>
+      <p class="mt-1 text-xs text-white/70">Call, text, email, or request service.</p>
+    </div>
+    <ul class="divide-y divide-kom-charcoal/10">
       {
         options.map((option) => (
           <li>
             <a
               href={option.href}
-              class="hover:bg-kom-cream flex items-center gap-3 px-4 py-3 transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none focus-visible:ring-inset"
+              class="flex items-center gap-3 px-4 py-3.5 transition-colors hover:bg-kom-warm-white focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none focus-visible:ring-inset"
             >
-              <span class="bg-kom-sage-tint text-kom-field flex size-9 shrink-0 items-center justify-center rounded-lg">
+              <span class="bg-kom-sage-tint text-kom-field flex size-10 shrink-0 items-center justify-center rounded-md">
                 <option.icon class="size-4.5" aria-hidden="true" />
               </span>
               <span>
@@ -55,7 +58,7 @@ const options = [
     id="floating-contact-toggle"
     aria-expanded="false"
     aria-controls="floating-contact-panel"
-    class="bg-kom-field hover:bg-kom-field-hover flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-white shadow-card-hover transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+    class="bg-kom-field hover:bg-kom-field-hover flex items-center gap-2 rounded-full px-5 py-3 text-sm font-black text-white shadow-card-hover transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
   >
     <Headset class="size-5" data-icon-open aria-hidden="true" />
     <X class="hidden size-5" data-icon-close aria-hidden="true" />

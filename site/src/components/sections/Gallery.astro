@@ -2,69 +2,50 @@
 import { Image } from "astro:assets";
 
 import SectionHeader from "../common/SectionHeader.astro";
-import { exampleProjects } from "../../data/business";
 
-import kitchen from "../../assets/images/kitchen-remodel.jpg";
-import basement from "../../assets/images/basement-interior.jpg";
-import bathroom from "../../assets/images/bathroom-remodel.jpg";
-import painting from "../../assets/images/painting-drywall.jpg";
 import homeExterior from "../../assets/images/home-exterior.jpg";
-import renovation from "../../assets/images/interior-renovation.jpg";
+import doorLock from "../../assets/images/door-lock.jpg";
+import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
+import workerElectrical from "../../assets/images/worker-electrical.jpg";
+import basementInterior from "../../assets/images/basement-interior.jpg";
+import interiorRenovation from "../../assets/images/interior-renovation.jpg";
 
 /**
- * Photos are temporary stand-ins (see src/assets/images) — swap each for real
- * project photos as they're documented, and replace the example scopes in
- * business.ts with real Problem / Work / Result write-ups.
+ * Placeholder photos (see src/assets/images) — swap for real KOM USA job
+ * photos as they're documented.
  */
-const projectImages: { image: ImageMetadata; alt: string }[] = [
-  { image: kitchen, alt: "Remodeled kitchen with white cabinets and gas range" },
-  { image: basement, alt: "Clean, rent-ready unit interior" },
-  { image: bathroom, alt: "Renovated bathroom with glass shower and double vanity" },
-  { image: painting, alt: "Roller applying fresh paint to an interior wall" },
-  { image: homeExterior, alt: "Well-kept two-story home exterior" },
-  { image: renovation, alt: "Contractor finishing a ceiling during an interior renovation" },
+const photos: { image: ImageMetadata; alt: string }[] = [
+  { image: homeExterior, alt: "Sample photo — well-kept Metro Detroit home exterior" },
+  { image: doorLock, alt: "Sample photo — smart lock on a residential door" },
+  { image: fireplaceChimney, alt: "Sample photo — fireplace and chimney" },
+  { image: workerElectrical, alt: "Sample photo — technician at work on a water heater install" },
+  { image: basementInterior, alt: "Sample photo — clean, finished basement interior" },
+  { image: interiorRenovation, alt: "Sample photo — interior in progress during a home project" },
 ];
 ---
 
-<section id="projects" class="section-pad scroll-mt-16 bg-kom-cream">
+<section id="gallery" class="section-pad scroll-mt-16 bg-kom-cream">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
-      title="Our Work"
-      lead="Example scopes for the kind of jobs we take on every week. Real project photos and write-ups are being added as we document them."
+      title="A look at the work"
+      lead="Sample photos of the kind of jobs we take on every week — locksmith, water heater, and chimney work across Metro Detroit."
     />
 
-    <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {
-        exampleProjects.map((project, index) => (
+        photos.map((photo, index) => (
           <li
-            class="reveal border-border flex flex-col overflow-hidden rounded-xl border bg-white shadow-card"
+            class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card"
             style={`--rd: ${(index % 3) * 70}ms`}
           >
             <Image
-              src={projectImages[index].image}
-              alt={projectImages[index].alt}
-              class="aspect-[16/9] w-full object-cover"
-              widths={[480, 800]}
-              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              src={photo.image}
+              alt={photo.alt}
+              class="aspect-[4/3] w-full object-cover"
+              widths={[400, 600, 800]}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               loading="lazy"
             />
-            <div class="flex flex-1 flex-col gap-3 p-5">
-              <h3 class="font-serif text-kom-ink text-lg font-bold">{project.title}</h3>
-              <div class="space-y-2.5 text-sm leading-relaxed">
-                <p>
-                  <span class="text-kom-steel block text-xs font-bold tracking-wider uppercase">Problem</span>
-                  <span class="text-kom-charcoal/90">{project.problem}</span>
-                </p>
-                <p>
-                  <span class="text-kom-steel block text-xs font-bold tracking-wider uppercase">Work completed</span>
-                  <span class="text-kom-charcoal/90">{project.work}</span>
-                </p>
-                <p>
-                  <span class="text-kom-steel block text-xs font-bold tracking-wider uppercase">Result</span>
-                  <span class="text-kom-charcoal/90">{project.result}</span>
-                </p>
-              </div>
-            </div>
           </li>
         ))
       }

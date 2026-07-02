@@ -1,78 +1,71 @@
 ---
+import { Image } from "astro:assets";
 import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
-import Headset from "@tabler/icons/outline/headset.svg";
+import Phone from "@tabler/icons/outline/phone.svg";
 
-import Icon from "../common/Icon.astro";
 import SectionHeader from "../common/SectionHeader.astro";
-import { serviceCategories } from "../../data/business";
+import { business, services } from "../../data/business";
+import doorLock from "../../assets/images/door-lock.jpg";
+import workerElectrical from "../../assets/images/worker-electrical.jpg";
+import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
 
-const cardCta: Record<string, { label: string; href: string }> = {
-  "construction-remodeling": { label: "Request remodeling help", href: "/#request-service" },
-  "property-maintenance": { label: "Request maintenance", href: "/#request-service" },
-  locksmith: { label: "See upfront pricing", href: "/locksmith" },
-  "chimney-care": { label: "Request chimney service", href: "/#request-service" },
-  "property-management": { label: "Request portfolio service", href: "/#request-service" },
+const imageMap: Record<string, ImageMetadata> = {
+  locksmith: doorLock,
+  "water-heaters": workerElectrical,
+  "chimney-care": fireplaceChimney,
 };
-
-const maxJobs = 5;
 ---
 
-<section id="services" class="section-pad scroll-mt-16 bg-kom-cream pt-0">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+<section id="services" class="section-pad scroll-mt-16 bg-kom-cream">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
     <SectionHeader
-      title="Professional help across five trades"
-      lead="From a $25 key copy to a full home addition — one local crew handles it."
+      eyebrow="What we do"
+      title="Three services, done right"
+      lead="Flat, published pricing where we can. A fast, honest quote where the job needs one."
     />
 
-    <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
       {
-        serviceCategories.map((category, index) => {
-          const cta = cardCta[category.id];
-          const jobs = category.items.slice(0, maxJobs);
-          return (
-            <li
-              id={category.id}
-              class="reveal border-border flex scroll-mt-24 flex-col rounded-xl border bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover"
-              style={`--rd: ${(index % 3) * 70}ms`}
-            >
-              <span class="bg-kom-sage-tint text-kom-field flex size-13 items-center justify-center rounded-lg">
-                <Icon name={category.icon} class="size-7" />
+        services.map((service, index) => (
+          <a
+            href={`/services/${service.slug}`}
+            class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+            style={`--rd: ${index * 90}ms`}
+          >
+            <Image
+              src={imageMap[service.slug]}
+              alt={service.title}
+              class="h-48 w-full object-cover"
+              widths={[400, 600, 800]}
+              sizes="(min-width: 768px) 30vw, 100vw"
+            />
+            <span class="flex flex-1 flex-col p-6">
+              <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
+                {service.anchorPrice}
               </span>
-              <h3 class="text-kom-ink mt-5 text-xl font-bold">{category.title}</h3>
-              <p class="text-muted-foreground mt-1.5 text-sm leading-relaxed">{category.blurb}</p>
-              <p class="text-kom-charcoal/80 mt-3 flex-1 text-sm leading-relaxed">
-                {jobs.join(" · ")}
-                {category.items.length > maxJobs && " · and more"}
-              </p>
-              <a
-                href={cta.href}
-                class="text-kom-field hover:text-kom-field-hover mt-4 inline-flex items-center gap-1.5 rounded-sm text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-              >
-                {cta.label}
-                <ArrowRight class="size-4" aria-hidden="true" />
-              </a>
-            </li>
-          );
-        })
+              <span class="text-kom-charcoal-deep group-hover:text-kom-field mt-3 text-xl font-black transition-colors">
+                {service.title}
+              </span>
+              <span class="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">{service.blurb}</span>
+              <span class="text-kom-field mt-4 flex items-center gap-1.5 text-sm font-extrabold">
+                See details & pricing
+                <ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </span>
+            </span>
+          </a>
+        ))
       }
+    </div>
 
-      <li class="reveal bg-kom-field-deep flex flex-col rounded-xl p-6 text-white" style="--rd: 350ms">
-        <span class="flex size-13 items-center justify-center rounded-lg bg-white/15">
-          <Headset class="size-7" aria-hidden="true" />
-        </span>
-        <h3 class="mt-5 text-xl font-bold">Not sure who to call?</h3>
-        <p class="mt-1.5 flex-1 text-sm leading-relaxed text-white/75">
-          If it's on your property and on your list, ask us. If we can't do it, we'll say so —
-          no runaround.
-        </p>
-        <a
-          href="/#request-service"
-          class="text-kom-tan mt-4 inline-flex items-center gap-1.5 rounded-sm text-sm font-bold transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-white/40 focus-visible:outline-none"
-        >
-          Ask about your project
-          <ArrowRight class="size-4" aria-hidden="true" />
-        </a>
-      </li>
-    </ul>
+    <div class="reveal border-border mt-6 flex flex-col items-center justify-between gap-4 rounded-xl border bg-white p-6 text-center shadow-card sm:flex-row sm:text-left" style="--rd: 270ms">
+      <p class="text-kom-charcoal text-lg font-bold">
+        Need something else around the house?
+        <span class="text-muted-foreground block text-sm font-medium">Ask us — if we can't help, we'll say so honestly and point you the right way.</span>
+      </p>
+      <a href={business.phoneHref} class="bg-kom-field hover:bg-kom-field-hover inline-flex shrink-0 items-center gap-2 rounded-md px-5 py-2.5 text-sm font-extrabold text-white transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none">
+        <Phone class="size-4" aria-hidden="true" />
+        Call {business.phone}
+      </a>
+    </div>
   </div>
 </section>

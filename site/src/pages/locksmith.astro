@@ -7,7 +7,6 @@ import InfoCircle from "@tabler/icons/outline/info-circle.svg";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/starwind/button/Button.astro";
-import LockoutBand from "../components/sections/LockoutBand.astro";
 import { business, locksmithNotes, locksmithPricing, serviceCategories } from "../data/business";
 import doorLock from "../assets/images/door-lock.jpg";
 
@@ -152,6 +151,4 @@ const locksmithServices = serviceCategories.find((c) => c.id === "locksmith")?.i
       </div>
     </div>
   </section>
-
-  <LockoutBand />
 </BaseLayout>

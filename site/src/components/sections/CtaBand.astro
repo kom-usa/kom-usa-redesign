@@ -1,0 +1,23 @@
+---
+import Phone from "@tabler/icons/outline/phone.svg";
+import Button from "../starwind/button/Button.astro";
+import { business } from "../../data/business";
+---
+
+<section class="bg-kom-field">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-5 px-4 py-12 text-center sm:px-6 lg:flex-row lg:text-left">
+    <div>
+      <h2 class="text-2xl font-black text-white sm:text-3xl">Ready when you are.</h2>
+      <p class="mt-1 text-white/85">Share your info and we'll call you back — or skip the form and call now.</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3">
+      <Button href="/#lead-form" size="lg" class="bg-white font-extrabold text-kom-field hover:bg-kom-cream">
+        Request a Call
+      </Button>
+      <Button href={business.phoneHref} variant="outline" size="lg" class="border-white/60 font-extrabold text-white hover:bg-white/10">
+        <Phone aria-hidden="true" />
+        {business.phone}
+      </Button>
+    </div>
+  </div>
+</section>
