@@ -1,0 +1,41 @@
+---
+import Phone from "@tabler/icons/outline/phone.svg";
+import MessageCircle from "@tabler/icons/outline/message-circle.svg";
+import Key from "@tabler/icons/outline/key.svg";
+
+import { business } from "../../data/business";
+---
+
+<section aria-label="Emergency lockout help" class="bg-kom-ink">
+  <div
+    class="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-6 text-center sm:px-6 md:flex-row md:justify-between md:text-left"
+  >
+    <p class="flex items-center gap-3 text-white">
+      <span class="bg-kom-field flex size-10 shrink-0 items-center justify-center rounded-full">
+        <Key class="size-5" aria-hidden="true" />
+      </span>
+      <span>
+        <span class="block text-base font-bold">Locked out right now?</span>
+        <span class="block text-sm text-white/70">
+          House and unit unlocks at <a href="/locksmith#pricing" class="text-kom-tan font-bold hover:underline">$129 standard pricing</a> — call or text and we'll dispatch a technician.
+        </span>
+      </span>
+    </p>
+    <p class="flex shrink-0 flex-wrap justify-center gap-2.5">
+      <a
+        href={business.phoneHref}
+        class="bg-kom-field hover:bg-kom-field-hover inline-flex items-center gap-2 rounded-md px-5 py-2.5 text-sm font-bold text-white transition-colors focus-visible:ring-3 focus-visible:ring-white/40 focus-visible:outline-none"
+      >
+        <Phone class="size-4" aria-hidden="true" />
+        Call {business.phone}
+      </a>
+      <a
+        href={business.smsHref}
+        class="inline-flex items-center gap-2 rounded-md border border-white/30 px-5 py-2.5 text-sm font-bold text-white transition-colors hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-white/40 focus-visible:outline-none"
+      >
+        <MessageCircle class="size-4" aria-hidden="true" />
+        Text us
+      </a>
+    </p>
+  </div>
+</section>

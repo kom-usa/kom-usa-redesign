@@ -1,5 +1,6 @@
 ---
 import Phone from "@tabler/icons/outline/phone.svg";
+import MessageCircle from "@tabler/icons/outline/message-circle.svg";
 import ClipboardCheck from "@tabler/icons/outline/clipboard-check.svg";
 
 import { business } from "../../data/business";
@@ -9,19 +10,26 @@ import { business } from "../../data/business";
   class="bg-background/95 fixed inset-x-0 bottom-0 z-50 border-t px-3 pt-2.5 backdrop-blur-sm md:hidden"
   style="padding-bottom: calc(0.625rem + env(safe-area-inset-bottom));"
 >
-  <div class="mx-auto flex max-w-md gap-2.5">
+  <div class="mx-auto flex max-w-md gap-2">
     <a
       href={business.phoneHref}
-      class="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/50 flex h-12 flex-1 items-center justify-center gap-2 rounded-md text-base font-bold transition-colors focus-visible:ring-3 focus-visible:outline-none"
+      class="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/50 flex h-12 flex-1 items-center justify-center gap-1.5 rounded-md text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:outline-none"
     >
-      <Phone class="size-5" aria-hidden="true" />
-      Call now
+      <Phone class="size-4.5" aria-hidden="true" />
+      Call
     </a>
     <a
-      href="#request-service"
-      class="bg-kom-charcoal hover:bg-kom-charcoal/90 focus-visible:ring-outline/50 flex h-12 flex-1 items-center justify-center gap-2 rounded-md text-base font-bold text-white transition-colors focus-visible:ring-3 focus-visible:outline-none"
+      href={business.smsHref}
+      class="border-kom-field text-kom-field flex h-12 flex-1 items-center justify-center gap-1.5 rounded-md border bg-white text-sm font-bold transition-colors hover:bg-kom-sage-tint focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
     >
-      <ClipboardCheck class="size-5" aria-hidden="true" />
+      <MessageCircle class="size-4.5" aria-hidden="true" />
+      Text
+    </a>
+    <a
+      href="/#request-service"
+      class="bg-kom-ink hover:bg-kom-ink/90 focus-visible:ring-outline/50 flex h-12 flex-[1.4] items-center justify-center gap-1.5 rounded-md text-sm font-bold text-white transition-colors focus-visible:ring-3 focus-visible:outline-none"
+    >
+      <ClipboardCheck class="size-4.5" aria-hidden="true" />
       Request service
     </a>
   </div>

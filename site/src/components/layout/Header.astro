@@ -1,31 +1,34 @@
 ---
 import Phone from "@tabler/icons/outline/phone.svg";
-import Mail from "@tabler/icons/outline/mail.svg";
+import Menu2 from "@tabler/icons/outline/menu-2.svg";
+import X from "@tabler/icons/outline/x.svg";
 
 import Button from "../starwind/button/Button.astro";
 import { business } from "../../data/business";
 import logoWhite from "../../assets/logos/kom-usa-logo-white.svg";
 
+// Absolute paths so the nav works from /about and /locksmith too.
 const nav = [
-  { label: "Services", href: "#services" },
-  { label: "Pricing", href: "#locksmith-pricing" },
-  { label: "Property managers", href: "#property-management" },
-  { label: "Service area", href: "#service-area" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Services", href: "/#services" },
+  { label: "Pricing", href: "/locksmith#pricing" },
+  { label: "Property managers", href: "/#property-management" },
+  { label: "Service area", href: "/#service-area" },
+  { label: "About", href: "/about" },
+  { label: "FAQ", href: "/#faq" },
 ];
 ---
 
 <header class="bg-kom-field sticky top-0 z-50">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6">
     <a
       href="/"
-      class="flex shrink-0 items-center gap-2 rounded-sm focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none"
+      class="flex shrink-0 items-center rounded-sm focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none"
       aria-label={`${business.name} home`}
     >
-      <img src={logoWhite.src} alt={business.name} class="h-11 w-auto md:h-12" width="86" height="63" />
+      <img src={logoWhite.src} alt={business.name} class="h-10 w-auto md:h-11" width="78" height="57" />
     </a>
 
-    <nav aria-label="Main" class="hidden items-center gap-6 lg:flex">
+    <nav aria-label="Main" class="hidden items-center gap-5 lg:flex">
       {
         nav.map((item) => (
           <a
@@ -38,30 +41,80 @@ const nav = [
       }
     </nav>
 
-    <div class="flex items-center gap-2 sm:gap-3">
-      <a
-        href={business.emailHref}
-        class="hidden items-center gap-1.5 rounded-sm text-sm font-medium text-white/80 transition-colors hover:text-white focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none xl:flex"
-      >
-        <Mail class="size-4" aria-hidden="true" />
-        {business.email}
-      </a>
+    <div class="flex items-center gap-2">
       <Button
         href={business.phoneHref}
         size="sm"
         class="border border-white/40 bg-transparent font-bold text-white hover:bg-white/10 focus-visible:ring-white/40"
       >
         <Phone aria-hidden="true" />
-        <span class="hidden sm:inline">{business.phone}</span>
-        <span class="sm:hidden">Call</span>
+        <span class="hidden md:inline">Call {business.phone}</span>
+        <span class="md:hidden">Call</span>
       </Button>
       <Button
-        href="#request-service"
+        href="/#request-service"
         size="sm"
         class="text-kom-field bg-white font-bold hover:bg-white/90 focus-visible:ring-white/50"
       >
         Request service
       </Button>
+      <button
+        type="button"
+        id="menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label="Open menu"
+        class="flex size-9 items-center justify-center rounded-md text-white transition-colors hover:bg-white/10 focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none lg:hidden"
+      >
+        <Menu2 class="size-6" data-icon-open aria-hidden="true" />
+        <X class="hidden size-6" data-icon-close aria-hidden="true" />
+      </button>
     </div>
   </div>
+
+  <nav id="mobile-menu" aria-label="Mobile" class="hidden border-t border-white/15 lg:hidden">
+    <ul class="mx-auto max-w-6xl px-4 py-2 sm:px-6">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="block rounded-md px-2 py-2.5 text-sm font-bold text-white/90 transition-colors hover:bg-white/10 hover:text-white focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <script>
+    const toggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("mobile-menu");
+
+    if (toggle && menu) {
+      const setOpen = (open: boolean) => {
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        menu.classList.toggle("hidden", !open);
+        toggle.querySelector("[data-icon-open]")?.classList.toggle("hidden", open);
+        toggle.querySelector("[data-icon-close]")?.classList.toggle("hidden", !open);
+      };
+
+      toggle.addEventListener("click", () => {
+        setOpen(toggle.getAttribute("aria-expanded") !== "true");
+      });
+      // Close after choosing a destination or pressing Escape.
+      menu.addEventListener("click", (event) => {
+        if ((event.target as HTMLElement).closest("a")) setOpen(false);
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+          setOpen(false);
+          toggle.focus();
+        }
+      });
+    }
+  </script>
 </header>

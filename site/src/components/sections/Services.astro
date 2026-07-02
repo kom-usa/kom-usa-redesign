@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
+import Check from "@tabler/icons/outline/check.svg";
 
 import SectionHeader from "../common/SectionHeader.astro";
 import { serviceCategories } from "../../data/business";
@@ -11,31 +12,40 @@ import doorLock from "../../assets/images/door-lock.jpg";
 import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
 import apartmentBuilding from "../../assets/images/apartment-building.jpg";
 
-/** Card photos are temporary stock images until real project photos exist. */
-const cardImages: Record<string, { image: ImageMetadata; alt: string }> = {
+const cardMeta: Record<string, { image: ImageMetadata; alt: string; cta: string; href: string }> = {
   "construction-remodeling": {
     image: kitchenRemodel,
-    alt: "Remodeled kitchen with white cabinets (stock photo)",
+    alt: "Remodeled kitchen with white cabinets",
+    cta: "Request remodeling help",
+    href: "/#request-service",
   },
   "property-maintenance": {
     image: homeExterior,
-    alt: "Well-kept two-story home with a wraparound porch (stock photo)",
+    alt: "Well-kept two-story home with a wraparound porch",
+    cta: "Request maintenance",
+    href: "/#request-service",
   },
   locksmith: {
     image: doorLock,
-    alt: "Smart lock installed on a unit door (stock photo)",
+    alt: "Smart lock installed on a unit door",
+    cta: "See upfront pricing",
+    href: "/locksmith",
   },
   "chimney-care": {
     image: fireplaceChimney,
-    alt: "Fire burning in a brick fireplace (stock photo)",
+    alt: "Fire burning in a brick fireplace",
+    cta: "Request chimney service",
+    href: "/#request-service",
   },
   "property-management": {
     image: apartmentBuilding,
-    alt: "Apartment building with balconies (stock photo)",
+    alt: "Apartment building with balconies",
+    cta: "Request portfolio service",
+    href: "/#request-service",
   },
 };
 
-const centerIndex = 2; // Locksmith card is raised, matching the mockup
+const maxJobs = 6;
 ---
 
 <section id="services" class="section-pad scroll-mt-16">
@@ -45,58 +55,56 @@ const centerIndex = 2; // Locksmith card is raised, matching the mockup
       lead="Five trades, one local crew — from a $25 key copy to a full home addition."
     />
 
-    <ul class="mt-12 grid gap-5 min-[480px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+    <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {
-        serviceCategories.map((category, index) => (
-          <li
-            class:list={[
-              "reveal group relative h-72 overflow-hidden rounded-xl shadow-card transition-transform duration-200",
-              index === centerIndex && "lg:z-10 lg:scale-105 lg:shadow-card-hover",
-            ]}
-            style={`--rd: ${index * 70}ms`}
-          >
-            <a
-              href={`#${category.id}`}
-              class="block h-full focus-visible:ring-3 focus-visible:ring-kom-field focus-visible:outline-none"
+        serviceCategories.map((category, index) => {
+          const meta = cardMeta[category.id];
+          const jobs = category.items.slice(0, maxJobs);
+          const remaining = category.items.length - jobs.length;
+          return (
+            <li
+              id={category.id}
+              class="reveal border-border flex scroll-mt-24 flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover"
+              style={`--rd: ${(index % 3) * 70}ms`}
             >
-              <Image
-                src={cardImages[category.id].image}
-                alt={cardImages[category.id].alt}
-                class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.04] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-                widths={[480, 800]}
-                sizes="(min-width: 1024px) 20vw, (min-width: 480px) 50vw, 100vw"
-                loading="lazy"
-              />
-              <span
-                class="absolute inset-0 bg-gradient-to-t from-kom-ink/85 via-kom-ink/25 to-transparent"
-                aria-hidden="true"
-              />
-              <span class="absolute inset-x-0 bottom-0 p-4">
-                <span class="font-serif block text-xl leading-tight font-bold text-white">
-                  {category.title}
-                </span>
-                <span class="mt-1.5 inline-flex items-center gap-1 text-xs font-bold text-white/80 transition-colors group-hover:text-white">
-                  View details
-                  <ArrowRight class="size-3.5" aria-hidden="true" />
-                </span>
-              </span>
-            </a>
-          </li>
-        ))
+              <div class="relative h-40">
+                <Image
+                  src={meta.image}
+                  alt={meta.alt}
+                  class="absolute inset-0 h-full w-full object-cover"
+                  widths={[480, 800]}
+                  sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                  loading="lazy"
+                />
+              </div>
+              <div class="flex flex-1 flex-col p-5">
+                <h3 class="font-serif text-kom-ink text-xl font-bold">{category.title}</h3>
+                <p class="text-muted-foreground mt-1.5 text-sm leading-relaxed">{category.blurb}</p>
+                <ul class="mt-3 grid flex-1 grid-cols-1 gap-x-4 gap-y-1.5 text-sm min-[420px]:grid-cols-2">
+                  {jobs.map((item) => (
+                    <li class="text-kom-charcoal/90 flex items-start gap-1.5">
+                      <Check class="text-kom-field mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                {remaining > 0 && (
+                  <p class="text-muted-foreground mt-2 text-xs font-medium">
+                    …plus {remaining} more — just ask.
+                  </p>
+                )}
+                <a
+                  href={meta.href}
+                  class="text-kom-field hover:text-kom-field-hover mt-4 inline-flex items-center gap-1.5 rounded-sm text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                >
+                  {meta.cta}
+                  <ArrowRight class="size-4" aria-hidden="true" />
+                </a>
+              </div>
+            </li>
+          );
+        })
       }
     </ul>
-
-    <dl class="reveal border-border mt-10 divide-y divide-border rounded-xl border bg-white px-6 shadow-card">
-      {
-        serviceCategories.map((category) => (
-          <div id={category.id} class="scroll-mt-24 gap-x-6 py-4 sm:grid sm:grid-cols-[220px_1fr]">
-            <dt class="text-kom-ink text-sm font-bold">{category.title}</dt>
-            <dd class="text-muted-foreground mt-1 text-sm leading-relaxed sm:mt-0">
-              {category.items.join(" · ")}
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
   </div>
 </section>

@@ -10,11 +10,12 @@ const year = new Date().getFullYear();
 
 const quickLinks = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "#services" },
-  { label: "Pricing", href: "#locksmith-pricing" },
-  { label: "How it works", href: "#how-it-works" },
-  { label: "Service area", href: "#service-area" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Services", href: "/#services" },
+  { label: "Locksmith pricing", href: "/locksmith#pricing" },
+  { label: "Property managers", href: "/#property-management" },
+  { label: "Service area", href: "/#service-area" },
+  { label: "About", href: "/about" },
+  { label: "FAQ", href: "/#faq" },
 ];
 
 const linkClass =
@@ -67,7 +68,10 @@ const linkClass =
           {
             serviceCategories.map((category) => (
               <li>
-                <a href={`#${category.id}`} class={linkClass}>
+                <a
+                  href={category.id === "locksmith" ? "/locksmith" : `/#${category.id}`}
+                  class={linkClass}
+                >
                   {category.title}
                 </a>
               </li>
@@ -83,7 +87,7 @@ const linkClass =
           Detroit.
         </p>
         <a
-          href="#quick-quote"
+          href="/#quick-quote"
           class="bg-kom-field hover:bg-kom-field-hover mt-5 inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-bold text-white transition-colors focus-visible:ring-3 focus-visible:ring-kom-tan/60 focus-visible:outline-none"
         >
           Get your free quote

@@ -10,6 +10,7 @@ export const business = {
   tagline: "Construction, maintenance, locksmith, and chimney services in Metro Detroit",
   phone: "313-804-0844",
   phoneHref: "tel:+13138040844",
+  smsHref: "sms:+13138040844",
   email: "info@kom-usa.com",
   emailHref: "mailto:info@kom-usa.com",
   serviceArea: "Metro Detroit",
@@ -113,13 +114,14 @@ export const serviceCategories: ServiceCategory[] = [
     icon: "building-community",
     items: [
       "Unit turnovers",
-      "Vacant property access",
-      "Recurring maintenance",
-      "Inspections",
-      "Snow, lawn & gutter service",
-      "Exterior upkeep",
       "Lock changes",
-      "Maintenance coordination",
+      "Vacant property access",
+      "Inspections",
+      "Recurring maintenance",
+      "Snow, lawn & gutter coordination",
+      "Trash-outs",
+      "Repair coordination",
+      "Exterior upkeep",
     ],
   },
 ];
@@ -181,9 +183,66 @@ export const faqs: Faq[] = [
       "Call 313-804-0844 or send the request form on this page with a few details about the work. We'll follow up to confirm the scope and give you a quote before any work starts.",
   },
   {
+    question: "How does scheduling work?",
+    answer:
+      "Once we confirm your quote, we pick a time that works for you. For rentals we can coordinate directly with tenants, use lockboxes, or handle vacant-property access ourselves — you don't have to be on site.",
+  },
+  {
     question: "Can one crew really handle construction, maintenance, locksmith, and chimney work?",
     answer:
       "That's the point of KOM USA: one local team and one phone number for the trades most homes and rentals need. You skip juggling separate contractors, and we already know your property when the next job comes up.",
+  },
+];
+
+export interface ExampleProject {
+  title: string;
+  problem: string;
+  work: string;
+  result: string;
+}
+
+/**
+ * Example project scopes for the "Our Work" section. These describe typical
+ * jobs, not specific completed projects — swap in real projects (photos,
+ * cities, real outcomes) as they're documented. Keep the Problem / Work /
+ * Result structure when you do.
+ */
+export const exampleProjects: ExampleProject[] = [
+  {
+    title: "Kitchen remodel",
+    problem: "A dated kitchen with worn cabinets, old counters, and poor lighting.",
+    work: "Full remodel — cabinets, countertops, tile backsplash, flooring, and fixtures.",
+    result: "A modern kitchen that's ready for daily life or listing photos.",
+  },
+  {
+    title: "Rental unit turnover",
+    problem: "A vacated unit that needs to be rent-ready fast.",
+    work: "Trash-out, patch and paint, lock change, deep repairs list, and a final inspection.",
+    result: "A unit ready to show and lease, with keys and codes handed off cleanly.",
+  },
+  {
+    title: "Bathroom remodel",
+    problem: "An aging bathroom with failing tile and constant small leaks.",
+    work: "New tile, tub or shower surround, vanity, plumbing fixtures, and paint.",
+    result: "A watertight, easy-to-clean bathroom that adds real value.",
+  },
+  {
+    title: "Drywall & paint refresh",
+    problem: "Wall damage and scuffed paint dragging down the whole space.",
+    work: "Drywall repair, skim coating, and a full repaint in updated colors.",
+    result: "Clean walls and a fresh, consistent look throughout.",
+  },
+  {
+    title: "Exterior & gutter service",
+    problem: "Clogged gutters and deferred exterior maintenance risking water damage.",
+    work: "Gutter cleaning, minor exterior repairs, and a seasonal upkeep plan.",
+    result: "Water moving away from the house instead of into it.",
+  },
+  {
+    title: "Basement finishing",
+    problem: "An unfinished basement sitting as wasted square footage.",
+    work: "Framing, drywall, flooring, lighting, and trim to finish the space.",
+    result: "Livable square footage added without moving.",
   },
 ];
 

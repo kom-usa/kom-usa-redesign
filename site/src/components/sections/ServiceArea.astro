@@ -42,7 +42,7 @@ const countiesSentence = serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ",
 
         <Roofline class="text-kom-tan mt-8" />
         <p class="text-muted-foreground mt-4 max-w-xl text-sm leading-relaxed">
-          Not sure if you're in our area? Call <a href={business.phoneHref} class="text-kom-field font-bold hover:underline">{business.phone}</a> and we'll tell you right away. Locksmith jobs over 25 miles from our location add a $50 distance fee.
+          Not sure if we serve your city? <a href={business.phoneHref} class="text-kom-field font-bold hover:underline">Call</a> or <a href={business.smsHref} class="text-kom-field font-bold hover:underline">text us</a> at {business.phone} and we'll tell you right away. Locksmith jobs over 25 miles from our location add a $50 distance fee.
         </p>
       </div>
     </div>

@@ -1,116 +1,150 @@
 ---
 import { Image } from "astro:assets";
+import Phone from "@tabler/icons/outline/phone.svg";
+import MapPin from "@tabler/icons/outline/map-pin.svg";
+import Key from "@tabler/icons/outline/key.svg";
+import BuildingCommunity from "@tabler/icons/outline/building-community.svg";
+import Clock from "@tabler/icons/outline/clock.svg";
 
 import Button from "../starwind/button/Button.astro";
 import { business, serviceOptions } from "../../data/business";
 
 import workerElectrical from "../../assets/images/worker-electrical.jpg";
-import paintingDrywall from "../../assets/images/painting-drywall.jpg";
-import workerPortrait from "../../assets/images/worker-portrait.jpg";
 import interiorRenovation from "../../assets/images/interior-renovation.jpg";
 
 /**
- * Hero collage uses temporary stock photos (Unsplash) until real crew photos
- * are available. The quick-quote form is a second Netlify form alongside the
- * detailed "request-service" form lower on the page.
+ * Trust chips: "Licensed & insured" is intentionally absent until the owner
+ * confirms it's accurate — never claim credentials that aren't verified.
  */
-const collage = [
-  { image: workerElectrical, alt: "Technician in a hard hat servicing an electrical box (stock photo)" },
-  { image: paintingDrywall, alt: "Roller applying fresh paint to an interior wall (stock photo)" },
-  { image: workerPortrait, alt: "Tradesman in a hard hat on a job site (stock photo)" },
-  { image: interiorRenovation, alt: "Contractor finishing a ceiling during a renovation (stock photo)" },
+const chips = [
+  { label: "Metro Detroit local", icon: MapPin },
+  { label: "Upfront locksmith pricing", icon: Key, href: "/locksmith#pricing" },
+  { label: "Property-manager friendly", icon: BuildingCommunity },
+  { label: "Fast response", icon: Clock },
 ];
 
 const propertyTypes = ["House", "Apartment / unit", "Rental property", "Commercial", "Other"];
 
 const inputClass =
-  "h-11 w-full rounded-md border-0 bg-white/95 px-3 text-base text-kom-charcoal placeholder:text-kom-charcoal/50 focus:bg-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-kom-field";
+  "h-11 w-full rounded-md border border-kom-cream-deep bg-white px-3 text-base text-kom-charcoal placeholder:text-kom-charcoal/50 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-kom-field";
 ---
 
-<section class="pt-6 pb-14 sm:pt-8 md:pb-20">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6">
-    <div class="reveal grid overflow-hidden rounded-2xl shadow-card lg:grid-cols-[1.6fr_1fr]">
-      <div class="relative min-h-105">
-        <div class="absolute inset-0 grid grid-cols-2">
-          {
-            collage.map((tile) => (
-              <Image
-                src={tile.image}
-                alt={tile.alt}
-                class="h-full w-full object-cover"
-                widths={[480, 800]}
-                sizes="(min-width: 1024px) 30vw, 50vw"
-                loading="eager"
-                fetchpriority="high"
-              />
-            ))
-          }
-        </div>
-        <div class="absolute inset-0 bg-kom-ink/60"></div>
-        <div class="relative flex h-full flex-col items-center justify-center px-6 py-16 text-center sm:px-12">
-          <h1 class="font-serif max-w-xl text-3xl font-bold text-balance text-white sm:text-4xl lg:text-[2.6rem] lg:leading-[1.2]">
-            Your trusted partner for home and property maintenance. One call, total care.
-          </h1>
-          <Button href="#quick-quote" variant="primary" size="lg" class="mt-8 font-bold">
-            Get your free quote
-          </Button>
-          <p class="mt-5 text-sm font-medium text-white/80">
-            Construction · Maintenance · Locksmith · Chimney · Metro Detroit
-          </p>
-        </div>
+<section class="border-b bg-white">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[1.5fr_1fr]">
+    <div class="reveal">
+      <h1 class="font-serif text-kom-ink text-3xl font-bold text-balance sm:text-4xl lg:text-[2.75rem] lg:leading-[1.15]">
+        Construction, maintenance, locksmith, and turnover help across Metro Detroit.
+      </h1>
+      <p class="text-muted-foreground mt-4 max-w-2xl text-lg leading-relaxed">
+        One local crew for homeowners, landlords, and property managers across Wayne, Oakland,
+        and Macomb counties.
+      </p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <Button href="#request-service" variant="primary" size="lg" class="font-bold">
+          Request service
+        </Button>
+        <Button href={business.phoneHref} variant="outline" size="lg" class="font-bold">
+          <Phone aria-hidden="true" />
+          Call now
+        </Button>
       </div>
 
-      <div id="quick-quote" class="bg-kom-tan scroll-mt-24 px-6 py-8 sm:px-8">
-        <h2 class="font-serif text-2xl font-bold text-kom-ink">Get your free quote today</h2>
-        <form
-          name="quick-quote"
-          method="POST"
-          action="/thank-you"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          class="mt-5 space-y-3"
-        >
-          <input type="hidden" name="form-name" value="quick-quote" />
-          <input type="hidden" name="subject" value="New quick quote request — kom.construction" />
-          <p class="hidden" aria-hidden="true">
-            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-          </p>
+      <ul class="mt-6 flex flex-wrap gap-2">
+        {
+          chips.map((chip) => {
+            const Tag = chip.href ? "a" : "li";
+            return (
+              <li class="contents">
+                <Tag
+                  href={chip.href}
+                  class:list={[
+                    "border-kom-cream-border text-kom-charcoal flex items-center gap-1.5 rounded-full border bg-kom-cream px-3 py-1.5 text-xs font-bold",
+                    chip.href &&
+                      "transition-colors hover:border-kom-field hover:text-kom-field focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none",
+                  ]}
+                >
+                  <chip.icon class="text-kom-field size-3.5" aria-hidden="true" />
+                  {chip.label}
+                </Tag>
+              </li>
+            );
+          })
+        }
+      </ul>
 
-          <div>
-            <label for="qq-name" class="sr-only">Full name</label>
-            <input type="text" id="qq-name" name="name" required autocomplete="name" placeholder="Full name" class={inputClass} />
-          </div>
-          <div>
-            <label for="qq-phone" class="sr-only">Phone number</label>
-            <input type="tel" id="qq-phone" name="phone" required autocomplete="tel" placeholder="Phone number" class={inputClass} />
-          </div>
-          <div>
-            <label for="qq-email" class="sr-only">Email</label>
-            <input type="email" id="qq-email" name="email" required autocomplete="email" placeholder="Email" class={inputClass} />
-          </div>
-          <div>
-            <label for="qq-service" class="sr-only">Service needed</label>
-            <select id="qq-service" name="service" required class={inputClass}>
-              <option value="" disabled selected>Service needed</option>
-              {serviceOptions.map((option) => <option value={option}>{option}</option>)}
-            </select>
-          </div>
-          <div>
-            <label for="qq-property-type" class="sr-only">Property type</label>
-            <select id="qq-property-type" name="property-type" class={inputClass}>
-              <option value="" disabled selected>Property type</option>
-              {propertyTypes.map((option) => <option value={option}>{option}</option>)}
-            </select>
-          </div>
-
-          <Button type="submit" variant="primary" size="lg" class="w-full font-bold">
-            Request service
-          </Button>
-          <p class="text-center text-xs font-medium text-kom-ink/70">
-            No spam — we only use this to respond to your request.
-          </p>
-        </form>
+      <div class="mt-8 hidden gap-3 sm:grid sm:grid-cols-2">
+        <Image
+          src={workerElectrical}
+          alt="Technician in a hard hat servicing an electrical box"
+          class="aspect-[16/8] w-full rounded-xl object-cover"
+          widths={[480, 800]}
+          sizes="(min-width: 1024px) 30vw, 45vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+        <Image
+          src={interiorRenovation}
+          alt="Contractor finishing a ceiling during an interior renovation"
+          class="aspect-[16/8] w-full rounded-xl object-cover"
+          widths={[480, 800]}
+          sizes="(min-width: 1024px) 30vw, 45vw"
+          loading="eager"
+        />
       </div>
+    </div>
+
+    <div id="quick-quote" class="reveal bg-kom-tan scroll-mt-20 rounded-xl px-6 py-7 shadow-card sm:px-7" style="--rd: 100ms">
+      <h2 class="font-serif text-kom-ink text-2xl font-bold">Get your free quote today</h2>
+      <form
+        name="quick-quote"
+        method="POST"
+        action="/thank-you"
+        data-netlify="true"
+        netlify-honeypot="bot-field"
+        class="mt-4 space-y-3"
+      >
+        <input type="hidden" name="form-name" value="quick-quote" />
+        <input type="hidden" name="subject" value="New quick quote request — kom.construction" />
+        <p class="hidden" aria-hidden="true">
+          <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+        </p>
+
+        <div>
+          <label for="qq-name" class="sr-only">Full name</label>
+          <input type="text" id="qq-name" name="name" required autocomplete="name" placeholder="Full name" class={inputClass} />
+        </div>
+        <div>
+          <label for="qq-phone" class="sr-only">Phone number</label>
+          <input type="tel" id="qq-phone" name="phone" required autocomplete="tel" placeholder="Phone number" class={inputClass} />
+        </div>
+        <div>
+          <label for="qq-email" class="sr-only">Email</label>
+          <input type="email" id="qq-email" name="email" required autocomplete="email" placeholder="Email" class={inputClass} />
+        </div>
+        <div>
+          <label for="qq-service" class="sr-only">Service needed</label>
+          <select id="qq-service" name="service" required class={inputClass}>
+            <option value="" disabled selected>Service needed</option>
+            {serviceOptions.map((option) => <option value={option}>{option}</option>)}
+          </select>
+        </div>
+        <div>
+          <label for="qq-property-type" class="sr-only">Property type</label>
+          <select id="qq-property-type" name="property-type" class={inputClass}>
+            <option value="" disabled selected>Property type</option>
+            {propertyTypes.map((option) => <option value={option}>{option}</option>)}
+          </select>
+        </div>
+
+        <Button type="submit" variant="primary" size="lg" class="w-full font-bold">
+          Request service
+        </Button>
+        <p class="text-kom-ink/70 text-center text-xs font-medium">
+          No spam — we only use this to respond to your request. Need more room for details? Use
+          the <a href="#request-service" class="font-bold underline">full request form</a>.
+        </p>
+      </form>
     </div>
   </div>
 </section>

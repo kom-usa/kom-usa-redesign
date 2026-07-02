@@ -2,58 +2,69 @@
 import { Image } from "astro:assets";
 
 import SectionHeader from "../common/SectionHeader.astro";
+import { exampleProjects } from "../../data/business";
 
 import kitchen from "../../assets/images/kitchen-remodel.jpg";
+import basement from "../../assets/images/basement-interior.jpg";
 import bathroom from "../../assets/images/bathroom-remodel.jpg";
-import homeExterior from "../../assets/images/home-exterior.jpg";
 import painting from "../../assets/images/painting-drywall.jpg";
+import homeExterior from "../../assets/images/home-exterior.jpg";
 import renovation from "../../assets/images/interior-renovation.jpg";
-import concrete from "../../assets/images/concrete-work.jpg";
-import framing from "../../assets/images/construction-framing.jpg";
 
 /**
- * Temporary stock photos, labeled below. Replace with real KOM USA project
- * photos (before/after pairs work well) as they're collected.
+ * Photos are temporary stand-ins (see src/assets/images) — swap each for real
+ * project photos as they're documented, and replace the example scopes in
+ * business.ts with real Problem / Work / Result write-ups.
  */
-const gallery = [
-  { image: kitchen, label: "Kitchen remodeling", alt: "Remodeled kitchen with white cabinets and gas range (stock photo)" },
-  { image: homeExterior, label: "Exterior maintenance", alt: "Well-kept two-story home with a wraparound porch (stock photo)" },
-  { image: bathroom, label: "Bathroom remodeling", alt: "Renovated bathroom with glass shower and double vanity (stock photo)" },
-  { image: renovation, label: "Interior renovation", alt: "Contractor finishing a ceiling during an interior renovation (stock photo)" },
-  { image: painting, label: "Painting & drywall", alt: "Roller applying fresh paint to an interior wall (stock photo)" },
-  { image: concrete, label: "Concrete & structural", alt: "Crew working with rebar on a concrete pour (stock photo)" },
-  { image: framing, label: "New construction", alt: "Construction crew reviewing a framed build site (stock photo)" },
+const projectImages: { image: ImageMetadata; alt: string }[] = [
+  { image: kitchen, alt: "Remodeled kitchen with white cabinets and gas range" },
+  { image: basement, alt: "Clean, rent-ready unit interior" },
+  { image: bathroom, alt: "Renovated bathroom with glass shower and double vanity" },
+  { image: painting, alt: "Roller applying fresh paint to an interior wall" },
+  { image: homeExterior, alt: "Well-kept two-story home exterior" },
+  { image: renovation, alt: "Contractor finishing a ceiling during an interior renovation" },
 ];
 ---
 
-<section id="projects" class="section-pad scroll-mt-16">
+<section id="projects" class="section-pad scroll-mt-16 border-y bg-white">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
       title="Our Work"
-      lead="The kind of projects we take on. Temporary stock photos shown for now — real KOM USA project photos are on the way."
+      lead="Example scopes for the kind of jobs we take on every week. Real project photos and write-ups are being added as we document them."
     />
-  </div>
 
-  <div class="mx-auto mt-12 max-w-6xl px-4 sm:px-6">
-    <ul
-      class="reveal flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3"
-      style="scrollbar-width: thin"
-    >
+    <ul class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
       {
-        gallery.map((item) => (
-          <li class="group relative w-72 shrink-0 snap-start overflow-hidden rounded-xl shadow-card">
+        exampleProjects.map((project, index) => (
+          <li
+            class="reveal border-border flex flex-col overflow-hidden rounded-xl border bg-white shadow-card"
+            style={`--rd: ${(index % 3) * 70}ms`}
+          >
             <Image
-              src={item.image}
-              alt={item.alt}
-              class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+              src={projectImages[index].image}
+              alt={projectImages[index].alt}
+              class="aspect-[16/9] w-full object-cover"
               widths={[480, 800]}
-              sizes="288px"
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
               loading="lazy"
             />
-            <p class="bg-kom-ink/85 absolute inset-x-0 bottom-0 px-4 py-2 text-sm font-bold text-white">
-              {item.label}
-              <span class="block text-xs font-medium text-white/70">Sample photo</span>
-            </p>
+            <div class="flex flex-1 flex-col gap-3 p-5">
+              <h3 class="font-serif text-kom-ink text-lg font-bold">{project.title}</h3>
+              <div class="space-y-2.5 text-sm leading-relaxed">
+                <p>
+                  <span class="text-kom-steel block text-xs font-bold tracking-wider uppercase">Problem</span>
+                  <span class="text-kom-charcoal/90">{project.problem}</span>
+                </p>
+                <p>
+                  <span class="text-kom-steel block text-xs font-bold tracking-wider uppercase">Work completed</span>
+                  <span class="text-kom-charcoal/90">{project.work}</span>
+                </p>
+                <p>
+                  <span class="text-kom-steel block text-xs font-bold tracking-wider uppercase">Result</span>
+                  <span class="text-kom-charcoal/90">{project.result}</span>
+                </p>
+              </div>
+            </div>
           </li>
         ))
       }

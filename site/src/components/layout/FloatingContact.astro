@@ -1,0 +1,92 @@
+---
+import Phone from "@tabler/icons/outline/phone.svg";
+import MessageCircle from "@tabler/icons/outline/message-circle.svg";
+import Mail from "@tabler/icons/outline/mail.svg";
+import ClipboardCheck from "@tabler/icons/outline/clipboard-check.svg";
+import Headset from "@tabler/icons/outline/headset.svg";
+import X from "@tabler/icons/outline/x.svg";
+
+import { business } from "../../data/business";
+
+/**
+ * Desktop-only floating contact launcher (mobile uses MobileStickyBar).
+ * Plain links only — no fake live-chat UI.
+ */
+const options = [
+  { label: "Call us", detail: business.phone, href: business.phoneHref, icon: Phone },
+  { label: "Text us", detail: business.phone, href: business.smsHref, icon: MessageCircle },
+  { label: "Email us", detail: business.email, href: business.emailHref, icon: Mail },
+  { label: "Request service", detail: "Use the request form", href: "/#request-service", icon: ClipboardCheck },
+];
+---
+
+<div id="floating-contact" class="fixed right-5 bottom-5 z-50 hidden flex-col items-end gap-3 md:flex">
+  <div
+    id="floating-contact-panel"
+    class="border-border hidden w-64 overflow-hidden rounded-xl border bg-white shadow-card-hover"
+    role="region"
+    aria-label="Contact options"
+  >
+    <p class="bg-kom-field px-4 py-3 text-sm font-bold text-white">How can we help?</p>
+    <ul class="divide-border divide-y">
+      {
+        options.map((option) => (
+          <li>
+            <a
+              href={option.href}
+              class="hover:bg-kom-cream flex items-center gap-3 px-4 py-3 transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none focus-visible:ring-inset"
+            >
+              <span class="bg-kom-sage-tint text-kom-field flex size-9 shrink-0 items-center justify-center rounded-lg">
+                <option.icon class="size-4.5" aria-hidden="true" />
+              </span>
+              <span>
+                <span class="text-kom-ink block text-sm font-bold">{option.label}</span>
+                <span class="text-muted-foreground block text-xs">{option.detail}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <button
+    type="button"
+    id="floating-contact-toggle"
+    aria-expanded="false"
+    aria-controls="floating-contact-panel"
+    class="bg-kom-field hover:bg-kom-field-hover flex items-center gap-2 rounded-full px-5 py-3 text-sm font-bold text-white shadow-card-hover transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+  >
+    <Headset class="size-5" data-icon-open aria-hidden="true" />
+    <X class="hidden size-5" data-icon-close aria-hidden="true" />
+    Contact KOM
+  </button>
+</div>
+
+<script>
+  const root = document.getElementById("floating-contact");
+  const toggle = document.getElementById("floating-contact-toggle");
+  const panel = document.getElementById("floating-contact-panel");
+
+  if (root && toggle && panel) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      panel.classList.toggle("hidden", !open);
+      toggle.querySelector("[data-icon-open]")?.classList.toggle("hidden", open);
+      toggle.querySelector("[data-icon-close]")?.classList.toggle("hidden", !open);
+      if (open) panel.querySelector("a")?.focus();
+    };
+    const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
+
+    toggle.addEventListener("click", () => setOpen(!isOpen()));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen()) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (isOpen() && !root.contains(event.target as Node)) setOpen(false);
+    });
+  }
+</script>
