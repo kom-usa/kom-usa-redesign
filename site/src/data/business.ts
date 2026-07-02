@@ -1,13 +1,13 @@
 /**
  * Single source of truth for KOM USA business facts.
  * Every component, meta tag, and schema entity reads from here —
- * never hard-code the phone number, email, or service lists in templates.
+ * never hard-code the phone number, email, prices, or service lists in templates.
  */
 
 export const business = {
   name: "KOM USA",
   legalName: "KOM Construction LLC",
-  tagline: "Construction, maintenance, locksmith, and chimney services in Metro Detroit",
+  tagline: "Locksmith, water heater, and chimney services in Metro Detroit",
   phone: "313-804-0844",
   phoneHref: "tel:+13138040844",
   smsHref: "sms:+13138040844",
@@ -15,7 +15,215 @@ export const business = {
   emailHref: "mailto:info@kom-usa.com",
   serviceArea: "Metro Detroit",
   url: "https://www.kom.construction",
+  hoursShort: "Mon–Sat 8am–6pm",
+  googleReviewsUrl: "https://share.google/gfFHF6KBpnBz5FchG",
 } as const;
+
+export const hours = [
+  { days: "Monday – Saturday", time: "8:00 am – 6:00 pm" },
+  { days: "Sunday", time: "Closed" },
+];
+
+export const googleReviews = {
+  url: business.googleReviewsUrl,
+  rating: "4.7",
+  count: 58,
+  featured: [
+    {
+      name: "Jordan P.",
+      quote:
+        "KOM did an amazing job with my basement tile. They were very knowledgeable and helped me understand my options. I would highly recommend them to anyone.",
+    },
+    {
+      name: "Kris R.",
+      quote:
+        "Wow, where do I even start. I contacted KOM to assist with a creative project in Detroit. The project required the ability to think outside of the box and be non-conventional.",
+    },
+    {
+      name: "Shannon P.",
+      quote:
+        "My adult son became disabled and living in that tiny house was not working — I had to make changes. Moving into a new home on a single income was not an option, so I did an overhaul of my home.",
+    },
+  ],
+};
+
+export const offer = {
+  headline: "$10 Off",
+  sub: "Your First Service With KOM USA",
+  terms: [
+    "For first-time customers. One per household.",
+    "Just mention this offer when we call you — no code to remember.",
+    "Can't be combined with other offers.",
+  ],
+  formValue: "$10 first-service offer claimed",
+};
+
+export interface PriceItem {
+  service: string;
+  detail?: string;
+  price: string;
+}
+
+export interface Faq {
+  question: string;
+  answer: string;
+}
+
+export interface ServiceDef {
+  slug: string;
+  title: string;
+  shortTitle: string;
+  icon: string;
+  anchorPrice: string;
+  blurb: string;
+  heroIntro: string;
+  includes: string[];
+  pricing: PriceItem[];
+  pricingNotes: string[];
+  faqs: Faq[];
+}
+
+export const pricingDisclaimer =
+  "Standard pricing — we confirm your exact quote by phone before any work starts.";
+
+export const services: ServiceDef[] = [
+  {
+    slug: "locksmith",
+    title: "Locksmith Services",
+    shortTitle: "Locksmith",
+    icon: "key",
+    anchorPrice: "Unlocks from $129",
+    blurb:
+      "Locked out, moving in, or ready for a keypad? Fast, damage-free residential locksmith work with prices published up front.",
+    heroIntro:
+      "Whether you're locked out right now or planning new locks for a new home, we handle it quickly and treat your door like our own. Our standard prices are published below, so you know what to expect before we ever pick up a tool.",
+    includes: [
+      "House and unit door unlocks",
+      "Lock changes and rekeying",
+      "Deadbolt and handle combos",
+      "Kwikset smart keypad installation",
+      "Lock box installation",
+      "Key duplication",
+    ],
+    pricing: [
+      { service: "House door unlock", detail: "Quick, damage-free entry", price: "$129" },
+      { service: "Change locks — 1 lock", price: "$179" },
+      { service: "Change locks — 2 locks", price: "$279" },
+      { service: "Change locks — 3 locks", price: "$349" },
+      { service: "Change locks — 4+ locks", price: "$65 per lock" },
+      { service: "Lock combo", detail: "Deadbolt + handle", price: "$179" },
+      { service: "Kwikset smart keypad", detail: "Keyless entry with user codes", price: "$329" },
+      { service: "Lock box", detail: "$79 when added to another service", price: "$129" },
+      { service: "Key duplication", detail: "$10 each additional copy", price: "$25" },
+    ],
+    pricingNotes: [
+      pricingDisclaimer,
+      "A 50% deposit is required before a technician is dispatched.",
+      "Jobs more than 25 miles from our location add a $50 distance fee.",
+    ],
+    faqs: [
+      {
+        question: "I'm locked out right now. What do I do?",
+        answer:
+          "Call us at 313-804-0844 — that's faster than the form. We confirm your location, verify the property is yours, and dispatch a technician after the 50% deposit.",
+      },
+      {
+        question: "Will unlocking my door damage it?",
+        answer:
+          "No — our standard unlock is damage-free. If your lock is broken or worn out, we'll tell you before doing anything and give you the price to replace it.",
+      },
+      {
+        question: "Can you install a keypad so I can stop carrying keys?",
+        answer:
+          "Yes. We install Kwikset smart keypads for $329, set up your codes with you, and show you how to add or remove users.",
+      },
+    ],
+  },
+  {
+    slug: "water-heaters",
+    title: "Water Heater Replacement",
+    shortTitle: "Water Heaters",
+    icon: "droplet",
+    anchorPrice: "From $1,750 installed",
+    blurb:
+      "No hot water? We replace electric, gas, and power-vent water heaters with straightforward installed pricing.",
+    heroIntro:
+      "A failing water heater doesn't wait, so neither do we. Tell us what you have and we'll recommend the right replacement, give you one installed price on the call, and get your hot water back.",
+    includes: [
+      "Electric water heater replacement (30–40 gallon)",
+      "Gas water heater replacement (40–50 gallon)",
+      "Power-vent gas water heater replacement",
+      "Help choosing the right size and type for your home",
+    ],
+    pricing: [
+      { service: "Electric water heater", detail: "30–40 gallon, installed", price: "from $1,750" },
+      { service: "Gas water heater", detail: "40 gallon, installed", price: "from $1,850" },
+      { service: "Gas water heater", detail: "50 gallon, installed", price: "from $2,300" },
+      { service: "Power-vent gas water heater", detail: "40 gallon, installed", price: "from $2,850" },
+    ],
+    pricingNotes: [
+      "Starting prices include standard installation. Your exact quote depends on the model and your home's setup — we confirm it on the call before scheduling.",
+    ],
+    faqs: [
+      {
+        question: "How do I know if I need a replacement or a repair?",
+        answer:
+          "If your water heater is leaking from the tank, over 10 years old, or not keeping up anymore, replacement usually beats repair. Not sure? Send the form — we'll talk it through on the call at no charge.",
+      },
+      {
+        question: "What sizes do you install?",
+        answer:
+          "We install 30–50 gallon electric and gas units, including power-vent models. We'll match the size and type to what your home already has, or recommend a change if it makes sense.",
+      },
+      {
+        question: "Does the price include installation?",
+        answer:
+          "Yes — the starting prices shown are installed prices, not tank-only. We confirm your exact quote by phone once we know the model and your setup.",
+      },
+    ],
+  },
+  {
+    slug: "chimney-care",
+    title: "Chimney Care",
+    shortTitle: "Chimney Care",
+    icon: "flame",
+    anchorPrice: "Cleaning $299",
+    blurb:
+      "Keep your fireplace safe and your chimney sealed against Michigan weather — cleaning, caps, and liner caps at flat prices.",
+    heroIntro:
+      "A clean, capped chimney burns safer and keeps water, ice, and critters out. We publish our chimney prices flat-out, so scheduling your yearly cleaning is one quick call.",
+    includes: [
+      "Chimney cleaning and sweep",
+      "Chimney cap installation and replacement",
+      "Chimney liner cap installation",
+      "Visual condition check with every cleaning",
+    ],
+    pricing: [
+      { service: "Chimney cleaning", detail: "Up to 35 feet", price: "$299" },
+      { service: "Additional height", detail: "Beyond 35 feet", price: "+$6 per ft" },
+      { service: "Chimney cap", detail: "Supplied and installed", price: "$329" },
+      { service: "Liner cap", detail: "Supplied and installed", price: "$289" },
+    ],
+    pricingNotes: [pricingDisclaimer],
+    faqs: [
+      {
+        question: "How often should my chimney be cleaned?",
+        answer:
+          "Once a year if you use your fireplace regularly — ideally before burning season. If you've just moved in and don't know when it was last cleaned, start with a cleaning and we'll tell you how it looks.",
+      },
+      {
+        question: "Do I really need a chimney cap?",
+        answer:
+          "In Michigan, yes. A cap keeps rain, snow, ice, and animals out of the flue — replacing one is far cheaper than repairing water damage inside a chimney.",
+      },
+      {
+        question: "How tall a chimney can you clean?",
+        answer:
+          "Our $299 cleaning covers chimneys up to 35 feet, which fits most homes. Taller than that is $6 per additional foot — we'll confirm the total on the call.",
+      },
+    ],
+  },
+];
 
 export const serviceAreaCities = [
   "Detroit",
@@ -38,134 +246,26 @@ export const serviceAreaCities = [
 
 export const serviceAreaCounties = ["Wayne County", "Oakland County", "Macomb County"];
 
-export interface ServiceCategory {
-  id: string;
-  title: string;
-  blurb: string;
-  icon: string;
-  items: string[];
-}
-
-export const serviceCategories: ServiceCategory[] = [
-  {
-    id: "construction-remodeling",
-    title: "Construction & remodeling",
-    blurb: "From a single room to a full addition, one crew handles your project start to finish.",
-    icon: "hammer",
-    items: [
-      "Kitchen remodeling",
-      "Bathroom remodeling",
-      "Tile",
-      "Flooring",
-      "Concrete",
-      "Painting",
-      "Drywall",
-      "New construction",
-      "Home additions",
-      "Basement finishing",
-    ],
-  },
-  {
-    id: "property-maintenance",
-    title: "Property maintenance",
-    blurb: "The repairs and upkeep that keep a home or rental running — handled on one call.",
-    icon: "tools",
-    items: [
-      "Water heater replacement",
-      "Trash removal",
-      "Sewage backups",
-      "Property inspections",
-      "Exterior maintenance",
-      "Gutter cleaning",
-      "Lawn care",
-      "Snow removal",
-    ],
-  },
-  {
-    id: "locksmith",
-    title: "Locksmith services",
-    blurb: "Unlocks, lock changes, and smart keypads with upfront standard pricing.",
-    icon: "key",
-    items: [
-      "House / unit unlocks",
-      "Lock changes",
-      "Lock combos",
-      "Smart keypads",
-      "Lock boxes",
-      "Key duplication",
-      "Property-management locksmith support",
-    ],
-  },
-  {
-    id: "chimney-care",
-    title: "Chimney care",
-    blurb: "Keep your fireplace safe and your chimney sealed against Michigan weather.",
-    icon: "flame",
-    items: [
-      "Chimney cleaning",
-      "Chimney cap installation & replacement",
-      "Chimney liner cap service",
-    ],
-  },
-  {
-    id: "property-management",
-    title: "Property management & investor services",
-    blurb: "A reliable maintenance arm for landlords, property managers, and investors.",
-    icon: "building-community",
-    items: [
-      "Unit turnovers",
-      "Lock changes",
-      "Vacant property access",
-      "Inspections",
-      "Recurring maintenance",
-      "Snow, lawn & gutter coordination",
-      "Trash-outs",
-      "Repair coordination",
-      "Exterior upkeep",
-    ],
-  },
-];
-
-export interface PriceItem {
-  service: string;
-  detail?: string;
-  price: string;
-}
-
-/** Standard pricing from the KOM Locksmiths flyer. Final pricing may vary. */
-export const locksmithPricing: PriceItem[] = [
-  { service: "House / unit door unlock", detail: "Quick, damage-free entry for residential properties", price: "$129" },
-  { service: "Change locks — 1 lock", price: "$179" },
-  { service: "Change locks — 2 locks", price: "$279" },
-  { service: "Change locks — 3 locks", price: "$349" },
-  { service: "Lock combo", detail: "Deadbolt + handle", price: "$179" },
-  { service: "Kwikset smart keypad", detail: "Keyless entry with authorized user codes", price: "$329" },
-  { service: "Install lock box", price: "$129" },
-  { service: "Key duplication", price: "$25" },
-];
-
-export const locksmithNotes = [
-  "Standard pricing shown — final pricing may vary based on lock hardware, door condition, and service details.",
-  "A 50% deposit is required before a technician is dispatched.",
-  "Distance fee: jobs over 25 miles from our location add $50.",
-  "B2B pricing available for management companies and real estate teams.",
-];
-
-export interface Faq {
-  question: string;
-  answer: string;
-}
-
 export const faqs: Faq[] = [
+  {
+    question: "What happens after I send the form?",
+    answer:
+      "We call you — usually the same business day. We talk through what you need, answer your questions, and give you a quote. If it sounds good, we schedule the work right on the call. No pressure, no obligation.",
+  },
   {
     question: "What areas do you serve?",
     answer:
-      "We serve Metro Detroit, including communities across Wayne, Oakland, and Macomb counties. If you're not sure whether you're in our service area, call 313-804-0844 and we'll tell you right away. Locksmith jobs more than 25 miles from our location add a $50 distance fee.",
+      "Metro Detroit — communities across Wayne, Oakland, and Macomb counties. Not sure if you're in range? Call 313-804-0844 and we'll tell you right away. Locksmith jobs more than 25 miles from our location add a $50 distance fee.",
   },
   {
-    question: "How much does locksmith service cost?",
+    question: "How does the $10 first-service offer work?",
     answer:
-      "We publish standard pricing so there are no surprises: a house or unit door unlock is $129, changing locks starts at $179 for one lock, and key duplication is $25. Final pricing may vary based on your lock hardware and service details, and a 50% deposit is required before a technician is dispatched.",
+      "If it's your first time using KOM USA, you get $10 off — just mention the offer when we call you, or hit \"Claim Offer\" on the coupon and we'll see it on your request. One per household; can't be combined with other offers.",
+  },
+  {
+    question: "Are your prices really the prices?",
+    answer:
+      "The prices on this site are our standard pricing, published so there are no surprises. Your exact quote can vary with your home's setup and hardware, and we always confirm it by phone before any work starts.",
   },
   {
     question: "I'm locked out right now. What do I do?",
@@ -173,76 +273,37 @@ export const faqs: Faq[] = [
       "Call us at 313-804-0844. Lockouts are handled by phone so we can confirm your location, verify the property, and dispatch a technician after the 50% deposit.",
   },
   {
-    question: "Do you work with property managers and landlords?",
+    question: "Are you licensed and insured?",
     answer:
-      "Yes — property management support is a core part of our business. We handle unit turnovers, vacant property access, lock changes, inspections, and recurring maintenance like snow, lawn, and gutter service. Tell us about your portfolio in the request form and we'll set up a plan.",
+      "Yes — KOM USA is licensed and insured, and we've been serving Metro Detroit homeowners under the same local ownership since day one.",
   },
   {
-    question: "How do I get a quote?",
+    question: "Do you only do locksmith, water heater, and chimney work?",
     answer:
-      "Call 313-804-0844 or send the request form on this page with a few details about the work. We'll follow up to confirm the scope and give you a quote before any work starts.",
-  },
-  {
-    question: "How does scheduling work?",
-    answer:
-      "Once we confirm your quote, we pick a time that works for you. For rentals we can coordinate directly with tenants, use lockboxes, or handle vacant-property access ourselves — you don't have to be on site.",
-  },
-  {
-    question: "Can one crew really handle construction, maintenance, locksmith, and chimney work?",
-    answer:
-      "That's the point of KOM USA: one local team and one phone number for the trades most homes and rentals need. You skip juggling separate contractors, and we already know your property when the next job comes up.",
+      "Those are the services we offer online today. Have something related in mind? Ask when we call — if we can't help, we'll say so honestly.",
   },
 ];
 
-export interface ExampleProject {
-  title: string;
-  problem: string;
-  work: string;
-  result: string;
-}
-
-/**
- * Example project scopes for the "Our Work" section. These describe typical
- * jobs, not specific completed projects — swap in real projects (photos,
- * cities, real outcomes) as they're documented. Keep the Problem / Work /
- * Result structure when you do.
- */
-export const exampleProjects: ExampleProject[] = [
+export const trustPoints = [
   {
-    title: "Kitchen remodel",
-    problem: "A dated kitchen with worn cabinets, old counters, and poor lighting.",
-    work: "Full remodel — cabinets, countertops, tile backsplash, flooring, and fixtures.",
-    result: "A modern kitchen that's ready for daily life or listing photos.",
+    title: "Locally owned & operated",
+    description: "A small Metro Detroit crew — the person you talk to knows the person who shows up.",
+    icon: "home-heart",
   },
   {
-    title: "Rental unit turnover",
-    problem: "A vacated unit that needs to be rent-ready fast.",
-    work: "Trash-out, patch and paint, lock change, deep repairs list, and a final inspection.",
-    result: "A unit ready to show and lease, with keys and codes handed off cleanly.",
+    title: "Upfront standard pricing",
+    description: "Our prices are on this site before you ever call. No surprises at the door.",
+    icon: "clipboard-check",
   },
   {
-    title: "Bathroom remodel",
-    problem: "An aging bathroom with failing tile and constant small leaks.",
-    work: "New tile, tub or shower surround, vanity, plumbing fixtures, and paint.",
-    result: "A watertight, easy-to-clean bathroom that adds real value.",
+    title: "Licensed & insured",
+    description: "Real credentials behind every job, big or small.",
+    icon: "shield-check",
   },
   {
-    title: "Drywall & paint refresh",
-    problem: "Wall damage and scuffed paint dragging down the whole space.",
-    work: "Drywall repair, skim coating, and a full repaint in updated colors.",
-    result: "Clean walls and a fresh, consistent look throughout.",
-  },
-  {
-    title: "Exterior & gutter service",
-    problem: "Clogged gutters and deferred exterior maintenance risking water damage.",
-    work: "Gutter cleaning, minor exterior repairs, and a seasonal upkeep plan.",
-    result: "Water moving away from the house instead of into it.",
-  },
-  {
-    title: "Basement finishing",
-    problem: "An unfinished basement sitting as wasted square footage.",
-    work: "Framing, drywall, flooring, lighting, and trim to finish the space.",
-    result: "Livable square footage added without moving.",
+    title: "We pick up the phone",
+    description: "Call or send the form — a person gets back to you, usually the same day.",
+    icon: "phone",
   },
 ];
 
@@ -250,52 +311,27 @@ export const howItWorks = [
   {
     title: "Tell us what you need",
     description:
-      "Call 313-804-0844 or send the request form. A couple of details — city, service, urgency — is all it takes.",
+      "Send the quick form or call 313-804-0844. A couple of details — your city, the service, and when you need it — is all it takes.",
     icon: "message-circle",
   },
   {
-    title: "Get your quote and schedule",
+    title: "We call you to talk it through",
     description:
-      "We confirm the scope, give you clear pricing, and pick a time that works. Locksmith dispatch requires a 50% deposit.",
+      "A real person calls you back, answers your questions, and gives you a clear quote. No pressure, no obligation.",
+    icon: "phone",
+  },
+  {
+    title: "We schedule and do the work",
+    description:
+      "Pick a time that works for you. We show up when we say we will and leave your home better than we found it.",
     icon: "calendar-check",
-  },
-  {
-    title: "We do the work",
-    description:
-      "Our crew shows up, does the job right, and leaves the property ready — whether it's one repair or a full turnover.",
-    icon: "hammer",
-  },
-];
-
-export const trustPoints = [
-  {
-    title: "One crew, every trade",
-    description: "Build, fix, maintain, and secure — one call covers it.",
-    icon: "tools",
-  },
-  {
-    title: "Upfront standard pricing",
-    description: "Locksmith prices published before you book.",
-    icon: "clipboard-check",
-  },
-  {
-    title: "Metro Detroit local",
-    description: "Based here, serving Wayne, Oakland & Macomb counties.",
-    icon: "map-pin",
-  },
-  {
-    title: "Landlord & PM friendly",
-    description: "Turnovers, access, and recurring service for portfolios.",
-    icon: "building-community",
   },
 ];
 
 export const serviceOptions = [
-  "Construction & remodeling",
-  "Property maintenance",
-  "Locksmith service",
+  "Locksmith",
+  "Water heater",
   "Chimney care",
-  "Property management / investor services",
   "Something else",
 ];
 
@@ -303,5 +339,5 @@ export const urgencyOptions = [
   "Emergency — locked out now",
   "Urgent — within a few days",
   "Soon — within a few weeks",
-  "Planning ahead — flexible",
+  "Flexible — planning ahead",
 ];
