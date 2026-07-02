@@ -2,6 +2,7 @@
 import {
   business,
   faqs,
+  googleReviews,
   serviceAreaCities,
   services,
 } from "../../data/business";
@@ -61,7 +62,7 @@ const graph: Record<string, unknown>[] = [
 if (includeBusinessGraph) {
   graph.push(
     {
-      "@type": ["HomeAndConstructionBusiness", "Locksmith"],
+      "@type": ["LocalBusiness", "Locksmith"],
       "@id": ids.business,
       name: business.name,
       url: site.href,
@@ -80,7 +81,30 @@ if (includeBusinessGraph) {
           name: `${city}, MI`,
         })),
       ],
+      openingHoursSpecification: {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ],
+        opens: "08:00",
+        closes: "18:00",
+      },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: googleReviews.rating,
+        reviewCount: String(googleReviews.count),
+      },
+      sameAs: [googleReviews.url],
       knowsAbout: services.map((s) => s.title),
+      makesOffer: services.map((s) => ({
+        "@type": "Offer",
+        itemOffered: { "@type": "Service", name: s.title },
+      })),
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "KOM USA services — standard pricing",

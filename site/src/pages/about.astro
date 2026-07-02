@@ -1,63 +1,42 @@
 ---
 import { Image } from "astro:assets";
-import Phone from "@tabler/icons/outline/phone.svg";
 import CircleCheck from "@tabler/icons/outline/circle-check.svg";
 
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/starwind/button/Button.astro";
-import Roofline from "../components/common/Roofline.astro";
-import { business, serviceAreaCounties } from "../data/business";
+import CtaBand from "../components/sections/CtaBand.astro";
+import { business, hours, serviceAreaCities, serviceAreaCounties } from "../data/business";
 import homeExterior from "../assets/images/home-exterior.jpg";
 import workerElectrical from "../assets/images/worker-electrical.jpg";
 
-const helps = [
-  {
-    who: "Homeowners",
-    how: "Repairs, remodels, and the maintenance list that never quite gets done.",
-  },
-  {
-    who: "Landlords",
-    how: "Turnovers, lock changes, and repairs between tenants — without chasing five vendors.",
-  },
-  {
-    who: "Property managers",
-    how: "A reliable maintenance arm that communicates clearly and shows up when scheduled.",
-  },
-  {
-    who: "Investors",
-    how: "Getting a property rent-ready or market-ready with one crew and one invoice.",
-  },
-];
-
-const different = [
-  "One crew across multiple trades — construction, maintenance, locksmith, and chimney work",
-  "Clear communication — you know what's happening, when, and what it costs",
-  "Practical scheduling — including tenant coordination and vacant-property access",
-  "Local service — based in Metro Detroit, working where you are",
+const howWeWork = [
+  "Send the quick form or call — a real person calls you back, usually the same day.",
+  "We talk through what you need and give you a clear quote over the phone.",
+  "If it sounds good, we schedule the work right then. No pressure, no obligation.",
+  "Our prices are published on this site up front, so there are no surprises at the door.",
 ];
 ---
 
 <BaseLayout
-  title="About KOM USA | One Local Crew for Metro Detroit Properties"
-  description="KOM USA is a Metro Detroit construction, maintenance, locksmith, and chimney service company serving homeowners, landlords, property managers, and investors across Wayne, Oakland, and Macomb counties."
+  title="About KOM USA | Locksmith, Water Heater & Chimney Crew in Metro Detroit"
+  description="KOM USA is a small, locally owned crew in Detroit handling locksmith, water heater, and chimney work — licensed, insured, and rated 4.7 on Google."
 >
   <section class="border-b bg-white">
     <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-12 sm:px-6 md:py-16 lg:grid-cols-[1.4fr_1fr]">
       <div class="reveal">
         <p class="text-kom-field text-xs font-bold tracking-[0.18em] uppercase">About KOM USA</p>
         <h1 class="font-serif text-kom-ink mt-2 text-3xl font-bold text-balance sm:text-4xl lg:text-[2.6rem] lg:leading-[1.15]">
-          A hometown crew for the work your property actually needs.
+          A small local crew, three things we do well.
         </h1>
         <p class="text-muted-foreground mt-4 max-w-2xl text-lg leading-relaxed">
-          KOM USA is a Metro Detroit service company covering construction and remodeling,
-          property maintenance, locksmith work, chimney care, and rental turnovers — the trades
-          most homes and rentals need, handled by one local team.
+          KOM USA is a small, locally owned crew based in Detroit. We started in construction and
+          property upkeep, and over the years the jobs our neighbors kept calling about were
+          locks, water heaters, and chimneys — so that's what we do, and we do it well.
         </p>
       </div>
       <figure class="reveal" style="--rd: 100ms">
         <Image
           src={workerElectrical}
-          alt="Technician in a hard hat servicing an electrical box"
+          alt="Technician servicing a home's mechanical system"
           class="w-full rounded-xl object-cover shadow-card"
           widths={[480, 800]}
           sizes="(min-width: 1024px) 35vw, 100vw"
@@ -70,27 +49,13 @@ const different = [
   <section class="section-pad">
     <div class="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-2">
       <div class="reveal">
-        <h2 class="font-serif text-kom-ink text-2xl font-bold sm:text-3xl">Where we work</h2>
+        <h2 class="font-serif text-kom-ink text-2xl font-bold sm:text-3xl">How we work</h2>
         <p class="text-muted-foreground mt-3 leading-relaxed">
-          We serve {business.serviceArea} — {serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ", and $1")}.
-          From Detroit neighborhoods to the suburbs, if you're in the metro area, you're in our
-          service area. Not sure? <a href={business.phoneHref} class="text-kom-field font-bold hover:underline">Call</a> or <a href={business.smsHref} class="text-kom-field font-bold hover:underline">text us</a> and we'll tell you right away.
+          No account logins, no ticket queues — just a straightforward call-back process.
         </p>
-
-        <h2 class="font-serif text-kom-ink mt-10 text-2xl font-bold sm:text-3xl">Why we exist</h2>
-        <p class="text-muted-foreground mt-3 leading-relaxed">
-          Most property work gets split across a contractor, a handyman, a locksmith, a chimney
-          company, and a lawn crew — five phone numbers, five schedules, five invoices. We built
-          KOM USA so one call covers it. You get one team that already knows your property, your
-          locks, and how you like things done.
-        </p>
-
-        <h2 class="font-serif text-kom-ink mt-10 text-2xl font-bold sm:text-3xl">
-          What makes us different
-        </h2>
         <ul class="mt-4 space-y-2.5">
           {
-            different.map((item) => (
+            howWeWork.map((item) => (
               <li class="text-kom-charcoal/90 flex items-start gap-2.5 text-sm leading-relaxed font-medium">
                 <CircleCheck class="text-kom-field mt-0.5 size-4.5 shrink-0" aria-hidden="true" />
                 {item}
@@ -98,19 +63,59 @@ const different = [
             ))
           }
         </ul>
-      </div>
+        <p class="text-muted-foreground mt-4 leading-relaxed">
+          We're licensed and insured, and we publish our standard pricing right on this site —
+          your exact quote is always confirmed by phone before any work starts.
+        </p>
 
-      <div class="reveal" style="--rd: 100ms">
-        <h2 class="font-serif text-kom-ink text-2xl font-bold sm:text-3xl">Who we help</h2>
-        <ul class="mt-4 grid gap-4">
+        <h2 class="font-serif text-kom-ink mt-10 text-2xl font-bold sm:text-3xl">Where we work</h2>
+        <p class="text-muted-foreground mt-3 leading-relaxed">
+          We serve {business.serviceArea} — {serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ", and $1")}.
+          Not sure if you're in range? <a href={business.phoneHref} class="text-kom-field font-bold hover:underline">Call</a> or <a href={business.smsHref} class="text-kom-field font-bold hover:underline">text us</a> and we'll tell you right away.
+        </p>
+        <ul class="text-kom-charcoal/90 mt-4 flex flex-wrap gap-x-2 gap-y-1.5 text-sm leading-relaxed">
           {
-            helps.map((item) => (
-              <li class="border-border rounded-xl border bg-white p-5 shadow-card">
-                <h3 class="text-kom-ink text-base font-bold">{item.who}</h3>
-                <p class="text-muted-foreground mt-1 text-sm leading-relaxed">{item.how}</p>
+            serviceAreaCities.map((city, i) => (
+              <li class="font-medium">
+                {city}
+                {i < serviceAreaCities.length - 1 && <span class="text-muted-foreground">,</span>}
               </li>
             ))
           }
+        </ul>
+      </div>
+
+      <div class="reveal" style="--rd: 100ms">
+        <h2 class="font-serif text-kom-ink text-2xl font-bold sm:text-3xl">Hours</h2>
+        <ul class="mt-4 space-y-2 rounded-xl border border-border bg-white p-5 shadow-card">
+          {
+            hours.map((h) => (
+              <li class="text-kom-charcoal/90 flex items-center justify-between text-sm leading-relaxed font-medium">
+                <span>{h.days}</span>
+                <span class="text-muted-foreground">{h.time}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 class="font-serif text-kom-ink mt-10 text-2xl font-bold sm:text-3xl">Why folks call us back</h2>
+        <ul class="mt-4 space-y-2.5">
+          <li class="text-kom-charcoal/90 flex items-start gap-2.5 text-sm leading-relaxed font-medium">
+            <CircleCheck class="text-kom-field mt-0.5 size-4.5 shrink-0" aria-hidden="true" />
+            Locally owned & operated — the person you talk to knows the person who shows up.
+          </li>
+          <li class="text-kom-charcoal/90 flex items-start gap-2.5 text-sm leading-relaxed font-medium">
+            <CircleCheck class="text-kom-field mt-0.5 size-4.5 shrink-0" aria-hidden="true" />
+            Licensed & insured on every job, big or small.
+          </li>
+          <li class="text-kom-charcoal/90 flex items-start gap-2.5 text-sm leading-relaxed font-medium">
+            <CircleCheck class="text-kom-field mt-0.5 size-4.5 shrink-0" aria-hidden="true" />
+            Upfront standard pricing, published before you ever call.
+          </li>
+          <li class="text-kom-charcoal/90 flex items-start gap-2.5 text-sm leading-relaxed font-medium">
+            <CircleCheck class="text-kom-field mt-0.5 size-4.5 shrink-0" aria-hidden="true" />
+            Rated 4.7 on Google from 58 reviews.
+          </li>
         </ul>
         <figure class="mt-6">
           <Image
@@ -126,25 +131,5 @@ const different = [
     </div>
   </section>
 
-  <section class="bg-kom-field-deep">
-    <div class="mx-auto flex max-w-6xl flex-col items-center px-4 py-14 text-center sm:px-6">
-      <Roofline class="text-kom-tan" />
-      <h2 class="font-serif mt-4 max-w-2xl text-2xl font-bold text-balance text-white sm:text-3xl">
-        Have a project or a portfolio that needs a crew?
-      </h2>
-      <div class="mt-6 flex flex-wrap justify-center gap-3">
-        <Button href="/contact" variant="primary" size="lg" class="font-bold">
-          Request service
-        </Button>
-        <Button
-          href={business.phoneHref}
-          size="lg"
-          class="border border-white/30 bg-transparent font-bold text-white hover:bg-white/10 focus-visible:ring-white/40"
-        >
-          <Phone aria-hidden="true" />
-          Call {business.phone}
-        </Button>
-      </div>
-    </div>
-  </section>
+  <CtaBand />
 </BaseLayout>

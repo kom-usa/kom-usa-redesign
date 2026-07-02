@@ -1,7 +1,5 @@
 ---
 import Phone from "@tabler/icons/outline/phone.svg";
-import MessageCircle from "@tabler/icons/outline/message-circle.svg";
-import Mail from "@tabler/icons/outline/mail.svg";
 import ClipboardCheck from "@tabler/icons/outline/clipboard-check.svg";
 import Headset from "@tabler/icons/outline/headset.svg";
 import X from "@tabler/icons/outline/x.svg";
@@ -11,12 +9,11 @@ import { business } from "../../data/business";
 /**
  * Desktop-only floating contact launcher (mobile uses MobileStickyBar).
  * Plain links only — no fake live-chat UI.
+ * Primary action is a phone call; secondary is the /contact request form.
  */
 const options = [
-  { label: "Call us", detail: business.phone, href: business.phoneHref, icon: Phone },
-  { label: "Text us", detail: business.phone, href: business.smsHref, icon: MessageCircle },
-  { label: "Email us", detail: business.email, href: business.emailHref, icon: Mail },
-  { label: "Request service", detail: "Use the request form", href: "/contact", icon: ClipboardCheck },
+  { label: "Call", detail: business.phone, href: business.phoneHref, icon: Phone },
+  { label: "Request a Call", detail: "Use the contact form", href: "/contact", icon: ClipboardCheck },
 ];
 ---
 
@@ -29,7 +26,7 @@ const options = [
   >
     <div class="bg-kom-field-deep px-4 py-4 text-white">
       <p class="text-sm font-black">Contact KOM</p>
-      <p class="mt-1 text-xs text-white/70">Call, text, email, or request service.</p>
+      <p class="mt-1 text-xs text-white/70">Call now or request a call back.</p>
     </div>
     <ul class="divide-y divide-kom-charcoal/10">
       {

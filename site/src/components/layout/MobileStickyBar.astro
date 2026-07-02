@@ -1,6 +1,5 @@
 ---
 import Phone from "@tabler/icons/outline/phone.svg";
-import MessageCircle from "@tabler/icons/outline/message-circle.svg";
 import ClipboardCheck from "@tabler/icons/outline/clipboard-check.svg";
 
 import { business } from "../../data/business";
@@ -19,18 +18,11 @@ import { business } from "../../data/business";
       Call
     </a>
     <a
-      href={business.smsHref}
-      class="border-kom-field text-kom-field flex h-12 flex-1 items-center justify-center gap-1.5 rounded-md border bg-white text-sm font-bold transition-colors hover:bg-kom-sage-tint focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-    >
-      <MessageCircle class="size-4.5" aria-hidden="true" />
-      Text
-    </a>
-    <a
       href="/contact"
       class="bg-kom-ink hover:bg-kom-ink/90 focus-visible:ring-outline/50 flex h-12 flex-[1.4] items-center justify-center gap-1.5 rounded-md text-sm font-bold text-white transition-colors focus-visible:ring-3 focus-visible:outline-none"
     >
       <ClipboardCheck class="size-4.5" aria-hidden="true" />
-      Request service
+      Request a Call
     </a>
   </div>
 </div>
