@@ -1,0 +1,74 @@
+---
+import Button from "../starwind/button/Button.astro";
+import Input from "../starwind/input/Input.astro";
+import Label from "../starwind/label/Label.astro";
+import { business, serviceOptions } from "../../data/business";
+
+interface Props {
+  preselectService?: string;
+  headline?: string;
+}
+
+const { preselectService, headline = "Let us call you" } = Astro.props;
+
+const selectClass =
+  "border-input focus-visible:outline-outline flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1";
+---
+
+<div id="lead-form" class="border-border scroll-mt-24 rounded-xl border bg-white p-6 shadow-card-hover sm:p-8">
+  <h2 class="text-kom-field text-2xl font-black">{headline}</h2>
+  <p class="text-muted-foreground mt-1 text-sm">
+    Share a few details and a real person calls you back — usually the same day.
+  </p>
+
+  <form name="request-call" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="mt-5">
+    <input type="hidden" name="form-name" value="request-call" />
+    <input type="hidden" name="subject" value="New call request — kom.construction" />
+    <input type="hidden" id="offer-field" name="offer" value="" />
+    <p class="hidden" aria-hidden="true">
+      <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+    </p>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="space-y-1.5">
+        <Label for="lead-name">First name <span class="text-error">*</span></Label>
+        <Input type="text" id="lead-name" name="first-name" required autocomplete="given-name" placeholder="e.g. Sam" />
+      </div>
+      <div class="space-y-1.5">
+        <Label for="lead-phone">Phone <span class="text-error">*</span></Label>
+        <Input type="tel" id="lead-phone" name="phone" required autocomplete="tel" placeholder="(555) 555-5555" />
+      </div>
+      <div class="space-y-1.5">
+        <Label for="lead-email">Email <span class="text-error">*</span></Label>
+        <Input type="email" id="lead-email" name="email" required autocomplete="email" />
+      </div>
+      <div class="space-y-1.5">
+        <Label for="lead-city">City or ZIP <span class="text-error">*</span></Label>
+        <Input type="text" id="lead-city" name="city" required autocomplete="postal-code" placeholder="e.g. Warren or 48088" />
+      </div>
+      <div class="space-y-1.5">
+        <Label for="lead-service">What do you need? <span class="text-error">*</span></Label>
+        <select id="lead-service" name="service" required class={selectClass}>
+          <option value="" disabled selected={!preselectService}>Choose a service</option>
+          {serviceOptions.map((option) => (
+            <option value={option} selected={option === preselectService}>{option}</option>
+          ))}
+        </select>
+      </div>
+      <div class="space-y-1.5">
+        <Label for="lead-note">Anything else? <span class="text-muted-foreground font-normal">(optional)</span></Label>
+        <Input type="text" id="lead-note" name="note" placeholder="e.g. no hot water since Tuesday" />
+      </div>
+    </div>
+
+    <div class="mt-5 flex flex-col items-center gap-3 sm:flex-row">
+      <Button type="submit" variant="primary" size="lg" class="w-full font-extrabold sm:w-auto">
+        Request a Call
+      </Button>
+      <p class="text-muted-foreground text-xs">
+        We'll only use this to call you about your request. Locked out right now?
+        <a href={business.phoneHref} class="text-kom-field font-bold hover:underline">Call {business.phone}</a> — it's faster.
+      </p>
+    </div>
+  </form>
+</div>

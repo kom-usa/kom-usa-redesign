@@ -1,84 +1,69 @@
 ---
-import { getImage } from "astro:assets";
+import { Image } from "astro:assets";
+import StarFilled from "@tabler/icons/filled/star.svg";
 import Phone from "@tabler/icons/outline/phone.svg";
-import MapPin from "@tabler/icons/outline/map-pin.svg";
-import Key from "@tabler/icons/outline/key.svg";
-import BuildingCommunity from "@tabler/icons/outline/building-community.svg";
-import Clock from "@tabler/icons/outline/clock.svg";
 
 import Button from "../starwind/button/Button.astro";
-import { business } from "../../data/business";
-import bannerImage from "../../assets/images/construction-framing.jpg";
-
-/**
- * Full-bleed jobsite banner with a dark overlay and a big left-aligned
- * headline. Trust chips: "Licensed & insured" stays absent until the owner
- * confirms it's accurate.
- */
-const banner = await getImage({ src: bannerImage, width: 1920, format: "webp" });
-
-const chips = [
-  { label: "Metro Detroit local", icon: MapPin },
-  { label: "Upfront locksmith pricing", icon: Key, href: "/locksmith#pricing" },
-  { label: "Property-manager friendly", icon: BuildingCommunity },
-  { label: "Fast response", icon: Clock },
-];
+import LeadCallForm from "./LeadCallForm.astro";
+import { business, googleReviews } from "../../data/business";
+import homeExterior from "../../assets/images/home-exterior.jpg";
 ---
 
-<section
-  class="relative bg-kom-ink bg-cover bg-center"
-  style={`background-image: url('${banner.src}')`}
->
-  <div class="absolute inset-0 bg-kom-ink/70" aria-hidden="true"></div>
-  <div class="relative mx-auto max-w-6xl px-4 pt-20 pb-24 sm:px-6 lg:pt-28 lg:pb-32">
-    <div class="reveal max-w-3xl">
-      <p class="text-kom-sage text-sm font-bold tracking-[0.18em] uppercase">
-        One local crew · Metro Detroit
-      </p>
-      <h1 class="mt-4 text-4xl font-black text-balance text-white sm:text-5xl lg:text-[64px] lg:leading-[1.06] lg:tracking-tight">
-        Construction, maintenance, locksmith, and turnover help across Metro Detroit.
-      </h1>
-      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl">
-        One local crew for homeowners, landlords, and property managers across Wayne, Oakland,
-        and Macomb counties.
-      </p>
+<section class="relative">
+  <div class="relative isolate overflow-hidden bg-kom-ink pb-40 lg:pb-48">
+    <Image
+      src={homeExterior}
+      alt=""
+      class="absolute inset-0 -z-10 h-full w-full object-cover"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      loading="eager"
+    />
+    <div class="absolute inset-0 -z-10 bg-gradient-to-r from-kom-ink/90 via-kom-ink/70 to-kom-ink/30" aria-hidden="true"></div>
 
-      <div class="mt-8 flex flex-wrap items-center gap-3">
-        <Button href="/#request-service" variant="primary" size="lg" class="font-bold">
-          Request service
-        </Button>
-        <Button
-          href={business.phoneHref}
-          size="lg"
-          class="border-2 border-white/70 bg-transparent font-bold text-white hover:bg-white/10 focus-visible:ring-white/40"
-        >
-          <Phone aria-hidden="true" />
-          Call now
-        </Button>
+    <div class="mx-auto max-w-7xl px-4 pt-16 pb-10 sm:px-6 lg:pt-24">
+      <div class="reveal max-w-2xl">
+        <p class="text-kom-tan text-sm font-extrabold tracking-wider uppercase">
+          Home services in {business.serviceArea}, MI
+        </p>
+        <h1 class="mt-3 text-4xl leading-[1.05] font-black tracking-tight text-white text-balance sm:text-5xl lg:text-6xl">
+          A friendly local crew for locks, water heaters & chimneys
+        </h1>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-white/85">
+          We're a small, locally owned Metro Detroit team. Tell us what you need,
+          we'll call you back, talk it through, and take care of it — with our
+          standard prices published right on this site.
+        </p>
+
+        <div class="mt-7 flex flex-wrap items-center gap-5">
+          <a
+            href={googleReviews.url}
+            target="_blank"
+            rel="noopener"
+            class="flex items-center gap-3 rounded-lg bg-white/10 px-4 py-2.5 backdrop-blur-sm transition-colors hover:bg-white/20 focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none"
+          >
+            <span class="text-3xl font-black text-white">{googleReviews.rating}</span>
+            <span>
+              <span class="flex text-kom-brass" aria-hidden="true">
+                {Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}
+              </span>
+              <span class="block text-xs font-bold text-white/85">
+                {googleReviews.count} Google reviews
+              </span>
+            </span>
+          </a>
+          <Button href={business.phoneHref} variant="outline" size="lg" class="border-white/50 font-extrabold text-white hover:bg-white/10">
+            <Phone aria-hidden="true" />
+            {business.phone}
+          </Button>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <ul class="mt-10 flex flex-wrap gap-2.5">
-        {
-          chips.map((chip) => {
-            const Tag = chip.href ? "a" : "span";
-            return (
-              <li class="contents">
-                <Tag
-                  href={chip.href}
-                  class:list={[
-                    "flex items-center gap-1.5 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 text-xs font-bold text-white",
-                    chip.href &&
-                      "transition-colors hover:border-kom-sage hover:text-kom-sage focus-visible:ring-3 focus-visible:ring-white/40 focus-visible:outline-none",
-                  ]}
-                >
-                  <chip.icon class="text-kom-sage size-3.5" aria-hidden="true" />
-                  {chip.label}
-                </Tag>
-              </li>
-            );
-          })
-        }
-      </ul>
+  <div class="mx-auto -mt-32 max-w-6xl px-4 sm:px-6 lg:-mt-36">
+    <div class="reveal" style="--rd: 120ms">
+      <LeadCallForm />
     </div>
   </div>
 </section>
