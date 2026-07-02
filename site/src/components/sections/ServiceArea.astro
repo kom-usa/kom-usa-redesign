@@ -4,38 +4,47 @@ import MapPin from "@tabler/icons/outline/map-pin.svg";
 import SectionHeader from "../common/SectionHeader.astro";
 import Roofline from "../common/Roofline.astro";
 import { business, serviceAreaCities, serviceAreaCounties } from "../../data/business";
+
+const countiesSentence = serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ", and $1");
 ---
 
-<section id="service-area" class="section-pad scroll-mt-20 bg-white">
+<section id="service-area" class="section-pad scroll-mt-16">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
-      eyebrow="Service area"
-      title="Based in Metro Detroit. Working across it."
-      lead={`We serve homes, rentals, and portfolios throughout ${serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ", and $1")}.`}
+      title="Our Service Area"
+      lead={`Based in Metro Detroit and working across it — homes, rentals, and portfolios throughout ${countiesSentence}.`}
     />
 
-    <ul class="reveal mx-auto mt-10 flex max-w-3xl flex-wrap justify-center gap-2.5">
-      {
-        serviceAreaCities.map((city) => (
-          <li class="border-border text-kom-charcoal flex items-center gap-1.5 rounded-full border bg-kom-warm-white px-3.5 py-1.5 text-sm font-medium">
-            <MapPin class="text-kom-steel size-3.5" aria-hidden="true" />
-            {city}
-          </li>
-        ))
-      }
-      <li class="text-muted-foreground flex items-center px-2 py-1.5 text-sm font-medium">
-        …and surrounding Metro Detroit communities
-      </li>
-    </ul>
+    <div class="mt-12 grid items-stretch gap-6 lg:grid-cols-2">
+      <div class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-83.85%2C42.00%2C-82.60%2C42.90&layer=mapnik&marker=42.383%2C-83.102"
+          title="Map of the KOM USA service area across Metro Detroit"
+          class="h-full min-h-80 w-full border-0"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
 
-    <div class="reveal mt-10 flex flex-col items-center gap-3 text-center" style="--rd: 90ms">
-      <Roofline class="text-kom-sage" />
-      <p class="text-muted-foreground max-w-xl text-sm leading-relaxed">
-        Not sure if you're in our area? Call
-        <a href={business.phoneHref} class="text-primary font-bold hover:underline">{business.phone}</a>
-        — we'll tell you right away. Locksmith jobs over 25 miles from our location add a $50
-        distance fee.
-      </p>
+      <div class="reveal flex flex-col justify-center" style="--rd: 100ms">
+        <ul class="flex flex-wrap gap-2.5">
+          {
+            serviceAreaCities.map((city) => (
+              <li class="border-border text-kom-ink flex items-center gap-1.5 rounded-full border bg-white px-3.5 py-1.5 text-sm font-medium">
+                <MapPin class="text-kom-field size-3.5" aria-hidden="true" />
+                {city}
+              </li>
+            ))
+          }
+          <li class="text-muted-foreground flex items-center px-2 py-1.5 text-sm font-medium">
+            …and surrounding Metro Detroit communities
+          </li>
+        </ul>
+
+        <Roofline class="text-kom-tan mt-8" />
+        <p class="text-muted-foreground mt-4 max-w-xl text-sm leading-relaxed">
+          Not sure if you're in our area? Call <a href={business.phoneHref} class="text-kom-field font-bold hover:underline">{business.phone}</a> and we'll tell you right away. Locksmith jobs over 25 miles from our location add a $50 distance fee.
+        </p>
+      </div>
     </div>
   </div>
 </section>

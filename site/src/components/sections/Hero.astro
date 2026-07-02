@@ -1,61 +1,116 @@
 ---
 import { Image } from "astro:assets";
-import Phone from "@tabler/icons/outline/phone.svg";
-import MapPin from "@tabler/icons/outline/map-pin.svg";
 
 import Button from "../starwind/button/Button.astro";
-import Roofline from "../common/Roofline.astro";
-import { business } from "../../data/business";
-import heroImage from "../../assets/images/home-exterior.jpg";
+import { business, serviceOptions } from "../../data/business";
+
+import workerElectrical from "../../assets/images/worker-electrical.jpg";
+import paintingDrywall from "../../assets/images/painting-drywall.jpg";
+import workerPortrait from "../../assets/images/worker-portrait.jpg";
+import interiorRenovation from "../../assets/images/interior-renovation.jpg";
+
+/**
+ * Hero collage uses temporary stock photos (Unsplash) until real crew photos
+ * are available. The quick-quote form is a second Netlify form alongside the
+ * detailed "request-service" form lower on the page.
+ */
+const collage = [
+  { image: workerElectrical, alt: "Technician in a hard hat servicing an electrical box (stock photo)" },
+  { image: paintingDrywall, alt: "Roller applying fresh paint to an interior wall (stock photo)" },
+  { image: workerPortrait, alt: "Tradesman in a hard hat on a job site (stock photo)" },
+  { image: interiorRenovation, alt: "Contractor finishing a ceiling during a renovation (stock photo)" },
+];
+
+const propertyTypes = ["House", "Apartment / unit", "Rental property", "Commercial", "Other"];
+
+const inputClass =
+  "h-11 w-full rounded-md border-0 bg-white/95 px-3 text-base text-kom-charcoal placeholder:text-kom-charcoal/50 focus:bg-white focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-kom-field";
 ---
 
-<section class="section-pad">
-  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
-    <div class="reveal">
-      <p class="text-primary flex items-center gap-2 text-xs font-bold tracking-[0.18em] uppercase">
-        <MapPin class="size-4" aria-hidden="true" />
-        Serving all of Metro Detroit
-      </p>
-      <h1 class="text-kom-charcoal mt-4 text-4xl font-extrabold text-balance sm:text-5xl lg:text-[3.4rem] lg:leading-[1.08]">
-        One local crew for your home, rental, or property.
-      </h1>
-      <p class="text-muted-foreground mt-5 max-w-xl text-lg leading-relaxed sm:text-xl">
-        KOM USA handles construction and remodeling, property maintenance, locksmith service,
-        and chimney care — so you make one call instead of five.
-      </p>
-      <div class="mt-8 flex flex-wrap items-center gap-3">
-        <Button href={business.phoneHref} variant="primary" size="lg" class="font-bold">
-          <Phone aria-hidden="true" />
-          Call {business.phone}
-        </Button>
-        <Button href="#request-service" variant="outline" size="lg" class="font-bold">
-          Request service
-        </Button>
+<section class="pt-6 pb-14 sm:pt-8 md:pb-20">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="reveal grid overflow-hidden rounded-2xl shadow-card lg:grid-cols-[1.6fr_1fr]">
+      <div class="relative min-h-105">
+        <div class="absolute inset-0 grid grid-cols-2">
+          {
+            collage.map((tile) => (
+              <Image
+                src={tile.image}
+                alt={tile.alt}
+                class="h-full w-full object-cover"
+                widths={[480, 800]}
+                sizes="(min-width: 1024px) 30vw, 50vw"
+                loading="eager"
+                fetchpriority="high"
+              />
+            ))
+          }
+        </div>
+        <div class="absolute inset-0 bg-kom-ink/60"></div>
+        <div class="relative flex h-full flex-col items-center justify-center px-6 py-16 text-center sm:px-12">
+          <h1 class="font-serif max-w-xl text-3xl font-bold text-balance text-white sm:text-4xl lg:text-[2.6rem] lg:leading-[1.2]">
+            Your trusted partner for home and property maintenance. One call, total care.
+          </h1>
+          <Button href="#quick-quote" variant="primary" size="lg" class="mt-8 font-bold">
+            Get your free quote
+          </Button>
+          <p class="mt-5 text-sm font-medium text-white/80">
+            Construction · Maintenance · Locksmith · Chimney · Metro Detroit
+          </p>
+        </div>
       </div>
-      <p class="text-muted-foreground mt-5 text-sm">
-        Locked out? Call now — house and unit unlocks are <span class="text-kom-charcoal font-bold">$129</span> standard pricing.
-      </p>
-      <Roofline class="text-kom-sage mt-8" />
-    </div>
 
-    <figure class="reveal relative" style="--rd: 120ms">
-      <div class="border-border overflow-hidden rounded-xl border bg-white p-2 shadow-card">
-        <Image
-          src={heroImage}
-          alt="Two-story home with a peaked roof and wraparound porch on a green lawn"
-          class="h-full w-full rounded-lg object-cover"
-          widths={[480, 800, 1200]}
-          sizes="(min-width: 1024px) 45vw, 100vw"
-          loading="eager"
-          fetchpriority="high"
-        />
+      <div id="quick-quote" class="bg-kom-tan scroll-mt-24 px-6 py-8 sm:px-8">
+        <h2 class="font-serif text-2xl font-bold text-kom-ink">Get your free quote today</h2>
+        <form
+          name="quick-quote"
+          method="POST"
+          action="/thank-you"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="mt-5 space-y-3"
+        >
+          <input type="hidden" name="form-name" value="quick-quote" />
+          <input type="hidden" name="subject" value="New quick quote request — kom.construction" />
+          <p class="hidden" aria-hidden="true">
+            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+          </p>
+
+          <div>
+            <label for="qq-name" class="sr-only">Full name</label>
+            <input type="text" id="qq-name" name="name" required autocomplete="name" placeholder="Full name" class={inputClass} />
+          </div>
+          <div>
+            <label for="qq-phone" class="sr-only">Phone number</label>
+            <input type="tel" id="qq-phone" name="phone" required autocomplete="tel" placeholder="Phone number" class={inputClass} />
+          </div>
+          <div>
+            <label for="qq-email" class="sr-only">Email</label>
+            <input type="email" id="qq-email" name="email" required autocomplete="email" placeholder="Email" class={inputClass} />
+          </div>
+          <div>
+            <label for="qq-service" class="sr-only">Service needed</label>
+            <select id="qq-service" name="service" required class={inputClass}>
+              <option value="" disabled selected>Service needed</option>
+              {serviceOptions.map((option) => <option value={option}>{option}</option>)}
+            </select>
+          </div>
+          <div>
+            <label for="qq-property-type" class="sr-only">Property type</label>
+            <select id="qq-property-type" name="property-type" class={inputClass}>
+              <option value="" disabled selected>Property type</option>
+              {propertyTypes.map((option) => <option value={option}>{option}</option>)}
+            </select>
+          </div>
+
+          <Button type="submit" variant="primary" size="lg" class="w-full font-bold">
+            Request service
+          </Button>
+          <p class="text-center text-xs font-medium text-kom-ink/70">
+            No spam — we only use this to respond to your request.
+          </p>
+        </form>
       </div>
-      <figcaption
-        class="border-border absolute -bottom-4 left-4 rounded-lg border bg-white px-4 py-2.5 shadow-card sm:left-6"
-      >
-        <p class="text-kom-charcoal text-sm font-bold">Build · Fix · Maintain · Secure</p>
-        <p class="text-muted-foreground text-xs">One number: {business.phone}</p>
-      </figcaption>
-    </figure>
+    </div>
   </div>
 </section>

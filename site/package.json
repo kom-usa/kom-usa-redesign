@@ -14,6 +14,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/nunito-sans": "^5.2.7",
+    "@fontsource/playfair-display": "^5.2.8",
     "@tabler/icons": "^3.44.0",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.3.2",

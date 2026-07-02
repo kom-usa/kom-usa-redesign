@@ -85,8 +85,11 @@
   --kom-steel: #5e7480;
   --kom-brass: #c59a42;
   --kom-sage-tint: #eaf0e2;
+  --kom-cream: #f2ede1;
+  --kom-cream-deep: #eae3d2;
+  --kom-cream-border: #ddd4be;
 
-  --background: var(--kom-warm-white);
+  --background: var(--kom-cream);
   --foreground: var(--kom-charcoal);
   --card: var(--color-white);
   --card-foreground: var(--kom-charcoal);
@@ -98,8 +101,8 @@
   --secondary: var(--kom-charcoal);
   --secondary-foreground: var(--color-white);
   --secondary-accent: var(--color-white);
-  --muted: var(--kom-concrete);
-  --muted-foreground: var(--kom-steel);
+  --muted: var(--kom-cream-deep);
+  --muted-foreground: #6b6a5e;
   --accent: var(--kom-sage-tint);
   --accent-foreground: var(--kom-field);
   --info: var(--kom-steel);
@@ -110,10 +113,10 @@
   --warning-foreground: var(--color-amber-950);
   --error: var(--color-red-700);
   --error-foreground: var(--color-neutral-50);
-  --border: var(--kom-concrete);
-  --input: var(--kom-concrete);
+  --border: var(--kom-cream-border);
+  --input: var(--kom-cream-border);
   --outline: var(--kom-field);
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 
   /* sidebar variables */
   --sidebar-background: var(--color-neutral-50);

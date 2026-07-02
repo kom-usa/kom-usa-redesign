@@ -4,12 +4,14 @@
   --font-sans:
     "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
 
   /* KOM USA brand colors exposed as Tailwind utilities (bg-kom-sage, text-kom-steel, …) */
   --color-kom-sage: #78a866;
   --color-kom-field: #2f6b3b;
   --color-kom-field-hover: #275a32;
   --color-kom-field-press: #1f4928;
+  --color-kom-field-deep: #2b5b3b;
   --color-kom-charcoal: #33383e;
   --color-kom-charcoal-deep: #272b30;
   --color-kom-warm-white: #f7f7f2;
@@ -17,6 +19,14 @@
   --color-kom-steel: #5e7480;
   --color-kom-brass: #c59a42;
   --color-kom-sage-tint: #eaf0e2;
+
+  /* Editorial layer from the homepage mockup: cream page, tan quote panel,
+     warm ink for footer/testimonial cards */
+  --color-kom-cream: #f2ede1;
+  --color-kom-cream-deep: #eae3d2;
+  --color-kom-tan: #c9b183;
+  --color-kom-tan-light: #d9c596;
+  --color-kom-ink: #262520;
 
   --shadow-card: 0 2px 8px rgba(51, 56, 62, 0.08);
   --shadow-card-hover: 0 4px 14px rgba(51, 56, 62, 0.12);

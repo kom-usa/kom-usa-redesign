@@ -4,30 +4,23 @@ import SectionHeader from "../common/SectionHeader.astro";
 import { howItWorks } from "../../data/business";
 ---
 
-<section id="how-it-works" class="section-pad scroll-mt-20">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6">
-    <SectionHeader
-      eyebrow="How it works"
-      title="From first call to finished job."
-    />
+<section id="how-it-works" class="section-pad scroll-mt-16">
+  <div class="mx-auto max-w-5xl px-4 sm:px-6">
+    <SectionHeader title="How it works" />
 
-    <ol class="mt-12 grid gap-6 md:grid-cols-3">
+    <ol class="mt-12 grid gap-10 text-center sm:grid-cols-3">
       {
         howItWorks.map((step, index) => (
-          <li
-            class="reveal border-border relative rounded-lg border bg-white p-6 shadow-card"
-            style={`--rd: ${index * 90}ms`}
-          >
-            <div class="flex items-center gap-3">
-              <span class="bg-kom-sage-tint text-primary flex size-11 items-center justify-center rounded-lg">
-                <Icon name={step.icon} class="size-6" />
-              </span>
-              <span class="text-kom-concrete text-4xl font-extrabold" aria-hidden="true">
-                {index + 1}
-              </span>
-            </div>
-            <h3 class="text-kom-charcoal mt-4 text-lg font-bold">{step.title}</h3>
-            <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{step.description}</p>
+          <li class="reveal flex flex-col items-center" style={`--rd: ${index * 90}ms`}>
+            <span class="border-kom-ink/20 text-kom-ink flex size-16 items-center justify-center rounded-full border bg-white/60">
+              <Icon name={step.icon} class="size-7" />
+            </span>
+            <h3 class="text-kom-ink mt-4 text-base font-bold">
+              {index + 1}. {step.title}
+            </h3>
+            <p class="text-muted-foreground mt-2 max-w-60 text-sm leading-relaxed">
+              {step.description}
+            </p>
           </li>
         ))
       }

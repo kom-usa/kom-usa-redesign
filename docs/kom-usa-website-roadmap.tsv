@@ -1,0 +1,36 @@
+Topic	Task	Notes
+PHASE 1	Finalize homepage layout and design system	Lock the visual direction, spacing, buttons, forms, mobile sticky CTA, section order, and reusable Astro/Starwind patterns. Current site already has the main homepage sections, so this is polish and consistency work first.
+PHASE 1	Responsive, accessibility, and performance QA	Test desktop, tablet, and mobile. Check focus states, contrast, tap targets, form labels, image sizing, reduced-motion behavior, build output, and Core Web Vitals basics.
+PHASE 1	SEO foundation pass	Centralize page titles/descriptions, canonical URLs, sitemap, robots, Open Graph image, LocalBusiness schema, FAQ schema, service schema, and internal heading structure.
+PHASE 1	Conversion form and thank-you flow	Keep the current Netlify form as the simple launch path. Confirm submissions, spam protection, email notifications, thank-you page, and conversion tracking.
+PHASE 1	Trust and proof content	Add the strongest proof available: project photos, before/after images, reviews, insurance/licensing notes if verified, service guarantees, and property-manager/investor proof.
+PHASE 2	Wix content and URL audit	Inventory every Wix page, URL, service, form, image, review, and SEO title/description. Mark what to keep, rewrite, redirect, merge, or delete.
+PHASE 2	Build core migrated pages	Add About, Contact, Services overview, Locksmith, Construction & Remodeling, Property Maintenance, Chimney Care, and Property Management pages using the finalized layout system.
+PHASE 2	Build high-priority service landing pages	Create SEO pages for the most valuable services first, such as lock change, emergency lockout, bathroom remodel, kitchen remodel, unit turnover, water heater replacement, gutter cleaning, and snow removal.
+PHASE 2	Build service-area pages	Create Metro Detroit overview plus priority city pages only where content can be unique and useful. Start with highest-value cities rather than thin pages for every city.
+PHASE 2	Redirects and migration QA	Map old Wix URLs to new Astro URLs in Netlify redirects. Verify no broken links, missing images, duplicate titles, accidental noindex, or orphaned pages before launch.
+PHASE 3	Content operations and publishing workflow	Add Astro content collections for services, locations, FAQs, testimonials, projects/case studies, and resources so AI agents can add content without hard-coding every page.
+PHASE 3	Project gallery and case studies	Turn photos into structured project pages with service type, city, before/after notes, scope, outcome, and related CTA. This builds trust and SEO depth.
+PHASE 3	Resource and seasonal SEO content	Add helpful articles for seasonal and recurring needs: winter prep, lock change after tenant move-out, unit turnover checklist, chimney maintenance, gutter cleaning, and remodeling planning.
+PHASE 3	Analytics and lead tracking	Add Google Search Console, analytics, call/form conversion events, UTM tracking, and a simple lead review process so content decisions are based on real demand.
+PHASE 3	Internal agent workflow	Create small AI-agent tickets with acceptance criteria, build checks, screenshot QA, SEO checks, and a rule that business facts come from shared data files.
+PHASE 4	Estimate request wizard	Replace the basic form with a guided quote flow: service type, urgency, property type, city, photos, notes, preferred contact method, and optional property-manager fields.
+PHASE 4	Photo upload intake	Add low-cost file handling for estimate photos using a secure form endpoint, Netlify function, Cloudinary, or Supabase Storage. Do not email raw large attachments long-term.
+PHASE 4	Job cost estimator v1	Add a non-binding estimator for common work using ranges, disclaimers, and lead capture. Start with locksmith, maintenance, and small repair jobs before complex remodeling.
+PHASE 4	Membership landing page	Create membership tiers and benefit language before building accounts. Validate the offer with a simple page, FAQ, and inquiry or checkout CTA.
+PHASE 4	Simple online payments	Add Stripe Payment Links or Stripe Checkout for deposits, membership preorders, or fixed-price services. Keep it simple before building a full customer portal.
+PHASE 5	ServiceM8 integration discovery	Confirm the exact ServiceM8 account setup, API access, job fields, scheduling workflow, service categories, customer records, and whether private API key or OAuth is the right integration path.
+PHASE 5	ServiceM8 lead-to-job MVP	Use a server-side Netlify function to create or update customers and draft jobs in ServiceM8 from the website form. Keep credentials server-side only.
+PHASE 5	ServiceM8 scheduling MVP	Move from "request a time" to controlled scheduling windows. Start with staff-confirmed scheduling before exposing real availability or technician allocation.
+PHASE 5	ServiceM8 webhooks and status sync	Add webhook handling so website records can update when jobs, schedules, or statuses change in ServiceM8. Use this foundation before customer dashboards.
+PHASE 5	ServiceM8 attachments and job notes	Send uploaded photos and intake notes into the correct ServiceM8 job diary or attachment fields when supported by the chosen API path.
+PHASE 6	Customer account architecture	Choose the low-cost account stack after integration needs are clear. Good candidates are Supabase Auth/Postgres or another hosted auth/database service that works cleanly with Netlify.
+PHASE 6	Customer dashboard v1	Let customers sign in, view profile details, saved addresses, current requests, upcoming appointments, and completed job history mirrored from ServiceM8.
+PHASE 6	Membership purchase and account linking	Use Stripe subscriptions or checkout, then attach membership status to the customer account. Show plan, renewal, benefits, and support contact.
+PHASE 6	Service history and documents	Show completed services, invoices/quotes if available, job photos if approved, recommendations, and rebook buttons. Keep private data behind account auth.
+PHASE 6	Property manager portal	Add multi-property support for landlords and managers: saved properties, unit notes, recurring service requests, priority contact flow, and portfolio-level history.
+PHASE 7	Real-time booking and advanced scheduling	Expose bookable time slots only after ServiceM8 scheduling rules, buffers, technician capacity, emergency handling, and manual override workflow are stable.
+PHASE 7	Estimator v2 with rules and admin controls	Upgrade estimator to use configurable labor/material rules, distance fees, membership discounts, service exclusions, and admin-editable pricing.
+PHASE 7	Automated lifecycle messaging	Add confirmations, reminders, reschedules, post-job review requests, abandoned estimate follow-ups, membership renewal notices, and property-manager reports.
+PHASE 7	Admin reporting dashboard	Add lightweight dashboards for leads, bookings, conversion rate, popular services, city demand, membership revenue, and estimator-to-booking performance.
+PHASE 7	Advanced growth features	Add referral program, review capture, coupons, financing links, live chat, knowledge base, AI-assisted intake summaries, and recurring maintenance plan automation.

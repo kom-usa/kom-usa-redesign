@@ -192,7 +192,7 @@ export const howItWorks = [
     title: "Tell us what you need",
     description:
       "Call 313-804-0844 or send the request form. A couple of details — city, service, urgency — is all it takes.",
-    icon: "phone",
+    icon: "message-circle",
   },
   {
     title: "Get your quote and schedule",
@@ -204,7 +204,7 @@ export const howItWorks = [
     title: "We do the work",
     description:
       "Our crew shows up, does the job right, and leaves the property ready — whether it's one repair or a full turnover.",
-    icon: "circle-check",
+    icon: "hammer",
   },
 ];
 
