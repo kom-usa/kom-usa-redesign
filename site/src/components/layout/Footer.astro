@@ -2,21 +2,20 @@
 import Phone from "@tabler/icons/outline/phone.svg";
 import Mail from "@tabler/icons/outline/mail.svg";
 import MapPin from "@tabler/icons/outline/map-pin.svg";
+import Clock from "@tabler/icons/outline/clock.svg";
 
 import Roofline from "../common/Roofline.astro";
-import { business, serviceCategories } from "../../data/business";
+import { business, services, hours } from "../../data/business";
 import logoWhite from "../../assets/logos/kom-usa-logo-white.svg";
 
 const year = new Date().getFullYear();
 
 const quickLinks = [
   { label: "Home", href: "/" },
-  { label: "Services", href: "/#services" },
-  { label: "Locksmith pricing", href: "/locksmith#pricing" },
-  { label: "Property managers", href: "/#property-management" },
-  { label: "Service area", href: "/#service-area" },
   { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
   { label: "FAQ", href: "/#faq" },
+  { label: "Service area", href: "/#service-area" },
 ];
 
 const linkClass =
@@ -48,6 +47,10 @@ const linkClass =
             <MapPin class="size-4 text-kom-tan" aria-hidden="true" />
             Serving {business.serviceArea}, Michigan
           </li>
+          <li class="flex items-start gap-2.5 text-white/80">
+            <Clock class="mt-0.5 size-4 shrink-0 text-kom-tan" aria-hidden="true" />
+            <span>{hours.map((h) => `${h.days}: ${h.time}`).join(" · ")}</span>
+          </li>
         </ul>
       </div>
 
@@ -70,13 +73,10 @@ const linkClass =
         <h2 class="text-sm font-bold text-white">Services</h2>
         <ul class="mt-4 space-y-2.5 text-sm">
           {
-            serviceCategories.map((category) => (
+            services.map((service) => (
               <li>
-                <a
-                  href={category.id === "locksmith" ? "/locksmith" : `/#${category.id}`}
-                  class={linkClass}
-                >
-                  {category.title}
+                <a href={`/services/${service.slug}`} class={linkClass}>
+                  {service.title}
                 </a>
               </li>
             ))
@@ -85,16 +85,16 @@ const linkClass =
       </nav>
 
       <div>
-        <h2 class="text-sm font-bold text-white">Get your free quote</h2>
+        <h2 class="text-sm font-bold text-white">Request a call</h2>
         <p class="mt-4 text-sm leading-relaxed text-white/70">
-          One local crew for construction, maintenance, locksmith, and chimney care across Metro
-          Detroit.
+          Locksmith, water heaters, and chimney care for Metro Detroit homes — tell us what you
+          need and we'll call you back.
         </p>
         <a
-          href="/#request-service"
+          href="/contact"
           class="bg-kom-field hover:bg-kom-field-hover mt-5 inline-flex items-center justify-center rounded-md px-5 py-2.5 text-sm font-bold text-white transition-colors focus-visible:ring-3 focus-visible:ring-kom-tan/60 focus-visible:outline-none"
         >
-          Get your free quote
+          Request a Call
         </a>
       </div>
     </div>
@@ -106,7 +106,7 @@ const linkClass =
         <img src={logoWhite.src} alt="" class="h-8 w-auto opacity-80" width="57" height="42" />
         © {year} {business.name}. All rights reserved.
       </p>
-      <p>Locksmith standard pricing shown on this site — final pricing may vary by job.</p>
+      <p>Licensed & insured · Standard pricing shown on this site — we confirm your exact quote by phone.</p>
     </div>
   </div>
 </footer>
