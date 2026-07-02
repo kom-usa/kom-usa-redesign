@@ -2,7 +2,7 @@
 import Phone from "@tabler/icons/outline/phone.svg";
 import Mail from "@tabler/icons/outline/mail.svg";
 import MapPin from "@tabler/icons/outline/map-pin.svg";
-import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
+import Clock from "@tabler/icons/outline/clock.svg";
 
 import Button from "../starwind/button/Button.astro";
 import Input from "../starwind/input/Input.astro";
@@ -12,10 +12,10 @@ import SectionHeader from "../common/SectionHeader.astro";
 import { business, serviceOptions, urgencyOptions } from "../../data/business";
 
 /**
- * Netlify Forms: this is a plain HTML form on a static page, so Netlify's build
- * parser registers it automatically from `data-netlify`. Enable form detection
- * in the Netlify UI (Forms section) before launch. ServiceM8 booking replaces
- * or augments this in a later phase.
+ * Residential request form for the /contact page. Plain HTML form on a static
+ * page, so Netlify's build parser registers it automatically from
+ * `data-netlify`. Enable form detection in the Netlify UI (Forms section)
+ * before launch. ServiceM8 booking replaces or augments this in a later phase.
  */
 const selectClass =
   "border-input focus-visible:outline-outline flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1";
@@ -26,7 +26,7 @@ const selectClass =
     <SectionHeader
       eyebrow="Request service"
       title="Tell us what you need. We'll take it from there."
-      lead="Send a few details and we'll follow up with a quote and scheduling. Locked out right now? Skip the form and call."
+      lead="Send a few details and we'll call you back — usually the same business day — to talk it through and give you a quote."
     />
 
     <div class="mt-12 grid gap-8 lg:grid-cols-[1fr_1.6fr]">
@@ -66,6 +66,15 @@ const selectClass =
           <span>
             <span class="text-muted-foreground block text-xs font-bold tracking-wider uppercase">Service area</span>
             <span class="text-kom-charcoal block text-lg font-extrabold">{business.serviceArea}, MI</span>
+          </span>
+        </div>
+        <div class="border-border flex items-center gap-4 rounded-lg border bg-white p-5 shadow-card">
+          <span class="bg-kom-sage-tint text-primary flex size-12 shrink-0 items-center justify-center rounded-lg">
+            <Clock class="size-6" aria-hidden="true" />
+          </span>
+          <span>
+            <span class="text-muted-foreground block text-xs font-bold tracking-wider uppercase">Hours</span>
+            <span class="text-kom-charcoal block text-lg font-extrabold">{business.hoursShort}</span>
           </span>
         </div>
       </div>
@@ -120,6 +129,15 @@ const selectClass =
               {urgencyOptions.map((option) => <option value={option}>{option}</option>)}
             </select>
           </div>
+          <div class="space-y-1.5">
+            <Label for="preferred-time">Preferred contact time <span class="text-muted-foreground font-normal">(optional)</span></Label>
+            <select id="preferred-time" name="preferred-time" class={selectClass}>
+              <option value="" selected>No preference</option>
+              {["Morning (8–11)", "Midday (11–2)", "Afternoon (2–6)", "Any time"].map((option) => (
+                <option value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
           <div class="space-y-1.5 sm:col-span-2">
             <Label for="message">What's going on? <span class="text-muted-foreground font-normal">(optional)</span></Label>
             <Textarea
@@ -149,43 +167,6 @@ const selectClass =
             </div>
           </fieldset>
         </div>
-
-        <details class="border-border group mt-6 rounded-md border">
-          <summary
-            class="text-kom-charcoal flex cursor-pointer list-none items-center justify-between gap-2 rounded-md px-4 py-3 text-sm font-bold [&::-webkit-details-marker]:hidden"
-          >
-            Property manager, landlord, or investor? Add portfolio details
-            <ChevronDown class="size-4.5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" />
-          </summary>
-          <div class="grid gap-5 border-t px-4 py-5 sm:grid-cols-2">
-            <div class="space-y-1.5">
-              <Label for="company">Company name</Label>
-              <Input type="text" id="company" name="company" autocomplete="organization" />
-            </div>
-            <div class="space-y-1.5">
-              <Label for="unit-count">Number of properties / units</Label>
-              <Input type="text" id="unit-count" name="unit-count" inputmode="numeric" placeholder="e.g. 12 units" />
-            </div>
-            <fieldset class="sm:col-span-2">
-              <legend class="text-sm font-bold">What kind of service?</legend>
-              <div class="mt-2 flex flex-wrap gap-x-6 gap-y-2">
-                {
-                  ["One-time job", "Recurring service", "Not sure yet"].map((type) => (
-                    <label class="flex items-center gap-2 text-sm font-medium">
-                      <input
-                        type="radio"
-                        name="service-frequency"
-                        value={type}
-                        class="text-primary focus:ring-primary border-input size-4"
-                      />
-                      {type}
-                    </label>
-                  ))
-                }
-              </div>
-            </fieldset>
-          </div>
-        </details>
 
         <Button type="submit" variant="primary" size="lg" class="mt-6 w-full font-bold">
           Send request
