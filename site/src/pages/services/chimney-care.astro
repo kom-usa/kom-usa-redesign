@@ -1,0 +1,16 @@
+---
+import ServicePage from "../../layouts/ServicePage.astro";
+import { services } from "../../data/business";
+import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
+
+const service = services.find((s) => s.slug === "chimney-care")!;
+---
+
+<ServicePage
+  service={service}
+  heroImage={fireplaceChimney}
+  heroAlt="Brick fireplace and chimney in a Metro Detroit home"
+  metaTitle="Chimney Cleaning $299 & Caps | Metro Detroit | KOM USA"
+  metaDescription="Chimney cleaning $299 (up to 35 ft), caps $329, liner caps $289 — flat published pricing for Metro Detroit homes from KOM USA. Request a call today."
+  preselectService="Chimney care"
+/>

@@ -20,3 +20,6 @@
 #
 # (Rules above are commented out on purpose — uncomment and adjust once the
 # real Wix URL inventory is confirmed.)
+
+/locksmith            /services/locksmith        301
+/locksmith/           /services/locksmith        301

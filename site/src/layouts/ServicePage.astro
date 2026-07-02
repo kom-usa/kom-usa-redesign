@@ -1,0 +1,118 @@
+---
+import { Image } from "astro:assets";
+import Check from "@tabler/icons/outline/check.svg";
+import Phone from "@tabler/icons/outline/phone.svg";
+import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
+
+import BaseLayout from "./BaseLayout.astro";
+import Button from "../components/starwind/button/Button.astro";
+import LeadCallForm from "../components/sections/LeadCallForm.astro";
+import { business, type ServiceDef } from "../data/business";
+
+interface Props {
+  service: ServiceDef;
+  heroImage: ImageMetadata;
+  heroAlt: string;
+  metaTitle: string;
+  metaDescription: string;
+  preselectService: string;
+}
+
+const { service, heroImage, heroAlt, metaTitle, metaDescription, preselectService } = Astro.props;
+---
+
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <section class="bg-kom-cream">
+    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
+      <div class="reveal">
+        <p class="text-kom-field text-sm font-extrabold tracking-wider uppercase">
+          {business.serviceArea} · Residential
+        </p>
+        <h1 class="text-kom-charcoal-deep mt-3 text-4xl leading-[1.05] font-black tracking-tight text-balance sm:text-5xl">
+          {service.title}
+        </h1>
+        <p class="text-muted-foreground mt-5 max-w-xl text-lg leading-relaxed">{service.heroIntro}</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <Button href="#lead-form" variant="primary" size="lg" class="font-extrabold">Request a Call</Button>
+          <Button href={business.phoneHref} variant="outline" size="lg" class="border-kom-field/40 font-extrabold text-kom-field hover:bg-kom-sage-tint">
+            <Phone aria-hidden="true" />
+            {business.phone}
+          </Button>
+        </div>
+      </div>
+      <Image
+        src={heroImage}
+        alt={heroAlt}
+        class="reveal h-full min-h-72 w-full rounded-xl object-cover shadow-card-hover"
+        style="--rd: 120ms"
+        widths={[520, 760, 1000]}
+        sizes="(min-width: 1024px) 45vw, 100vw"
+        loading="eager"
+      />
+    </div>
+  </section>
+
+  <section class="section-pad bg-white">
+    <div class="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr]">
+      <div class="reveal">
+        <h2 class="text-kom-charcoal-deep text-2xl font-black sm:text-3xl">What we handle</h2>
+        <ul class="mt-6 space-y-3">
+          {service.includes.map((item) => (
+            <li class="flex items-start gap-3">
+              <span class="bg-kom-sage-tint text-kom-field mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full">
+                <Check class="size-4" aria-hidden="true" />
+              </span>
+              <span class="text-kom-charcoal font-medium">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="reveal" id="pricing" style="--rd: 90ms">
+        <h2 class="text-kom-charcoal-deep text-2xl font-black sm:text-3xl">Standard pricing</h2>
+        <div class="border-border mt-6 overflow-hidden rounded-xl border shadow-card">
+          <table class="w-full text-left text-sm">
+            <caption class="sr-only">{service.title} standard pricing</caption>
+            <tbody>
+              {service.pricing.map((item, index) => (
+                <tr class={index % 2 === 0 ? "bg-white" : "bg-kom-cream/60"}>
+                  <th scope="row" class="px-4 py-3.5 font-bold text-kom-charcoal">
+                    {item.service}
+                    {item.detail && <span class="text-muted-foreground block text-xs font-medium">{item.detail}</span>}
+                  </th>
+                  <td class="text-kom-field px-4 py-3.5 text-right font-black whitespace-nowrap">{item.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <ul class="text-muted-foreground mt-4 space-y-1.5 text-xs leading-relaxed">
+          {service.pricingNotes.map((note) => <li>{note}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-warm-white">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6">
+      <h2 class="text-kom-charcoal-deep text-center text-2xl font-black sm:text-3xl">Common questions</h2>
+      <div class="mt-8 space-y-3">
+        {service.faqs.map((faq) => (
+          <details class="reveal border-border group rounded-lg border bg-white shadow-card">
+            <summary class="text-kom-charcoal flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-bold [&::-webkit-details-marker]:hidden">
+              {faq.question}
+              <ChevronDown class="size-5 shrink-0 transition-transform group-open:rotate-180" aria-hidden="true" />
+            </summary>
+            <p class="text-muted-foreground border-t px-5 py-4 text-sm leading-relaxed">{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <LeadCallForm preselectService={preselectService} headline={`Get your ${service.shortTitle.toLowerCase()} quote`} />
+    </div>
+  </section>
+</BaseLayout>
