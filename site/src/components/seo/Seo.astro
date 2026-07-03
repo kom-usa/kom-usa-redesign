@@ -117,13 +117,13 @@ if (includeBusinessGraph) {
         "@type": "OfferCatalog",
         name: "KOM USA services — standard pricing",
         itemListElement: serviceStories.flatMap((s) =>
-          ((s.content.pricing ?? []) as { service: string; detail?: string; price: string }[])
+          ((s.content.pricing ?? []) as { name: string; detail?: string; price: string }[])
             .filter((item) => /^\$[\d,]+$/.test(item.price) || item.price.startsWith("from "))
             .map((item) => {
               const isFlat = /^\$[\d,]+$/.test(item.price);
               return {
                 "@type": "Offer",
-                itemOffered: { "@type": "Service", name: `${s.content.title} — ${item.service}` },
+                itemOffered: { "@type": "Service", name: `${s.content.title} — ${item.name}` },
                 priceSpecification: isFlat
                   ? {
                       "@type": "PriceSpecification",

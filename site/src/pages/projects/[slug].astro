@@ -52,7 +52,7 @@ const ogImage: string | undefined = content.seo_image?.filename ?? heroPhoto?.fi
       {heroPhoto?.filename && (
         <img
           src={heroPhoto.filename}
-          alt={content.title}
+          alt={heroPhoto.alt || content.title}
           class="reveal mt-8 w-full rounded-xl object-cover shadow-card"
           style="--rd: 120ms"
           loading="eager"
@@ -64,7 +64,7 @@ const ogImage: string | undefined = content.seo_image?.filename ?? heroPhoto?.fi
           {otherPhotos.map((photo) => (
             <img
               src={photo.filename}
-              alt={content.title}
+              alt={photo.alt || content.title}
               class="h-40 w-full rounded-lg object-cover shadow-card"
               loading="lazy"
             />

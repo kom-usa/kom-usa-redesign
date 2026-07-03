@@ -6,6 +6,18 @@ import ServicePage from "../../layouts/ServicePage.astro";
 
 export async function getStaticPaths() {
   const stories = await getStories("service");
+
+  const requiredSlugs = ["locksmith", "water-heaters", "chimney-care"];
+  const foundSlugs = new Set(stories.map((story) => story.slug));
+  const missingSlugs = requiredSlugs.filter((slug) => !foundSlugs.has(slug));
+  if (missingSlugs.length > 0) {
+    throw new Error(
+      `Service ${missingSlugs.length > 1 ? "stories" : "story"} ${missingSlugs
+        .map((slug) => `'${slug}'`)
+        .join(", ")} ${missingSlugs.length > 1 ? "are" : "is"} missing or unpublished in Storyblok — the site will not build without ${missingSlugs.length > 1 ? "them" : "it"}. Restore the ${missingSlugs.length > 1 ? "stories" : "story"} (or ${missingSlugs.length > 1 ? "their slugs" : "its slug"}) at app.storyblok.com.`,
+    );
+  }
+
   return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
 }
 

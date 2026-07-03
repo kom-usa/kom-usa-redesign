@@ -1,10 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SectionHeader from "../../components/common/SectionHeader.astro";
-import { getStories } from "../../lib/storyblok";
+import { getStories, storyDate } from "../../lib/storyblok";
 
 const stories = await getStories("project");
-stories.sort((a, b) => (b.content.date ?? b.first_published_at ?? "").localeCompare(a.content.date ?? a.first_published_at ?? ""));
+stories.sort((a, b) => storyDate(b).getTime() - storyDate(a).getTime());
 
 const serviceChipLabels: Record<string, string> = {
   locksmith: "Locksmith",

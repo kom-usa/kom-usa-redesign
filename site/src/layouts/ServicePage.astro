@@ -35,9 +35,9 @@ const metaTitle = content.seo_title || `${content.title} | KOM USA`;
 const metaDescription = content.seo_description;
 
 const includesList: string[] = (content.includes ?? []).map((item: any) => item.text);
-const pricingRows: { service: string; detail?: string; price: string }[] = (content.pricing ?? []).map(
+const pricingRows: { name: string; detail?: string; price: string }[] = (content.pricing ?? []).map(
   (row: any) => ({
-    service: row.service,
+    name: row.name,
     detail: row.detail,
     price: row.price,
   }),
@@ -120,7 +120,7 @@ const pricingNotes: string[] = [
               {pricingRows.map((item, index) => (
                 <tr class={index % 2 === 0 ? "bg-white" : "bg-kom-cream/60"}>
                   <th scope="row" class="px-4 py-3.5 font-bold text-kom-charcoal">
-                    {item.service}
+                    {item.name}
                     {item.detail && <span class="text-muted-foreground block text-xs font-medium">{item.detail}</span>}
                   </th>
                   <td class="text-kom-field px-4 py-3.5 text-right font-black whitespace-nowrap">{item.price}</td>

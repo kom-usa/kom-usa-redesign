@@ -10,7 +10,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     return next();
   }
 
-  const { request, cookies, url } = context;
+  const { cookies, url } = context;
   const previewKey = import.meta.env.PREVIEW_ACCESS_KEY;
 
   const hasStoryblokParam = url.searchParams.has("_storyblok");
@@ -31,7 +31,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   if (paramValid) {
     response.headers.append(
       "Set-Cookie",
-      `kom_preview=${previewKey}; Path=/; HttpOnly`,
+      `kom_preview=${previewKey}; Path=/; HttpOnly; Secure; SameSite=Lax`,
     );
   }
 
