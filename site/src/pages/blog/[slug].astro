@@ -1,0 +1,60 @@
+---
+import { renderRichText } from "@storyblok/astro";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getStories } from "../../lib/storyblok";
+
+export async function getStaticPaths() {
+  const stories = await getStories("article");
+  return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
+}
+
+const { story } = Astro.props;
+const { content } = story;
+
+const categoryLabels: Record<string, string> = {
+  blog: "Blog post",
+  update: "Company update",
+};
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
+const formattedDate = dateFormatter.format(new Date(content.date.replace(" ", "T")));
+
+const metaTitle = content.seo_title || `${content.title} | KOM USA Blog`;
+const metaDescription = content.seo_description || content.excerpt;
+const ogImage: string | undefined = content.seo_image?.filename ?? content.cover_image?.filename;
+
+const bodyHtml = renderRichText(content.body);
+---
+
+<BaseLayout title={metaTitle} description={metaDescription} ogImage={ogImage}>
+  <article class="section-pad">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6">
+      <p class="reveal flex items-center gap-3">
+        <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
+          {categoryLabels[content.category] ?? "Blog post"}
+        </span>
+        <span class="text-muted-foreground text-xs font-medium">{formattedDate}</span>
+      </p>
+      <h1 class="reveal text-kom-charcoal-deep mt-4 text-4xl leading-[1.05] font-black tracking-tight text-balance sm:text-5xl" style="--rd: 60ms">
+        {content.title}
+      </h1>
+
+      {content.cover_image?.filename && (
+        <img
+          src={content.cover_image.filename}
+          alt={content.cover_image?.alt || content.title}
+          class="reveal mt-8 w-full rounded-xl object-cover shadow-card"
+          style="--rd: 120ms"
+          loading="eager"
+        />
+      )}
+
+      <div
+        class="reveal article-body text-kom-charcoal mt-8 max-w-none leading-relaxed [&_a]:text-kom-field [&_a]:font-bold [&_a]:hover:underline [&_h2]:text-kom-charcoal-deep [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:text-2xl [&_h2]:font-black [&_h3]:text-kom-charcoal-deep [&_h3]:mt-6 [&_h3]:mb-2 [&_h3]:text-xl [&_h3]:font-black [&_p]:mt-4 [&_p]:leading-relaxed [&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:mt-1.5 [&_blockquote]:border-kom-field [&_blockquote]:text-muted-foreground [&_blockquote]:mt-4 [&_blockquote]:border-l-4 [&_blockquote]:pl-4 [&_blockquote]:italic"
+        style="--rd: 150ms"
+        set:html={bodyHtml}
+      />
+    </div>
+  </article>
+</BaseLayout>

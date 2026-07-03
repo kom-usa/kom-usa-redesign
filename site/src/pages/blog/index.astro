@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeader from "../../components/common/SectionHeader.astro";
+import { getStories } from "../../lib/storyblok";
+
+const stories = await getStories("article");
+stories.sort((a, b) => (a.content.date < b.content.date ? 1 : a.content.date > b.content.date ? -1 : 0));
+
+const categoryLabels: Record<string, string> = {
+  blog: "Blog post",
+  update: "Company update",
+};
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
+function formatDate(date: string) {
+  return dateFormatter.format(new Date(date.replace(" ", "T")));
+}
+---
+
+<BaseLayout
+  title="Blog & Updates | KOM USA"
+  description="News, tips, and updates from the KOM USA crew — locksmith, water heater, and chimney care for Metro Detroit homes."
+>
+  <section class="section-pad">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <SectionHeader
+        eyebrow="From the crew"
+        title="Blog & Updates"
+        lead="News, tips, and the occasional behind-the-scenes look at KOM USA."
+      />
+
+      {
+        stories.length === 0 ? (
+          <p class="reveal text-muted-foreground mt-12 text-center text-lg">No posts yet — check back soon.</p>
+        ) : (
+          <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {stories.map((story, index) => (
+              <a
+                href={`/blog/${story.slug}`}
+                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                style={`--rd: ${index * 90}ms`}
+              >
+                {story.content.cover_image?.filename && (
+                  <img
+                    src={story.content.cover_image.filename}
+                    alt={story.content.cover_image?.alt || story.content.title}
+                    class="h-48 w-full object-cover"
+                    loading="lazy"
+                  />
+                )}
+                <span class="flex flex-1 flex-col p-6">
+                  <span class="flex items-center gap-3">
+                    <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
+                      {categoryLabels[story.content.category] ?? "Blog post"}
+                    </span>
+                    <span class="text-muted-foreground text-xs font-medium">{formatDate(story.content.date)}</span>
+                  </span>
+                  <span class="text-kom-charcoal-deep group-hover:text-kom-field mt-3 text-xl font-black transition-colors">
+                    {story.content.title}
+                  </span>
+                  {story.content.excerpt && (
+                    <span class="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">{story.content.excerpt}</span>
+                  )}
+                </span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
