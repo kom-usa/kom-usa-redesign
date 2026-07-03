@@ -1,7 +1,6 @@
 ---
 import {
   business,
-  faqs,
   googleReviews,
   serviceAreaCities,
 } from "../../data/business";
@@ -40,6 +39,13 @@ const ids = {
 };
 
 const serviceStories = includeBusinessGraph ? await getStories("service", { sort_by: "created_at:asc" }) : [];
+const faqStories = includeBusinessGraph ? await getStories("faq", { sort_by: "position:asc" }) : [];
+const faqs = faqStories
+  .filter((story) => story.content.placement === "homepage")
+  .map((story) => ({
+    question: story.content.question as string,
+    answer: story.content.answer as string,
+  }));
 
 const graph: Record<string, unknown>[] = [
   {

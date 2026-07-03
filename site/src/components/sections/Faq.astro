@@ -4,26 +4,36 @@ import AccordionItem from "../starwind/accordion/AccordionItem.astro";
 import AccordionTrigger from "../starwind/accordion/AccordionTrigger.astro";
 import AccordionContent from "../starwind/accordion/AccordionContent.astro";
 import SectionHeader from "../common/SectionHeader.astro";
-import { faqs } from "../../data/business";
+import { getStories } from "../../lib/storyblok";
+
+const faqStories = await getStories("faq", { sort_by: "position:asc" });
+const faqs = faqStories
+  .filter((story) => story.content.placement === "homepage")
+  .map((story) => ({
+    question: story.content.question as string,
+    answer: story.content.answer as string,
+  }));
 ---
 
-<section id="faq" class="section-pad scroll-mt-16 border-t">
-  <div class="mx-auto max-w-3xl px-4 sm:px-6">
-    <SectionHeader eyebrow="FAQ" title="Common questions, straight answers." />
+{
+  faqs.length > 0 && (
+    <section id="faq" class="section-pad scroll-mt-16 border-t">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6">
+        <SectionHeader eyebrow="FAQ" title="Common questions, straight answers." />
 
-    <Accordion type="single" class="reveal mt-10">
-      {
-        faqs.map((faq, index) => (
-          <AccordionItem value={`faq-${index}`}>
-            <AccordionTrigger class="text-left text-base font-bold">
-              {faq.question}
-            </AccordionTrigger>
-            <AccordionContent>
-              <p class="text-muted-foreground leading-relaxed">{faq.answer}</p>
-            </AccordionContent>
-          </AccordionItem>
-        ))
-      }
-    </Accordion>
-  </div>
-</section>
+        <Accordion type="single" class="reveal mt-10">
+          {faqs.map((faq, index) => (
+            <AccordionItem value={`faq-${index}`}>
+              <AccordionTrigger class="text-left text-base font-bold">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent>
+                <p class="text-muted-foreground leading-relaxed">{faq.answer}</p>
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
+  )
+}

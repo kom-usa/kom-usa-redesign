@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 
 import SectionHeader from "../common/SectionHeader.astro";
+import { getStories, storyDate } from "../../lib/storyblok";
 
 import homeExterior from "../../assets/images/home-exterior.jpg";
 import doorLock from "../../assets/images/door-lock.jpg";
@@ -11,10 +12,10 @@ import basementInterior from "../../assets/images/basement-interior.jpg";
 import interiorRenovation from "../../assets/images/interior-renovation.jpg";
 
 /**
- * Placeholder photos (see src/assets/images) — swap for real KOM USA job
- * photos as they're documented.
+ * Placeholder photos (see src/assets/images) — used as a fallback until at
+ * least 3 projects are published in Storyblok.
  */
-const photos: { image: ImageMetadata; alt: string }[] = [
+const stockPhotos: { image: ImageMetadata; alt: string }[] = [
   { image: homeExterior, alt: "Sample photo — well-kept Metro Detroit home exterior" },
   { image: doorLock, alt: "Sample photo — smart lock on a residential door" },
   { image: fireplaceChimney, alt: "Sample photo — fireplace and chimney" },
@@ -22,33 +23,76 @@ const photos: { image: ImageMetadata; alt: string }[] = [
   { image: basementInterior, alt: "Sample photo — clean, finished basement interior" },
   { image: interiorRenovation, alt: "Sample photo — interior in progress during a home project" },
 ];
+
+const projectStories = await getStories("project");
+const usesProjects = projectStories.length >= 3;
+
+const projectPhotos = usesProjects
+  ? [...projectStories]
+      .sort((a, b) => storyDate(b).getTime() - storyDate(a).getTime())
+      .slice(0, 6)
+      .map((story) => {
+        const firstPhoto = (story.content.photos ?? [])[0] as { filename: string } | undefined;
+        return {
+          src: firstPhoto?.filename,
+          title: story.content.title as string,
+          slug: story.slug,
+        };
+      })
+      .filter((p) => p.src)
+  : [];
 ---
 
 <section id="gallery" class="section-pad scroll-mt-16 bg-kom-cream">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
       title="A look at the work"
-      lead="Sample photos of the kinds of homes we work in across Metro Detroit."
+      lead={
+        usesProjects
+          ? "Recent projects from homes we've worked in across Metro Detroit."
+          : "Sample photos of the kinds of homes we work in across Metro Detroit."
+      }
     />
 
-    <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        photos.map((photo, index) => (
-          <li
-            class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card"
-            style={`--rd: ${(index % 3) * 70}ms`}
-          >
-            <Image
-              src={photo.image}
-              alt={photo.alt}
-              class="aspect-[4/3] w-full object-cover"
-              widths={[400, 600, 800]}
-              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              loading="lazy"
-            />
-          </li>
-        ))
-      }
-    </ul>
+    {
+      usesProjects ? (
+        <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {projectPhotos.map((photo, index) => (
+            <li
+              class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card"
+              style={`--rd: ${(index % 3) * 70}ms`}
+            >
+              <a href={`/projects/${photo.slug}`} class="block">
+                <img
+                  src={photo.src}
+                  alt={photo.title}
+                  class="aspect-[4/3] w-full object-cover"
+                  loading="lazy"
+                />
+                <span class="sr-only">{photo.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {stockPhotos.map((photo, index) => (
+            <li
+              class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card"
+              style={`--rd: ${(index % 3) * 70}ms`}
+            >
+              <Image
+                src={photo.image}
+                alt={photo.alt}
+                class="aspect-[4/3] w-full object-cover"
+                widths={[400, 600, 800]}
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                loading="lazy"
+              />
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </div>
 </section>
