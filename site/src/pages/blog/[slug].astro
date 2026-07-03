@@ -2,7 +2,7 @@
 import { renderRichText } from "@storyblok/astro";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getStories } from "../../lib/storyblok";
+import { getStories, storyDate } from "../../lib/storyblok";
 
 export async function getStaticPaths() {
   const stories = await getStories("article");
@@ -18,7 +18,7 @@ const categoryLabels: Record<string, string> = {
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
-const formattedDate = dateFormatter.format(new Date(content.date.replace(" ", "T")));
+const formattedDate = dateFormatter.format(storyDate(story));
 
 const metaTitle = content.seo_title || `${content.title} | KOM USA Blog`;
 const metaDescription = content.seo_description || content.excerpt;

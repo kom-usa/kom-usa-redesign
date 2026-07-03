@@ -37,3 +37,11 @@ export async function serviceNav() {
     shortTitle: s.content.short_title as string,
   }));
 }
+
+/** Article display date: editor-set content.date, falling back to Storyblok's
+ *  publish timestamp so a blank date can never crash a build. */
+export function storyDate(story: ISbStoryData): Date {
+  const raw = (story.content as any).date as string | undefined;
+  if (raw && raw.trim()) return new Date(raw.replace(" ", "T"));
+  return new Date(story.first_published_at ?? story.published_at ?? story.created_at);
+}

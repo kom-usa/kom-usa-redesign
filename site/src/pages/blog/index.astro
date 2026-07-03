@@ -1,10 +1,10 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import SectionHeader from "../../components/common/SectionHeader.astro";
-import { getStories } from "../../lib/storyblok";
+import { getStories, storyDate } from "../../lib/storyblok";
 
 const stories = await getStories("article");
-stories.sort((a, b) => (a.content.date < b.content.date ? 1 : a.content.date > b.content.date ? -1 : 0));
+stories.sort((a, b) => storyDate(b).getTime() - storyDate(a).getTime());
 
 const categoryLabels: Record<string, string> = {
   blog: "Blog post",
@@ -12,8 +12,8 @@ const categoryLabels: Record<string, string> = {
 };
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", { dateStyle: "long" });
-function formatDate(date: string) {
-  return dateFormatter.format(new Date(date.replace(" ", "T")));
+function formatDate(story: any) {
+  return dateFormatter.format(storyDate(story));
 }
 ---
 
@@ -53,7 +53,7 @@ function formatDate(date: string) {
                     <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
                       {categoryLabels[story.content.category] ?? "Blog post"}
                     </span>
-                    <span class="text-muted-foreground text-xs font-medium">{formatDate(story.content.date)}</span>
+                    <span class="text-muted-foreground text-xs font-medium">{formatDate(story)}</span>
                   </span>
                   <span class="text-kom-charcoal-deep group-hover:text-kom-field mt-3 text-xl font-black transition-colors">
                     {story.content.title}
