@@ -13,16 +13,16 @@ export const business = {
   phone: "313-804-0844",
   phoneHref: "tel:+13138040844",
   smsHref: "sms:+13138040844",
-  email: "info@kom-usa.com",
-  emailHref: "mailto:info@kom-usa.com",
+  email: "contact@kom-usa.com",
+  emailHref: "mailto:contact@kom-usa.com",
   serviceArea: "Metro Detroit",
   url: "https://www.kom.construction",
-  hoursShort: "Mon–Sat 8am–6pm",
+  hoursShort: "Mon–Sat 8am–5pm",
   googleReviewsUrl: "https://share.google/gfFHF6KBpnBz5FchG",
 } as const;
 
 export const hours = [
-  { days: "Monday – Saturday", time: "8:00 am – 6:00 pm" },
+  { days: "Monday – Saturday", time: "8:00 am – 5:00 pm" },
   { days: "Sunday", time: "Closed" },
 ];
 
