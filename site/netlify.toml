@@ -21,3 +21,11 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Branch "preview" renders server-side with Storyblok draft content for the
+# visual editor. Never index it.
+[context."preview".environment]
+  STORYBLOK_PREVIEW = "true"
+
+[context."preview"]
+  command = "npm run build"
