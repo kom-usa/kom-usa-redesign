@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeader from "../../components/common/SectionHeader.astro";
+import { getStories } from "../../lib/storyblok";
+
+const stories = await getStories("project");
+stories.sort((a, b) => (b.content.date ?? b.first_published_at ?? "").localeCompare(a.content.date ?? a.first_published_at ?? ""));
+
+const serviceChipLabels: Record<string, string> = {
+  locksmith: "Locksmith",
+  "water-heaters": "Water heater",
+  "chimney-care": "Chimney care",
+  other: "Other",
+};
+---
+
+<BaseLayout
+  title="Recent Projects | KOM USA"
+  description="Locksmith, water heater, and chimney projects completed by the KOM USA crew across Metro Detroit."
+>
+  <section class="section-pad">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <SectionHeader
+        eyebrow="Our work"
+        title="Recent projects"
+        lead="A look at real jobs completed for homeowners across Metro Detroit."
+      />
+
+      {
+        stories.length === 0 ? (
+          <p class="reveal text-muted-foreground mt-12 text-center text-lg">
+            Project photos are coming soon.
+          </p>
+        ) : (
+          <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {stories.map((story, index) => (
+              <a
+                href={`/projects/${story.slug}`}
+                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                style={`--rd: ${index * 90}ms`}
+              >
+                {story.content.photos?.[0]?.filename && (
+                  <img
+                    src={story.content.photos[0].filename}
+                    alt={story.content.title}
+                    class="h-48 w-full object-cover"
+                    loading="lazy"
+                  />
+                )}
+                <span class="flex flex-1 flex-col p-6">
+                  {story.content.service_category && serviceChipLabels[story.content.service_category] && (
+                    <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
+                      {serviceChipLabels[story.content.service_category]}
+                    </span>
+                  )}
+                  <span class="text-kom-charcoal-deep group-hover:text-kom-field mt-3 text-xl font-black transition-colors">
+                    {story.content.title}
+                  </span>
+                  <span class="text-muted-foreground mt-2 text-sm leading-relaxed">{story.content.city}</span>
+                </span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

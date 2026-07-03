@@ -29,9 +29,10 @@ export default defineConfig({
       accessToken: STORYBLOK_TOKEN,
       livePreview: isPreview,
       components: {
-        // populated as storyblok components land: location, project
         service: 'storyblok/Service',
         article: 'storyblok/Article',
+        location: 'storyblok/Location',
+        project: 'storyblok/Project',
       },
     }),
     sitemap({

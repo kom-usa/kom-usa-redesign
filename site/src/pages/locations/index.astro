@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SectionHeader from "../../components/common/SectionHeader.astro";
+import LeadCallForm from "../../components/sections/LeadCallForm.astro";
+import { getStories } from "../../lib/storyblok";
+import { business } from "../../data/business";
+
+const stories = await getStories("location");
+stories.sort((a, b) => (a.content.city ?? a.slug).localeCompare(b.content.city ?? b.slug));
+---
+
+<BaseLayout
+  title="Service Areas | KOM USA"
+  description={`Locksmith, water heater, and chimney services across ${business.serviceArea} — find your city and request a call.`}
+>
+  <section class="section-pad">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <SectionHeader
+        eyebrow="Where we work"
+        title="Service areas"
+        lead={`KOM USA serves homeowners across ${business.serviceArea}. Find your city below.`}
+      />
+
+      {
+        stories.length === 0 ? (
+          <p class="reveal text-muted-foreground mt-12 text-center text-lg">
+            City pages are coming soon — call us to confirm we cover your area.
+          </p>
+        ) : (
+          <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {stories.map((story, index) => (
+              <a
+                href={`/locations/${story.slug}`}
+                class="reveal border-border group flex flex-col rounded-xl border bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                style={`--rd: ${index * 90}ms`}
+              >
+                <span class="text-kom-charcoal-deep group-hover:text-kom-field text-xl font-black transition-colors">
+                  {story.content.city}
+                </span>
+                <span class="text-muted-foreground mt-2 text-sm leading-relaxed">
+                  Locksmith, water heater, and chimney service
+                </span>
+              </a>
+            ))}
+          </div>
+        )
+      }
+
+      <div class="mt-12 max-w-2xl">
+        <LeadCallForm />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
