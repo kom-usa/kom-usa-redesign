@@ -4,8 +4,8 @@ import {
   faqs,
   googleReviews,
   serviceAreaCities,
-  services,
 } from "../../data/business";
+import { getStories } from "../../lib/storyblok";
 
 interface Props {
   title: string;
@@ -38,6 +38,8 @@ const ids = {
   faq: `${canonical}#faq`,
   logo: new URL("/#logo", site).href,
 };
+
+const serviceStories = includeBusinessGraph ? await getStories("service", { sort_by: "created_at:asc" }) : [];
 
 const graph: Record<string, unknown>[] = [
   {
@@ -100,22 +102,22 @@ if (includeBusinessGraph) {
         reviewCount: String(googleReviews.count),
       },
       sameAs: [googleReviews.url],
-      knowsAbout: services.map((s) => s.title),
-      makesOffer: services.map((s) => ({
+      knowsAbout: serviceStories.map((s) => s.content.title as string),
+      makesOffer: serviceStories.map((s) => ({
         "@type": "Offer",
-        itemOffered: { "@type": "Service", name: s.title },
+        itemOffered: { "@type": "Service", name: s.content.title as string },
       })),
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "KOM USA services — standard pricing",
-        itemListElement: services.flatMap((s) =>
-          s.pricing
+        itemListElement: serviceStories.flatMap((s) =>
+          ((s.content.pricing ?? []) as { service: string; detail?: string; price: string }[])
             .filter((item) => /^\$[\d,]+$/.test(item.price) || item.price.startsWith("from "))
             .map((item) => {
               const isFlat = /^\$[\d,]+$/.test(item.price);
               return {
                 "@type": "Offer",
-                itemOffered: { "@type": "Service", name: `${s.title} — ${item.service}` },
+                itemOffered: { "@type": "Service", name: `${s.content.title} — ${item.service}` },
                 priceSpecification: isFlat
                   ? {
                       "@type": "PriceSpecification",

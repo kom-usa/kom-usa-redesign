@@ -1,0 +1,18 @@
+---
+import { getStories } from "../../lib/storyblok";
+import ServicePage from "../../layouts/ServicePage.astro";
+
+export async function getStaticPaths() {
+  const stories = await getStories("service");
+  return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
+}
+
+const { story } = Astro.props;
+const preselectMap: Record<string, string> = {
+  locksmith: "Locksmith",
+  "water-heaters": "Water heater",
+  "chimney-care": "Chimney care",
+};
+---
+
+<ServicePage story={story} preselectService={preselectMap[story.slug] ?? "Something else"} />

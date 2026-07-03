@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import type { ISbStoryData } from "@storyblok/astro";
 import Check from "@tabler/icons/outline/check.svg";
 import Phone from "@tabler/icons/outline/phone.svg";
 import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
@@ -7,18 +8,50 @@ import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
 import BaseLayout from "./BaseLayout.astro";
 import Button from "../components/starwind/button/Button.astro";
 import LeadCallForm from "../components/sections/LeadCallForm.astro";
-import { business, type ServiceDef } from "../data/business";
+import { business, pricingDisclaimer, serviceGuardrails } from "../data/business";
+import doorLock from "../assets/images/door-lock.jpg";
+import workerElectrical from "../assets/images/worker-electrical.jpg";
+import fireplaceChimney from "../assets/images/fireplace-chimney.jpg";
+import homeExterior from "../assets/images/home-exterior.jpg";
 
 interface Props {
-  service: ServiceDef;
-  heroImage: ImageMetadata;
-  heroAlt: string;
-  metaTitle: string;
-  metaDescription: string;
+  story: ISbStoryData;
   preselectService: string;
 }
 
-const { service, heroImage, heroAlt, metaTitle, metaDescription, preselectService } = Astro.props;
+const { story, preselectService } = Astro.props;
+const { content } = story;
+
+const localFallback: Record<string, ImageMetadata> = {
+  locksmith: doorLock,
+  "water-heaters": workerElectrical,
+  "chimney-care": fireplaceChimney,
+};
+const heroImage = localFallback[story.slug] ?? homeExterior;
+const heroImageUrl: string | undefined = content.hero_image?.filename || undefined;
+const heroAlt: string = content.hero_image?.alt || content.title;
+
+const metaTitle = content.seo_title || `${content.title} | KOM USA`;
+const metaDescription = content.seo_description;
+
+const includesList: string[] = (content.includes ?? []).map((item: any) => item.text);
+const pricingRows: { service: string; detail?: string; price: string }[] = (content.pricing ?? []).map(
+  (row: any) => ({
+    service: row.service,
+    detail: row.detail,
+    price: row.price,
+  }),
+);
+const faqItems: { question: string; answer: string }[] = (content.faqs ?? []).map((faq: any) => ({
+  question: faq.question,
+  answer: faq.answer,
+}));
+
+const pricingNotes: string[] = [
+  pricingDisclaimer,
+  ...(content.pricing_note ? [content.pricing_note] : []),
+  ...(serviceGuardrails[story.slug] ?? []),
+];
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription}>
@@ -29,9 +62,9 @@ const { service, heroImage, heroAlt, metaTitle, metaDescription, preselectServic
           {business.serviceArea} · Residential
         </p>
         <h1 class="text-kom-charcoal-deep mt-3 text-4xl leading-[1.05] font-black tracking-tight text-balance sm:text-5xl">
-          {service.title}
+          {content.title}
         </h1>
-        <p class="text-muted-foreground mt-5 max-w-xl text-lg leading-relaxed">{service.heroIntro}</p>
+        <p class="text-muted-foreground mt-5 max-w-xl text-lg leading-relaxed">{content.hero_intro}</p>
         <div class="mt-7 flex flex-wrap gap-3">
           <Button href="#lead-form" variant="primary" size="lg" class="font-extrabold">Request a Call</Button>
           <Button href={business.phoneHref} variant="outline" size="lg" class="border-kom-field/40 font-extrabold text-kom-field hover:bg-kom-sage-tint">
@@ -40,15 +73,25 @@ const { service, heroImage, heroAlt, metaTitle, metaDescription, preselectServic
           </Button>
         </div>
       </div>
-      <Image
-        src={heroImage}
-        alt={heroAlt}
-        class="reveal h-full min-h-72 w-full rounded-xl object-cover shadow-card-hover"
-        style="--rd: 120ms"
-        widths={[520, 760, 1000]}
-        sizes="(min-width: 1024px) 45vw, 100vw"
-        loading="eager"
-      />
+      {heroImageUrl ? (
+        <img
+          src={heroImageUrl}
+          alt={heroAlt}
+          class="reveal h-full min-h-72 w-full rounded-xl object-cover shadow-card-hover"
+          style="--rd: 120ms"
+          loading="eager"
+        />
+      ) : (
+        <Image
+          src={heroImage}
+          alt={heroAlt}
+          class="reveal h-full min-h-72 w-full rounded-xl object-cover shadow-card-hover"
+          style="--rd: 120ms"
+          widths={[520, 760, 1000]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          loading="eager"
+        />
+      )}
     </div>
   </section>
 
@@ -57,7 +100,7 @@ const { service, heroImage, heroAlt, metaTitle, metaDescription, preselectServic
       <div class="reveal">
         <h2 class="text-kom-charcoal-deep text-2xl font-black sm:text-3xl">What we handle</h2>
         <ul class="mt-6 space-y-3">
-          {service.includes.map((item) => (
+          {includesList.map((item) => (
             <li class="flex items-start gap-3">
               <span class="bg-kom-sage-tint text-kom-field mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full">
                 <Check class="size-4" aria-hidden="true" />
@@ -72,9 +115,9 @@ const { service, heroImage, heroAlt, metaTitle, metaDescription, preselectServic
         <h2 class="text-kom-charcoal-deep text-2xl font-black sm:text-3xl">Standard pricing</h2>
         <div class="border-border mt-6 overflow-hidden rounded-xl border shadow-card">
           <table class="w-full text-left text-sm">
-            <caption class="sr-only">{service.title} standard pricing</caption>
+            <caption class="sr-only">{content.title} standard pricing</caption>
             <tbody>
-              {service.pricing.map((item, index) => (
+              {pricingRows.map((item, index) => (
                 <tr class={index % 2 === 0 ? "bg-white" : "bg-kom-cream/60"}>
                   <th scope="row" class="px-4 py-3.5 font-bold text-kom-charcoal">
                     {item.service}
@@ -87,7 +130,7 @@ const { service, heroImage, heroAlt, metaTitle, metaDescription, preselectServic
           </table>
         </div>
         <ul class="text-muted-foreground mt-4 space-y-1.5 text-xs leading-relaxed">
-          {service.pricingNotes.map((note) => <li>{note}</li>)}
+          {pricingNotes.map((note) => <li>{note}</li>)}
         </ul>
       </div>
     </div>
@@ -97,7 +140,7 @@ const { service, heroImage, heroAlt, metaTitle, metaDescription, preselectServic
     <div class="mx-auto max-w-3xl px-4 sm:px-6">
       <h2 class="text-kom-charcoal-deep text-center text-2xl font-black sm:text-3xl">Common questions</h2>
       <div class="mt-8 space-y-3">
-        {service.faqs.map((faq) => (
+        {faqItems.map((faq) => (
           <details class="reveal border-border group rounded-lg border bg-white shadow-card">
             <summary class="text-kom-charcoal flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 font-bold [&::-webkit-details-marker]:hidden">
               {faq.question}
