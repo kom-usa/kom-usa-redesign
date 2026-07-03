@@ -1,15 +1,21 @@
 ---
-import { renderRichText } from "@storyblok/astro";
+import { getLiveStory, renderRichText } from "@storyblok/astro";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getStories, storyDate } from "../../lib/storyblok";
+import { getStories, getStory, storyDate } from "../../lib/storyblok";
 
 export async function getStaticPaths() {
   const stories = await getStories("article");
   return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
 }
 
-const { story } = Astro.props;
+const liveStory = await getLiveStory(Astro);
+let story = liveStory ?? (Astro.props as { story?: any }).story;
+if (!story) {
+  story = await getStory(`blog/${Astro.params.slug}`);
+  if (!story) return Astro.redirect("/404");
+}
+
 const { content } = story;
 
 const categoryLabels: Record<string, string> = {

@@ -1,4 +1,6 @@
 ---
+import { getLiveStory } from "@storyblok/astro";
+
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CtaBand from "../../components/sections/CtaBand.astro";
 import { getStories, getStory } from "../../lib/storyblok";
@@ -15,7 +17,8 @@ export async function getStaticPaths() {
   return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
 }
 
-let { story } = Astro.props as { story?: any };
+const liveStory = await getLiveStory(Astro);
+let story = liveStory ?? (Astro.props as { story?: any }).story;
 if (!story) {
   story = await getStory(`projects/${Astro.params.slug}`);
   if (!story) return Astro.redirect("/404");

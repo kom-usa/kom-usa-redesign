@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { renderRichText } from "@storyblok/astro";
+import { getLiveStory, renderRichText } from "@storyblok/astro";
 import StarFilled from "@tabler/icons/filled/star.svg";
 import ExternalLink from "@tabler/icons/outline/external-link.svg";
 import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
@@ -28,7 +28,8 @@ export async function getStaticPaths() {
   return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
 }
 
-let { story } = Astro.props as { story?: any };
+const liveStory = await getLiveStory(Astro);
+let story = liveStory ?? (Astro.props as { story?: any }).story;
 if (!story) {
   story = await getStory(`locations/${Astro.params.slug}`, {
     resolve_relations: "location.services_offered,location.featured_testimonials,location.featured_projects",

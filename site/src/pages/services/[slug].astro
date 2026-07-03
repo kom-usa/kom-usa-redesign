@@ -1,5 +1,7 @@
 ---
-import { getStories } from "../../lib/storyblok";
+import { getLiveStory } from "@storyblok/astro";
+
+import { getStories, getStory } from "../../lib/storyblok";
 import ServicePage from "../../layouts/ServicePage.astro";
 
 export async function getStaticPaths() {
@@ -7,7 +9,13 @@ export async function getStaticPaths() {
   return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
 }
 
-const { story } = Astro.props;
+const liveStory = await getLiveStory(Astro);
+let story = liveStory ?? (Astro.props as { story?: any }).story;
+if (!story) {
+  story = await getStory(`services/${Astro.params.slug}`);
+  if (!story) return Astro.redirect("/404");
+}
+
 const preselectMap: Record<string, string> = {
   locksmith: "Locksmith",
   "water-heaters": "Water heater",
