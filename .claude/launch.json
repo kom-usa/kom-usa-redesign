@@ -3,9 +3,25 @@
   "configurations": [
     {
       "name": "kom-usa-site",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--prefix", "site"],
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "astro",
+        "dev"
+      ],
+      "cwd": "site",
       "port": 4321
+    },
+    {
+      "name": "kom-usa-preview",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "astro",
+        "preview",
+        "--port",
+        "4330"
+      ],
+      "cwd": "site",
+      "port": 4330
     }
   ]
 }
