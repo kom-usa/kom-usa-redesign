@@ -4,6 +4,8 @@
  * never hard-code the phone number, email, prices, or service lists in templates.
  */
 
+import { offerFormValue } from "./offer-client";
+
 export const business = {
   name: "KOM USA",
   legalName: "KOM Construction LLC",
@@ -55,7 +57,7 @@ export const offer = {
     "Just mention this offer when we call you — no code to remember.",
     "Can't be combined with other offers.",
   ],
-  formValue: "$10 first-service offer claimed",
+  formValue: offerFormValue,
 };
 
 export interface PriceItem {
@@ -305,6 +307,11 @@ export const trustPoints = [
     description: "Call or send the form — a person gets back to you, usually the same day.",
     icon: "phone",
   },
+  {
+    title: "Plain communication",
+    description: "You know what happens next, what it costs, and who to call.",
+    icon: "message-circle",
+  },
 ];
 
 export const howItWorks = [
@@ -325,6 +332,11 @@ export const howItWorks = [
     description:
       "Pick a time that works for you. We show up when we say we will and leave your home better than we found it.",
     icon: "calendar-check",
+  },
+  {
+    title: "You're set",
+    description: "We close the loop, confirm the work is complete, and keep notes for next time.",
+    icon: "circle-check",
   },
 ];
 

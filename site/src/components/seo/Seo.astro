@@ -109,15 +109,26 @@ if (includeBusinessGraph) {
         "@type": "OfferCatalog",
         name: "KOM USA services — standard pricing",
         itemListElement: services.flatMap((s) =>
-          s.pricing.map((item) => ({
-            "@type": "Offer",
-            itemOffered: { "@type": "Service", name: `${s.title} — ${item.service}` },
-            priceSpecification: {
-              "@type": "PriceSpecification",
-              price: item.price.replace(/[^0-9.]/g, ""),
-              priceCurrency: "USD",
-            },
-          })),
+          s.pricing
+            .filter((item) => /^\$[\d,]+$/.test(item.price) || item.price.startsWith("from "))
+            .map((item) => {
+              const isFlat = /^\$[\d,]+$/.test(item.price);
+              return {
+                "@type": "Offer",
+                itemOffered: { "@type": "Service", name: `${s.title} — ${item.service}` },
+                priceSpecification: isFlat
+                  ? {
+                      "@type": "PriceSpecification",
+                      price: item.price.replace(/[^0-9.]/g, ""),
+                      priceCurrency: "USD",
+                    }
+                  : {
+                      "@type": "PriceSpecification",
+                      minPrice: item.price.replace(/[^0-9.]/g, ""),
+                      priceCurrency: "USD",
+                    },
+              };
+            }),
         ),
       },
     },

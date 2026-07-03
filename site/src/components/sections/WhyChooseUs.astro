@@ -2,14 +2,7 @@
 import Icon from "../common/Icon.astro";
 import { trustPoints } from "../../data/business";
 
-const features = [
-  ...trustPoints,
-  {
-    title: "Plain communication",
-    description: "You know what happens next, what it costs, and who to call.",
-    icon: "message-circle",
-  },
-];
+const features = trustPoints;
 ---
 
 <section class="section-pad bg-white">
