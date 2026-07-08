@@ -1,38 +1,25 @@
 ---
-import { getLiveStory } from "@storyblok/astro";
-
-import { getStories, getStory } from "../../lib/storyblok";
 import ServicePage from "../../layouts/ServicePage.astro";
+import { services } from "../../data/services";
+import doorLock from "../../assets/images/door-lock.jpg";
+import workerElectrical from "../../assets/images/worker-electrical.jpg";
+import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
+import homeExterior from "../../assets/images/home-exterior.jpg";
+
+const heroImages: Record<string, ImageMetadata> = {
+  locksmith: doorLock,
+  "water-heaters": workerElectrical,
+  "chimney-care": fireplaceChimney,
+};
 
 export async function getStaticPaths() {
-  const stories = await getStories("service");
-
-  const requiredSlugs = ["locksmith", "water-heaters", "chimney-care"];
-  const foundSlugs = new Set(stories.map((story) => story.slug));
-  const missingSlugs = requiredSlugs.filter((slug) => !foundSlugs.has(slug));
-  if (missingSlugs.length > 0) {
-    throw new Error(
-      `Service ${missingSlugs.length > 1 ? "stories" : "story"} ${missingSlugs
-        .map((slug) => `'${slug}'`)
-        .join(", ")} ${missingSlugs.length > 1 ? "are" : "is"} missing or unpublished in Storyblok — the site will not build without ${missingSlugs.length > 1 ? "them" : "it"}. Restore the ${missingSlugs.length > 1 ? "stories" : "story"} (or ${missingSlugs.length > 1 ? "their slugs" : "its slug"}) at app.storyblok.com.`,
-    );
-  }
-
-  return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
 }
 
-const liveStory = await getLiveStory(Astro);
-let story = liveStory ?? (Astro.props as { story?: any }).story;
-if (!story) {
-  story = await getStory(`services/${Astro.params.slug}`);
-  if (!story) return Astro.redirect("/404");
-}
-
-const preselectMap: Record<string, string> = {
-  locksmith: "Locksmith",
-  "water-heaters": "Water heater",
-  "chimney-care": "Chimney care",
-};
+const { service } = Astro.props as { service: (typeof services)[number] };
 ---
 
-<ServicePage story={story} preselectService={preselectMap[story.slug] ?? "Something else"} />
+<ServicePage service={service} heroImage={heroImages[service.slug] ?? homeExterior} />

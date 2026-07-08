@@ -6,11 +6,10 @@ import Clock from "@tabler/icons/outline/clock.svg";
 
 import Roofline from "../common/Roofline.astro";
 import { business, hours } from "../../data/business";
-import { serviceNav } from "../../lib/storyblok";
+import { services } from "../../data/services";
 import logoWhite from "../../assets/logos/kom-usa-logo-white.svg";
 
 const year = new Date().getFullYear();
-const services = await serviceNav();
 
 const quickLinks = [
   { label: "Home", href: "/" },

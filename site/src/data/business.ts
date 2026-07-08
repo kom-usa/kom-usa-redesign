@@ -83,6 +83,46 @@ export const serviceGuardrails: Record<string, string[]> = {
   ],
 };
 
+/** Homepage FAQ block. Code-owned so the funnel copy and the FAQPage schema
+ *  entity stay in sync and can never be emptied by a CMS outage. */
+export const faqs: Faq[] = [
+  {
+    question: "What happens after I send the form?",
+    answer:
+      "We call you — usually the same business day. We talk through what you need, answer your questions, and give you a quote. If it sounds good, we schedule the work right on the call. No pressure, no obligation.",
+  },
+  {
+    question: "What areas do you serve?",
+    answer:
+      "Metro Detroit — communities across Wayne, Oakland, and Macomb counties. Not sure if you're in range? Call 313-804-0844 and we'll tell you right away. Locksmith jobs more than 25 miles from our location add a $50 distance fee.",
+  },
+  {
+    question: "How does the $10 first-service offer work?",
+    answer:
+      "If it's your first time using KOM USA, you get $10 off — just mention the offer when we call you, or hit \"Claim Offer\" on the coupon and we'll see it on your request. One per household; can't be combined with other offers.",
+  },
+  {
+    question: "Are your prices really the prices?",
+    answer:
+      "The prices on this site are our standard pricing, published so there are no surprises. Your exact quote can vary with your home's setup and hardware, and we always confirm it by phone before any work starts.",
+  },
+  {
+    question: "I'm locked out right now. What do I do?",
+    answer:
+      "Call us at 313-804-0844. Lockouts are handled by phone so we can confirm your location, verify the property, and dispatch a technician after the 50% deposit.",
+  },
+  {
+    question: "Are you licensed and insured?",
+    answer:
+      "Yes — KOM USA is licensed and insured, and we've been serving Metro Detroit homeowners under the same local ownership since day one.",
+  },
+  {
+    question: "Do you only do locksmith, water heater, and chimney work?",
+    answer:
+      "Those are the services we offer online today. Have something related in mind? Ask when we call — if we can't help, we'll say so honestly.",
+  },
+];
+
 export const serviceAreaCities = [
   "Detroit",
   "Warren",

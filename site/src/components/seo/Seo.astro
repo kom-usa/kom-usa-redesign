@@ -3,8 +3,9 @@ import {
   business,
   googleReviews,
   serviceAreaCities,
+  faqs as homepageFaqs,
 } from "../../data/business";
-import { getStories } from "../../lib/storyblok";
+import { services } from "../../data/services";
 
 interface Props {
   title: string;
@@ -38,14 +39,8 @@ const ids = {
   logo: new URL("/#logo", site).href,
 };
 
-const serviceStories = includeBusinessGraph ? await getStories("service", { sort_by: "created_at:asc" }) : [];
-const faqStories = includeBusinessGraph ? await getStories("faq", { sort_by: "position:asc" }) : [];
-const faqs = faqStories
-  .filter((story) => story.content.placement === "homepage")
-  .map((story) => ({
-    question: story.content.question as string,
-    answer: story.content.answer as string,
-  }));
+const serviceList = includeBusinessGraph ? services : [];
+const faqList = includeBusinessGraph ? homepageFaqs : [];
 
 const graph: Record<string, unknown>[] = [
   {
@@ -108,22 +103,22 @@ if (includeBusinessGraph) {
         reviewCount: String(googleReviews.count),
       },
       sameAs: [googleReviews.url],
-      knowsAbout: serviceStories.map((s) => s.content.title as string),
-      makesOffer: serviceStories.map((s) => ({
+      knowsAbout: serviceList.map((s) => s.title),
+      makesOffer: serviceList.map((s) => ({
         "@type": "Offer",
-        itemOffered: { "@type": "Service", name: s.content.title as string },
+        itemOffered: { "@type": "Service", name: s.title },
       })),
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "KOM USA services — standard pricing",
-        itemListElement: serviceStories.flatMap((s) =>
-          ((s.content.pricing ?? []) as { name: string; detail?: string; price: string }[])
+        itemListElement: serviceList.flatMap((s) =>
+          s.pricing
             .filter((item) => /^\$[\d,]+$/.test(item.price) || item.price.startsWith("from "))
             .map((item) => {
               const isFlat = /^\$[\d,]+$/.test(item.price);
               return {
                 "@type": "Offer",
-                itemOffered: { "@type": "Service", name: `${s.content.title} — ${item.name}` },
+                itemOffered: { "@type": "Service", name: `${s.title} — ${item.service}` },
                 priceSpecification: isFlat
                   ? {
                       "@type": "PriceSpecification",
@@ -143,7 +138,7 @@ if (includeBusinessGraph) {
     {
       "@type": "FAQPage",
       "@id": ids.faq,
-      mainEntity: faqs.map((faq) => ({
+      mainEntity: faqList.map((faq) => ({
         "@type": "Question",
         name: faq.question,
         acceptedAnswer: { "@type": "Answer", text: faq.answer },

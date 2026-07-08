@@ -10,6 +10,11 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
     return next();
   }
 
+  const previewHeaders = {
+    "Content-Security-Policy": "frame-ancestors 'self' https://app.storyblok.com",
+    "X-Robots-Tag": "noindex, nofollow",
+  };
+
   const { cookies, url } = context;
   const previewKey = import.meta.env.PREVIEW_ACCESS_KEY;
 
@@ -21,12 +26,13 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   if (!hasStoryblokParam && !paramValid && !cookieValid) {
     return new Response("Not found", {
       status: 404,
-      headers: { "X-Robots-Tag": "noindex, nofollow" },
+      headers: previewHeaders,
     });
   }
 
   const response = await next();
-  response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  response.headers.set("Content-Security-Policy", previewHeaders["Content-Security-Policy"]);
+  response.headers.set("X-Robots-Tag", previewHeaders["X-Robots-Tag"]);
 
   if (paramValid) {
     response.headers.append(

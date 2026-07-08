@@ -1,5 +1,5 @@
 ---
-import { getLiveStory } from "@storyblok/astro";
+import { getLiveStory, storyblokEditable } from "@storyblok/astro";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CtaBand from "../../components/sections/CtaBand.astro";
@@ -35,7 +35,7 @@ const ogImage: string | undefined = content.seo_image?.filename ?? heroPhoto?.fi
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription} ogImage={ogImage}>
-  <article class="section-pad">
+  <article class="section-pad" {...storyblokEditable(content)}>
     <div class="mx-auto max-w-4xl px-4 sm:px-6">
       <p class="reveal flex flex-wrap items-center gap-3">
         {content.service_category && serviceChipLabels[content.service_category] && (

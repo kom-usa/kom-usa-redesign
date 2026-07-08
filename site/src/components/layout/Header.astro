@@ -6,7 +6,7 @@ import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
 
 import Button from "../starwind/button/Button.astro";
 import { business } from "../../data/business";
-import { serviceNav } from "../../lib/storyblok";
+import { services } from "../../data/services";
 import logo from "../../assets/logos/kom-usa-logo-primary-charcoal.svg";
 
 // Absolute paths so the nav works from /about and /locksmith too.
@@ -15,8 +15,7 @@ const nav = [
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
-// services rendered as a dropdown between Home and About
-const services = await serviceNav();
+// services rendered as a dropdown between Home and About (code-owned)
 ---
 
 <header class="sticky top-0 z-50 border-b border-kom-charcoal/10 bg-white/95 backdrop-blur-sm">

@@ -5,29 +5,25 @@ import { loadEnv } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 import { storyblok } from '@storyblok/astro';
-import netlify from '@astrojs/netlify';
 
 const env = loadEnv(process.env.NODE_ENV ?? 'production', process.cwd(), '');
 const STORYBLOK_TOKEN = env.STORYBLOK_TOKEN ?? process.env.STORYBLOK_TOKEN;
-// Preview deployments (branch `preview` on Netlify) render server-side with
-// draft content and the visual-editor bridge. Production stays fully static.
-const isPreview = (env.STORYBLOK_PREVIEW ?? process.env.STORYBLOK_PREVIEW) === 'true';
 
-if (!STORYBLOK_TOKEN) {
-  throw new Error('STORYBLOK_TOKEN is not set — add it to site/.env (see .env.example) or Netlify env.');
-}
+// Storyblok is being retired in favour of Sanity (see
+// docs/superpowers/specs/2026-07-08-sanity-seo-netlify-migration-design.md).
+// The integration is only registered when a token is present, so the
+// production build runs with no token and is fully static and self-contained.
+// Data helpers in src/lib/storyblok.ts degrade to empty results without a token.
+const integrations = [
+  sitemap({
+    filter: (page) => !page.includes('/thank-you'),
+  }),
+];
 
-export default defineConfig({
-  site: 'https://www.kom.construction',
-  output: isPreview ? 'server' : 'static',
-  adapter: isPreview ? netlify() : undefined,
-  vite: {
-    plugins: [tailwindcss()],
-  },
-  integrations: [
+if (STORYBLOK_TOKEN) {
+  integrations.unshift(
     storyblok({
       accessToken: STORYBLOK_TOKEN,
-      livePreview: isPreview,
       components: {
         service: 'storyblok/Service',
         article: 'storyblok/Article',
@@ -35,8 +31,14 @@ export default defineConfig({
         project: 'storyblok/Project',
       },
     }),
-    sitemap({
-      filter: (page) => !page.includes('/thank-you'),
-    }),
-  ],
+  );
+}
+
+export default defineConfig({
+  site: 'https://www.kom.construction',
+  output: 'static',
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  integrations,
 });

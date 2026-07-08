@@ -1,5 +1,5 @@
 ---
-import { getLiveStory, renderRichText } from "@storyblok/astro";
+import { getLiveStory, renderRichText, storyblokEditable } from "@storyblok/astro";
 
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getStories, getStory, storyDate } from "../../lib/storyblok";
@@ -34,7 +34,7 @@ const bodyHtml = renderRichText(content.body);
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription} ogImage={ogImage}>
-  <article class="section-pad">
+  <article class="section-pad" {...storyblokEditable(content)}>
     <div class="mx-auto max-w-3xl px-4 sm:px-6">
       <p class="reveal flex items-center gap-3">
         <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">

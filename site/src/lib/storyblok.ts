@@ -1,6 +1,16 @@
 import { useStoryblokApi } from "@storyblok/astro";
 import type { ISbStoryData } from "@storyblok/astro";
 
+/**
+ * Storyblok is being retired in favour of Sanity. Until Sanity is wired, the
+ * production build runs with no `STORYBLOK_TOKEN`, so these helpers must degrade
+ * to empty results instead of throwing — `useStoryblokApi()` is only reachable
+ * when the integration was actually registered (i.e. a token exists).
+ */
+export function storyblokEnabled(): boolean {
+  return Boolean(import.meta.env.STORYBLOK_TOKEN ?? process.env.STORYBLOK_TOKEN);
+}
+
 export function sbVersion(): "draft" | "published" {
   return import.meta.env.STORYBLOK_PREVIEW === "true" ? "draft" : "published";
 }
@@ -9,6 +19,7 @@ export async function getStories(
   contentType: string,
   opts: Record<string, string> = {},
 ): Promise<ISbStoryData[]> {
+  if (!storyblokEnabled()) return [];
   const api = useStoryblokApi();
   return (await api.getAll("cdn/stories", {
     version: sbVersion(),
@@ -19,6 +30,7 @@ export async function getStories(
 }
 
 export async function getStory(fullSlug: string, opts: Record<string, string> = {}) {
+  if (!storyblokEnabled()) return null;
   const api = useStoryblokApi();
   try {
     const { data } = await api.get(`cdn/stories/${fullSlug}`, { version: sbVersion(), ...opts });

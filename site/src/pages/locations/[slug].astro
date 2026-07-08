@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { getLiveStory, renderRichText } from "@storyblok/astro";
+import { getLiveStory, renderRichText, storyblokEditable } from "@storyblok/astro";
 import StarFilled from "@tabler/icons/filled/star.svg";
 import ExternalLink from "@tabler/icons/outline/external-link.svg";
 import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
@@ -51,6 +51,7 @@ const introHtml = renderRichText(content.intro);
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription} ogImage={ogImage}>
+  <div {...storyblokEditable(content)}>
   <section class="section-pad">
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
       <p class="reveal text-primary text-xs font-bold tracking-[0.18em] uppercase">
@@ -199,4 +200,5 @@ const introHtml = renderRichText(content.intro);
       </p>
     </div>
   </section>
+  </div>
 </BaseLayout>

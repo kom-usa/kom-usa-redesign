@@ -5,7 +5,7 @@ import Phone from "@tabler/icons/outline/phone.svg";
 
 import SectionHeader from "../common/SectionHeader.astro";
 import { business } from "../../data/business";
-import { getStories } from "../../lib/storyblok";
+import { services } from "../../data/services";
 import doorLock from "../../assets/images/door-lock.jpg";
 import workerElectrical from "../../assets/images/worker-electrical.jpg";
 import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
@@ -16,8 +16,6 @@ const imageMap: Record<string, ImageMetadata> = {
   "water-heaters": workerElectrical,
   "chimney-care": fireplaceChimney,
 };
-
-const stories = await getStories("service", { sort_by: "created_at:asc" });
 ---
 
 <section id="services" class="section-pad scroll-mt-16 bg-kom-cream">
@@ -30,36 +28,27 @@ const stories = await getStories("service", { sort_by: "created_at:asc" });
 
     <div class="mt-12 grid gap-6 md:grid-cols-3">
       {
-        stories.map((story, index) => (
+        services.map((service, index) => (
           <a
-            href={`/services/${story.slug}`}
+            href={`/services/${service.slug}`}
             class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
             style={`--rd: ${index * 90}ms`}
           >
-            {story.content.hero_image?.filename ? (
-              <img
-                src={story.content.hero_image.filename}
-                alt={story.content.title}
-                class="h-48 w-full object-cover"
-                loading="lazy"
-              />
-            ) : (
-              <Image
-                src={imageMap[story.slug] ?? homeExterior}
-                alt={story.content.title}
-                class="h-48 w-full object-cover"
-                widths={[400, 600, 800]}
-                sizes="(min-width: 768px) 30vw, 100vw"
-              />
-            )}
+            <Image
+              src={imageMap[service.slug] ?? homeExterior}
+              alt={service.title}
+              class="h-48 w-full object-cover"
+              widths={[400, 600, 800]}
+              sizes="(min-width: 768px) 30vw, 100vw"
+            />
             <span class="flex flex-1 flex-col p-6">
               <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
-                {story.content.anchor_price}
+                {service.anchorPrice}
               </span>
               <span class="text-kom-charcoal-deep group-hover:text-kom-field mt-3 text-xl font-black transition-colors">
-                {story.content.title}
+                {service.title}
               </span>
-              <span class="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">{story.content.card_blurb}</span>
+              <span class="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">{service.blurb}</span>
               <span class="text-kom-field mt-4 flex items-center gap-1.5 text-sm font-extrabold">
                 See details & pricing
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
