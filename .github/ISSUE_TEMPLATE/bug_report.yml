@@ -1,0 +1,53 @@
+name: Bug Report
+description: Something on the live site or in a build is broken
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for flagging this. Fill out what you can — screenshots help a lot.
+  - type: textarea
+    id: description
+    attributes:
+      label: What's broken
+      description: A clear description of the problem
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Page URL
+      description: Which page on kom-usa.com (or the preview site) shows the issue?
+      placeholder: https://kom-usa.com/services/locksmith
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Low (cosmetic, minor inconvenience)
+        - Medium (feature partially broken)
+        - High (feature completely broken, e.g. a form won't submit)
+        - Critical (site down, or customer data at risk)
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Device / browser
+      placeholder: iPhone 15, Safari
