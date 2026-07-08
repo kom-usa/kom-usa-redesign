@@ -9,10 +9,12 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sanity:seed": "node --env-file=.env --import tsx scripts/sanity-seed.ts"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "tsx": "^4.23.0",
     "typescript": "^6.0.3"
   },
   "dependencies": {
