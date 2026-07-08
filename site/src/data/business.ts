@@ -16,7 +16,7 @@ export const business = {
   email: "contact@kom-usa.com",
   emailHref: "mailto:contact@kom-usa.com",
   serviceArea: "Metro Detroit",
-  url: "https://www.kom.construction",
+  url: "https://kom-usa.com",
   hoursShort: "Mon–Sat 8am–5pm",
   googleReviewsUrl: "https://share.google/gfFHF6KBpnBz5FchG",
 } as const;

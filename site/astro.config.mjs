@@ -35,7 +35,7 @@ if (STORYBLOK_TOKEN) {
 }
 
 export default defineConfig({
-  site: 'https://www.kom.construction',
+  site: 'https://kom-usa.com',
   output: 'static',
   vite: {
     plugins: [tailwindcss()],

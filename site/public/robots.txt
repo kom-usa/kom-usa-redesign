@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.kom.construction/sitemap-index.xml
+Sitemap: https://kom-usa.com/sitemap-index.xml
