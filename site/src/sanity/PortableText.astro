@@ -1,0 +1,35 @@
+---
+import { toHTML } from "@portabletext/to-html";
+import { urlFor } from "../lib/sanity-image";
+
+interface Props {
+  value: unknown;
+}
+const { value } = Astro.props;
+
+const html = value
+  ? toHTML(value as never, {
+      components: {
+        types: {
+          image: ({ value }: any) =>
+            value?.asset
+              ? `<img src="${urlFor(value).width(1200).auto("format").url()}" alt="${value.alt ?? ""}" loading="lazy" class="rounded-xl my-6 w-full" />`
+              : "",
+        },
+        marks: {
+          link: ({ children, value }: any) => {
+            const href: string = value?.href ?? "";
+            const safe = /^(https?:|mailto:|tel:|\/)/i.test(href) ? href : "#";
+            const ext = safe.startsWith("http");
+            return `<a href="${safe}"${ext ? ' rel="noopener noreferrer" target="_blank"' : ""} class="text-kom-field underline">${children}</a>`;
+          },
+        },
+      },
+    })
+  : "";
+---
+
+<div
+  class="prose max-w-none prose-headings:text-kom-charcoal-deep prose-a:text-kom-field"
+  set:html={html}
+/>

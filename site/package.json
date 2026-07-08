@@ -11,11 +11,18 @@
     "preview": "astro preview",
     "astro": "astro"
   },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "typescript": "^6.0.3"
+  },
   "dependencies": {
     "@astrojs/netlify": "^8.1.1",
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource/nunito-sans": "^5.2.7",
     "@fontsource/playfair-display": "^5.2.8",
+    "@portabletext/to-html": "^5.0.2",
+    "@sanity/client": "^7.23.0",
+    "@sanity/image-url": "^2.1.1",
     "@storyblok/astro": "^10.0.1",
     "@tabler/icons": "^3.44.0",
     "@tailwindcss/forms": "^0.5.11",
