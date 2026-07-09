@@ -12,7 +12,7 @@ export const button = tv({
     variant: {
       default: "bg-foreground text-background hover:bg-foreground/90 focus-visible:ring-outline/50",
       primary:
-        "bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/50 border-b-4 border-b-kom-field-press",
+        "bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/50",
       secondary:
         "bg-secondary text-secondary-foreground hover:bg-secondary/90 focus-visible:ring-secondary/50",
       outline:

@@ -18,13 +18,13 @@ const nav = [
 // services rendered as a dropdown between Home and About (code-owned)
 ---
 
-<header class="sticky top-0 z-50 border-b border-kom-charcoal/10 bg-white/95 backdrop-blur-sm">
+<header class="sticky top-0 z-50 border-b border-kom-charcoal/10 bg-white">
   <div class="bg-kom-field text-white">
     <div
-      class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2 text-[11px] font-bold sm:px-6 sm:text-xs"
+      class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-2.5 text-xs font-bold sm:px-6 sm:text-sm"
     >
       <p class="flex items-center gap-2">
-        <span class="bg-kom-brass inline-block size-2 rounded-full" aria-hidden="true"></span>
+        <span class="bg-kom-brass inline-block size-2.5 rounded-full" aria-hidden="true"></span>
         Locally owned & operated · Serving Metro Detroit
       </p>
       <p class="hidden items-center gap-1.5 text-white/90 sm:flex">
@@ -39,75 +39,77 @@ const nav = [
     </div>
   </div>
 
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-4 sm:px-6">
-    <a
-      href="/"
-      class="flex shrink-0 items-center rounded-sm focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-      aria-label={`${business.name} home`}
-    >
-      <img src={logo.src} alt={business.name} class="h-10 w-auto md:h-12" width="78" height="57" />
-    </a>
-
-    <nav aria-label="Main" class="hidden items-center gap-7 lg:flex">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-5 sm:px-6">
+    <div class="flex items-center gap-8 xl:gap-12">
       <a
         href="/"
-        class="text-kom-charcoal hover:text-kom-field rounded-sm text-sm font-extrabold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+        class="flex shrink-0 items-center rounded-sm focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+        aria-label={`${business.name} home`}
       >
-        Home
+        <img src={logo.src} alt={business.name} class="h-12 w-auto md:h-14" width="78" height="57" />
       </a>
 
-      <div class="group relative">
-        <button
-          type="button"
-          class="text-kom-charcoal hover:text-kom-field flex items-center gap-1 rounded-sm text-sm font-extrabold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-          aria-haspopup="true"
+      <nav aria-label="Main" class="hidden items-center gap-7 lg:flex">
+        <a
+          href="/"
+          class="text-kom-charcoal hover:text-kom-field rounded-sm text-base font-extrabold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
         >
-          Services
-          <ChevronDown class="size-4" aria-hidden="true" />
-        </button>
-        <div class="invisible absolute left-1/2 z-50 -translate-x-1/2 pt-3 opacity-0 transition-all group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-          <ul class="border-border w-56 rounded-lg border bg-white p-2 shadow-card-hover">
-            {
-              services.map((service) => (
-                <li>
-                  <a
-                    href={`/services/${service.slug}`}
-                    class="text-kom-charcoal hover:bg-kom-sage-tint hover:text-kom-field block rounded-md px-3 py-2.5 text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-                  >
-                    {service.title}
-                  </a>
-                </li>
-              ))
-            }
-          </ul>
+          Home
+        </a>
+
+        <div class="group relative">
+          <button
+            type="button"
+            class="text-kom-charcoal hover:text-kom-field flex items-center gap-1 rounded-sm text-base font-extrabold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+            aria-haspopup="true"
+          >
+            Services
+            <ChevronDown class="size-4 transition-transform group-hover:rotate-180" aria-hidden="true" />
+          </button>
+          <div class="invisible absolute left-1/2 z-50 -translate-x-1/2 pt-3 opacity-0 transition-all group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+            <ul class="border-border w-60 rounded-lg border bg-white p-2 shadow-card-hover">
+              {
+                services.map((service) => (
+                  <li>
+                    <a
+                      href={`/services/${service.slug}`}
+                      class="text-kom-charcoal hover:bg-kom-sage-tint hover:text-kom-field block rounded-md px-3 py-2.5 text-[15px] font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                    >
+                      {service.title}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
         </div>
-      </div>
 
-      {
-        nav
-          .filter((item) => item.label !== "Home")
-          .map((item) => (
-            <a
-              href={item.href}
-              class="text-kom-charcoal hover:text-kom-field rounded-sm text-sm font-extrabold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-            >
-              {item.label}
-            </a>
-          ))
-      }
-    </nav>
+        {
+          nav
+            .filter((item) => item.label !== "Home")
+            .map((item) => (
+              <a
+                href={item.href}
+                class="text-kom-charcoal hover:text-kom-field rounded-sm text-base font-extrabold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+              >
+                {item.label}
+              </a>
+            ))
+        }
+      </nav>
+    </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-3">
       <Button
         href={business.phoneHref}
         variant="ghost"
-        size="sm"
-        class="hidden font-extrabold text-kom-charcoal hover:bg-kom-sage-tint hover:text-kom-field sm:inline-flex"
+        size="md"
+        class="hidden font-extrabold text-kom-charcoal hover:bg-kom-sage-tint hover:text-kom-field md:inline-flex"
       >
         <Phone aria-hidden="true" />
         <span>{business.phone}</span>
       </Button>
-      <Button href="/contact" variant="primary" size="sm" class="font-extrabold">
+      <Button href="/contact" variant="primary" size="md" class="font-extrabold">
         <Phone aria-hidden="true" />
         Request a Call
       </Button>
@@ -117,16 +119,16 @@ const nav = [
         aria-expanded="false"
         aria-controls="mobile-menu"
         aria-label="Open menu"
-        class="text-kom-charcoal hover:bg-kom-sage-tint flex size-9 items-center justify-center rounded-md transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none lg:hidden"
+        class="text-kom-charcoal hover:bg-kom-sage-tint flex size-11 items-center justify-center rounded-md transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none lg:hidden"
       >
-        <Menu2 class="size-6" data-icon-open aria-hidden="true" />
-        <X class="hidden size-6" data-icon-close aria-hidden="true" />
+        <Menu2 class="size-7" data-icon-open aria-hidden="true" />
+        <X class="hidden size-7" data-icon-close aria-hidden="true" />
       </button>
     </div>
   </div>
 
   <nav id="mobile-menu" aria-label="Mobile" class="hidden border-t border-kom-charcoal/10 lg:hidden">
-    <ul class="mx-auto max-w-7xl px-4 py-2 sm:px-6">
+    <ul class="mx-auto max-w-7xl px-4 py-3 sm:px-6">
       {
         [
           { label: "Home", href: "/" },
@@ -140,7 +142,7 @@ const nav = [
           <li>
             <a
               href={item.href}
-              class="text-kom-charcoal hover:bg-kom-sage-tint hover:text-kom-field block rounded-md px-2 py-2.5 text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+              class="text-kom-charcoal hover:bg-kom-sage-tint hover:text-kom-field block rounded-md px-3 py-3 text-base font-bold transition-colors focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
             >
               {item.label}
             </a>

@@ -32,8 +32,16 @@
   --color-kom-tan-light: #d9c596;
   --color-kom-ink: #262520;
 
-  --shadow-card: 0 2px 8px rgba(51, 56, 62, 0.08);
-  --shadow-card-hover: 0 4px 14px rgba(51, 56, 62, 0.12);
+  /* Flat design — no shadows or drop-shadows anywhere. Separation comes from
+     borders and background tints, not elevation. */
+  --shadow-card: none;
+  --shadow-card-hover: none;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-2xl: none;
 }
 
 @layer base {
