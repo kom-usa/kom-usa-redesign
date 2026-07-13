@@ -33,9 +33,3 @@
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    # PRE-LAUNCH: keep the site out of Google/Bing while it is not ready.
-    # noindex tells search engines not to index any page; crawling stays
-    # allowed so they can actually read this directive (do NOT also Disallow
-    # in robots.txt, or they can't see the noindex).
-    # ⚠️ LAUNCH CHECKLIST: delete the next line before going live.
-    X-Robots-Tag = "noindex, nofollow"

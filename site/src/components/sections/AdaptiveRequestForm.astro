@@ -1,0 +1,239 @@
+---
+import Button from "../starwind/button/Button.astro";
+import Input from "../starwind/input/Input.astro";
+import Label from "../starwind/label/Label.astro";
+import Textarea from "../starwind/textarea/Textarea.astro";
+import { maintenanceServices, constructionServices, type ServiceLine } from "../../data/service-catalog";
+
+interface Props {
+  line?: ServiceLine | "";
+  service?: string;
+  intent?: "service" | "callback" | "estimate";
+  heading?: string;
+  intro?: string;
+}
+
+const {
+  line = "",
+  service = "",
+  intent = line === "construction" ? "estimate" : "service",
+  heading = "Request Service or an Estimate",
+  intro = "Share a few details. KOM USA will review the request and contact you to discuss the next step.",
+} = Astro.props;
+
+const buttonLabel = intent === "estimate" ? "Request an Estimate" : intent === "callback" ? "Request a Callback" : "Request Service";
+const selectClass = "border-input focus-visible:outline-outline flex h-12 w-full rounded-md border bg-white px-3 py-2 text-base text-kom-charcoal transition-colors focus-visible:outline-2 focus-visible:outline-offset-2";
+---
+
+<section id="request-form" class="scroll-mt-28" data-request-form-root>
+  <div class="border-kom-charcoal/15 bg-white p-6 sm:p-8 lg:p-10" style="border-width: 1px; border-radius: 14px;">
+    <div class="max-w-2xl">
+      <h2 class="text-kom-ink text-3xl font-black text-balance sm:text-4xl">{heading}</h2>
+      <p class="text-kom-charcoal/75 mt-3 max-w-[65ch] text-base leading-relaxed">{intro}</p>
+    </div>
+
+    <form
+      name="request-service"
+      method="POST"
+      action="/thank-you/"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      class="adaptive-request-form mt-8"
+      data-default-line={line}
+      data-default-service={service}
+      data-default-intent={intent}
+    >
+      <input type="hidden" name="form-name" value="request-service" />
+      <input type="hidden" name="subject" value="New service or estimate request — kom-usa.com" />
+      <input type="hidden" name="source-page-url" value="" data-source-url />
+      <input type="hidden" name="service-page-slug" value="" data-source-slug />
+      <input type="hidden" name="form-intent" value={intent} data-intent />
+      <input type="hidden" name="utm-source" value="" data-utm="utm_source" />
+      <input type="hidden" name="utm-medium" value="" data-utm="utm_medium" />
+      <input type="hidden" name="utm-campaign" value="" data-utm="utm_campaign" />
+      <input type="hidden" name="utm-term" value="" data-utm="utm_term" />
+      <input type="hidden" name="utm-content" value="" data-utm="utm_content" />
+      <p class="hidden" aria-hidden="true"><label>Leave this field empty: <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+
+      <div class="grid gap-x-6 gap-y-5 sm:grid-cols-2">
+        <div class="space-y-2">
+          <Label for="request-line">Service line <span class="text-error">*</span></Label>
+          <select id="request-line" name="service-line" required class={selectClass} data-line-select>
+            <option value="" disabled selected={!line}>Choose Maintenance or Construction</option>
+            <option value="maintenance" selected={line === "maintenance"}>Maintenance</option>
+            <option value="construction" selected={line === "construction"}>Construction</option>
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <Label for="request-service-needed">Service needed <span class="text-error">*</span></Label>
+          <select id="request-service-needed" name="service" required class={selectClass} data-service-select>
+            <option value="" disabled selected={!service}>Choose a service</option>
+            <optgroup label="Maintenance" data-service-group="maintenance">
+              {maintenanceServices.map((item) => <option value={item.slug} data-line="maintenance" selected={line === "maintenance" && service === item.slug}>{item.title}</option>)}
+            </optgroup>
+            <optgroup label="Construction" data-service-group="construction">
+              {constructionServices.map((item) => <option value={item.slug} data-line="construction" selected={line === "construction" && service === item.slug}>{item.title}</option>)}
+            </optgroup>
+            <option value="not-sure" data-line="both">Not sure what I need</option>
+          </select>
+        </div>
+
+        <div class="space-y-2">
+          <Label for="request-name">Name <span class="text-error">*</span></Label>
+          <Input id="request-name" name="name" type="text" required autocomplete="name" />
+        </div>
+        <div class="space-y-2">
+          <Label for="request-phone">Phone number <span class="text-error">*</span></Label>
+          <Input id="request-phone" name="phone" type="tel" required autocomplete="tel" inputmode="tel" />
+        </div>
+        <div class="space-y-2">
+          <Label for="request-email">Email <span class="text-kom-charcoal/60 font-normal">(optional)</span></Label>
+          <Input id="request-email" name="email" type="email" autocomplete="email" />
+        </div>
+        <div class="space-y-2">
+          <Label for="request-city">City or ZIP <span class="text-error">*</span></Label>
+          <Input id="request-city" name="city" type="text" required autocomplete="postal-code" />
+        </div>
+        <div class="space-y-2 sm:col-span-2">
+          <Label for="request-address">Project address <span class="text-kom-charcoal/60 font-normal">(optional)</span></Label>
+          <Input id="request-address" name="project-address" type="text" autocomplete="street-address" />
+        </div>
+        <div class="space-y-2">
+          <Label for="request-timing">Desired timing <span class="text-error">*</span></Label>
+          <select id="request-timing" name="urgency" required class={selectClass}>
+            <option value="" disabled selected>Choose timing</option>
+            <option value="urgent">Urgent</option>
+            <option value="soon">Soon</option>
+            <option value="planning-ahead">Planning ahead</option>
+            <option value="flexible">Flexible</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <Label for="request-contact">Preferred contact method <span class="text-error">*</span></Label>
+          <select id="request-contact" name="preferred-contact" required class={selectClass} data-contact-method>
+            <option value="call" selected>Call</option>
+            <option value="text">Text</option>
+            <option value="email">Email</option>
+          </select>
+        </div>
+
+        <div class="hidden contents" data-construction-fields>
+          <div class="space-y-2">
+            <Label for="request-project-type">Type of project</Label>
+            <Input id="request-project-type" name="project-type" type="text" placeholder="e.g. kitchen remodel or addition" />
+          </div>
+          <div class="space-y-2">
+            <Label for="request-project-stage">Project stage</Label>
+            <select id="request-project-stage" name="project-stage" class={selectClass}>
+              <option value="" selected>Choose a stage</option>
+              <option value="exploring">Exploring</option>
+              <option value="planning">Planning</option>
+              <option value="ready-to-start">Ready to start</option>
+            </select>
+          </div>
+          <div class="space-y-2 sm:col-span-2">
+            <Label for="request-start-timeframe">Approximate desired start timeframe</Label>
+            <Input id="request-start-timeframe" name="desired-start-timeframe" type="text" placeholder="e.g. this fall or within six months" />
+          </div>
+        </div>
+
+        <div class="space-y-2 sm:col-span-2">
+          <Label for="request-description">Short project description</Label>
+          <Textarea id="request-description" name="message" rows={5} placeholder="What needs attention? Include quantities, dimensions, access details, or project goals when you can." />
+        </div>
+        <div class="hidden space-y-2 sm:col-span-2" data-additional-scope>
+          <Label for="request-additional-scope">Additional construction scope details</Label>
+          <Textarea id="request-additional-scope" name="additional-scope" rows={3} placeholder="Plans, materials, contractor coordination, or other details that will help us review the project." />
+        </div>
+      </div>
+
+      <div class="mt-6 border-t border-kom-charcoal/10 pt-5">
+        <p class="text-kom-charcoal/70 max-w-3xl text-xs leading-relaxed">
+          By submitting, you consent to KOM USA contacting you about this service request. This form does not add you to a marketing list.
+        </p>
+        <p class="text-kom-charcoal/70 mt-2 hidden max-w-3xl text-xs leading-relaxed" data-text-consent>
+          By selecting text, you expressly consent to receive text messages about this request at the number provided. Message and data rates may apply. Consent is not a condition of purchase.
+        </p>
+        <Button type="submit" variant="primary" size="lg" class="mt-5 w-full font-extrabold sm:w-auto" data-request-submit>
+          {buttonLabel}
+        </Button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<script>
+  const dataLayer = () => ((window as typeof window & { dataLayer?: Record<string, unknown>[] }).dataLayer ??= []);
+
+  document.querySelectorAll<HTMLFormElement>(".adaptive-request-form").forEach((form) => {
+    const params = new URLSearchParams(window.location.search);
+    const lineSelect = form.querySelector<HTMLSelectElement>("[data-line-select]");
+    const serviceSelect = form.querySelector<HTMLSelectElement>("[data-service-select]");
+    const contactSelect = form.querySelector<HTMLSelectElement>("[data-contact-method]");
+    const constructionFields = form.querySelector<HTMLElement>("[data-construction-fields]");
+    const additionalScope = form.querySelector<HTMLElement>("[data-additional-scope]");
+    const textConsent = form.querySelector<HTMLElement>("[data-text-consent]");
+    const intentField = form.querySelector<HTMLInputElement>("[data-intent]");
+    const submitButton = form.querySelector<HTMLButtonElement>("[data-request-submit]");
+
+    const requestedLine = params.get("line") || form.dataset.defaultLine || "";
+    const requestedService = params.get("service") || form.dataset.defaultService || "";
+    const requestedIntent = params.get("intent") || form.dataset.defaultIntent || "service";
+
+    if (lineSelect && ["maintenance", "construction"].includes(requestedLine)) lineSelect.value = requestedLine;
+    if (serviceSelect && requestedService && [...serviceSelect.options].some((option) => option.value === requestedService)) serviceSelect.value = requestedService;
+    if (intentField) intentField.value = requestedIntent;
+
+    const syncLine = () => {
+      const selectedLine = lineSelect?.value || "";
+      serviceSelect?.querySelectorAll<HTMLOptionElement>("option[data-line]").forEach((option) => {
+        const visible = option.dataset.line === selectedLine || option.dataset.line === "both" || selectedLine === "";
+        option.disabled = !visible;
+        option.hidden = !visible;
+      });
+      if (serviceSelect?.selectedOptions[0]?.disabled) serviceSelect.value = "";
+      const isConstruction = selectedLine === "construction";
+      constructionFields?.classList.toggle("hidden", !isConstruction);
+      additionalScope?.classList.toggle("hidden", !isConstruction);
+      const effectiveIntent = isConstruction ? "estimate" : requestedIntent === "callback" ? "callback" : "service";
+      if (intentField) intentField.value = effectiveIntent;
+      if (submitButton) submitButton.textContent = effectiveIntent === "estimate" ? "Request an Estimate" : effectiveIntent === "callback" ? "Request a Callback" : "Request Service";
+    };
+
+    const syncConsent = () => textConsent?.classList.toggle("hidden", contactSelect?.value !== "text");
+    syncLine();
+    syncConsent();
+    lineSelect?.addEventListener("change", syncLine);
+    contactSelect?.addEventListener("change", syncConsent);
+
+    const sourceUrl = form.querySelector<HTMLInputElement>("[data-source-url]");
+    const sourceSlug = form.querySelector<HTMLInputElement>("[data-source-slug]");
+    if (sourceUrl) sourceUrl.value = window.location.href;
+    if (sourceSlug) sourceSlug.value = window.location.pathname.split("/").filter(Boolean).at(-1) || "home";
+    form.querySelectorAll<HTMLInputElement>("[data-utm]").forEach((field) => {
+      field.value = params.get(field.dataset.utm || "") || "";
+    });
+
+    let started = false;
+    form.addEventListener("focusin", () => {
+      if (started) return;
+      started = true;
+      dataLayer().push({ event: "form_start", form_name: "request-service", source_page: window.location.pathname });
+    });
+
+    form.addEventListener("submit", () => {
+      const serviceLabel = serviceSelect?.selectedOptions[0]?.textContent?.trim() || "your request";
+      const selectedLine = lineSelect?.value || "maintenance";
+      sessionStorage.setItem("kom-request-confirmation", JSON.stringify({ service: serviceLabel, line: selectedLine }));
+      dataLayer().push({
+        event: "form_complete",
+        form_name: "request-service",
+        service_line: selectedLine,
+        service: serviceSelect?.value || "",
+        intent: intentField?.value || "service",
+        source_page: window.location.pathname,
+      });
+    });
+  });
+</script>

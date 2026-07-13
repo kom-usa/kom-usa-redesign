@@ -1,0 +1,93 @@
+---
+import { Image } from "astro:assets";
+import Phone from "@tabler/icons/outline/phone.svg";
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
+import BaseLayout from "./BaseLayout.astro";
+import AdaptiveRequestForm from "../components/sections/AdaptiveRequestForm.astro";
+import Gallery from "../components/sections/Gallery.astro";
+import { business } from "../data/business";
+import { maintenanceGroups, maintenanceServices, constructionServices, servicePath, type ServiceLine } from "../data/service-catalog";
+import homeExterior from "../assets/images/home-exterior.jpg";
+import constructionFraming from "../assets/images/construction-framing.jpg";
+
+interface Props { line: ServiceLine; }
+const { line } = Astro.props;
+const isMaintenance = line === "maintenance";
+const services = isMaintenance ? maintenanceServices : constructionServices;
+const phone = isMaintenance ? business.maintenancePhone : business.constructionPhone;
+const phoneHref = isMaintenance ? business.maintenancePhoneHref : business.constructionPhoneHref;
+const title = isMaintenance ? "Home Maintenance and Handyman Services in Metro Detroit" : "Residential Construction and Remodeling in Metro Detroit";
+const intro = isMaintenance
+  ? "From heating, drain, and electrical needs to drywall patches, exterior repairs, air-duct cleaning, and everyday handyman work, KOM USA helps Metro Detroit homeowners and contractors keep properties safe, functional, and well maintained."
+  : "Plan your next kitchen, bathroom, flooring, concrete, drywall, painting, or new-construction project with a local team that keeps the next step clear. Homeowners and contractors can share the project and receive a scope-based follow-up."
+const cta = isMaintenance ? "Request Service" : "Request an Estimate";
+const intent = isMaintenance ? "service" : "estimate";
+const heroImage = isMaintenance ? homeExterior : constructionFraming;
+const faqs = isMaintenance ? [
+  { q: "Can several maintenance jobs go in one request?", a: "Yes. Choose the closest service and list the remaining items in the description. Photos and quantities help the team review a combined visit." },
+  { q: "Which small jobs belong under Handyman Services?", a: "Shelf installation, closet-system work, small-area painting, touch-ups, and similar minor household installation or repair tasks are grouped there." },
+  { q: "Does every maintenance service have a fixed price?", a: "No. Some work may have standard pricing, while other work depends on access, condition, materials, and scope. KOM USA confirms pricing after reviewing the request." },
+] : [
+  { q: "What makes a useful construction request?", a: "Include the project type, current stage, location, desired timeframe, approximate dimensions, available plans, photos, and the result you are trying to achieve." },
+  { q: "Can contractors request a construction estimate?", a: "Yes. Contractors can describe the required scope, project stage, documents available, job-site conditions, and timing through the same form." },
+  { q: "Why is there no instant construction price?", a: "Dimensions, materials, access, existing conditions, selections, and project complexity all affect pricing. KOM USA reviews those details before explaining the estimate path." },
+];
+---
+
+<BaseLayout title={`${title} | KOM USA`} description={intro} serviceLine={line}>
+  <section class:list={["border-b", isMaintenance ? "bg-kom-warm-white" : "bg-kom-ink text-white"]}>
+    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-20">
+      <div>
+        <p class:list={["font-extrabold", isMaintenance ? "text-kom-field" : "text-kom-tan"]}>{isMaintenance ? "Maintenance" : "Construction"} across Metro Detroit</p>
+        <h1 class:list={["mt-3 text-4xl font-black leading-[1.05] tracking-[-0.03em] text-balance sm:text-5xl lg:text-6xl", isMaintenance ? "text-kom-ink" : "text-white"]}>{title}</h1>
+        <p class:list={["mt-5 max-w-2xl text-lg leading-relaxed", isMaintenance ? "text-kom-charcoal/75" : "text-white/75"]}>{intro}</p>
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+          <a href={`#request-form`} class="bg-kom-field hover:bg-kom-field-hover inline-flex h-12 items-center justify-center rounded-md px-7 text-lg font-extrabold text-white focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/40">{cta}<ArrowRight class="ml-2 size-5" aria-hidden="true" /></a>
+          <a href={phoneHref} class:list={["inline-flex h-12 items-center justify-center gap-2 rounded-md px-6 text-lg font-extrabold focus-visible:outline-none focus-visible:ring-3", isMaintenance ? "border border-kom-field text-kom-field" : "border border-white/35 text-white"]}><Phone class="size-5" aria-hidden="true" />{phone}</a>
+        </div>
+      </div>
+      <Image src={heroImage} alt={isMaintenance ? "Metro Detroit home maintained by KOM USA" : "Residential construction framing project by KOM USA"} class="aspect-[4/3] w-full object-cover" style="border-radius: 14px;" widths={[560, 800, 1100]} sizes="(min-width: 1024px) 43vw, 100vw" loading="eager" />
+    </div>
+  </section>
+
+  <section class="section-pad bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl"><h2 class="text-kom-ink text-3xl font-black text-balance sm:text-4xl">{isMaintenance ? "Choose the maintenance service you need" : "Construction capabilities"}</h2><p class="mt-3 leading-relaxed text-kom-charcoal/75">Every service page explains the scope, what affects pricing, and how to send a useful request.</p></div>
+
+      {isMaintenance ? (
+        <div class="mt-10 space-y-12">
+          {maintenanceGroups.slice(0, 4).map((group) => (
+            <section>
+              <h3 class="text-kom-ink border-b-2 border-kom-field pb-3 text-xl font-black">{group.label}</h3>
+              <ul class="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+                {group.links.filter((link) => !link.href.includes("#") || link.href.includes("handyman-services")).map((link) => <li><a href={link.href} class="text-kom-charcoal hover:text-kom-field inline-flex items-center gap-2 py-2 font-extrabold">{link.label}<ArrowRight class="size-4" aria-hidden="true" /></a></li>)}
+              </ul>
+            </section>
+          ))}
+        </div>
+      ) : (
+        <ul class="mt-10 grid gap-x-8 gap-y-0 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map((service) => <li class="border-b border-kom-charcoal/15"><a href={servicePath(service)} class="group flex min-h-24 items-center justify-between gap-4 py-5"><span><span class="text-kom-ink group-hover:text-kom-field block text-lg font-black">{service.title}</span><span class="mt-1 block text-sm leading-relaxed text-kom-charcoal/65">{service.summary}</span></span><ArrowRight class="text-kom-field size-5 shrink-0" aria-hidden="true" /></a></li>)}
+        </ul>
+      )}
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-sage-tint">
+    <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+      <div><h2 class="text-kom-ink text-3xl font-black sm:text-4xl">{isMaintenance ? "Standard service or custom scope?" : "Scope first, then a useful estimate"}</h2><p class="mt-4 max-w-[65ch] leading-relaxed text-kom-charcoal/80">{isMaintenance ? "Some repeatable tasks may have standard pricing. Repairs, multi-item visits, material-dependent work, and exterior projects often require a scope review. Every page labels the appropriate lead path, and KOM USA confirms the current price before work." : "Construction pricing depends on dimensions, materials, access, existing conditions, selections, site logistics, and project stage. The request form collects the essentials without forcing a premature budget field."}</p></div>
+      <div><h2 class="text-kom-ink text-3xl font-black sm:text-4xl">{isMaintenance ? "Handyman and small repairs" : "Planning through construction"}</h2><p class="mt-4 max-w-[65ch] leading-relaxed text-kom-charcoal/80">{isMaintenance ? "Group shelves, closet systems, touch-ups, minor installations, and related small repairs into one request. KOM USA will route anything larger to the correct dedicated service." : "KOM USA can speak with homeowners and contractors who are exploring, planning, or ready to start. Share the information you have now; the team will identify what is needed next."}</p>{isMaintenance && <a href="/maintenance/handyman-services/" class="text-kom-field mt-5 inline-flex items-center gap-2 font-black">Explore Handyman Services<ArrowRight class="size-4" aria-hidden="true" /></a>}</div>
+    </div>
+  </section>
+
+  <Gallery />
+
+  <section class="section-pad bg-white">
+    <div class="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
+      <div><h2 class="text-kom-ink text-3xl font-black sm:text-4xl">Metro Detroit service area</h2><p class="mt-4 leading-relaxed text-kom-charcoal/75">Serving homeowners, properties, and contractor projects across Wayne, Oakland, and Macomb counties. Include the city or ZIP so KOM USA can confirm the location and appropriate team.</p><a href="/service-areas/" class="text-kom-field mt-5 inline-flex items-center gap-2 font-black">View service area details<ArrowRight class="size-4" aria-hidden="true" /></a></div>
+      <div><h2 class="text-kom-ink text-3xl font-black sm:text-4xl">Common questions</h2><div class="mt-4 divide-y divide-kom-charcoal/15 border-y border-kom-charcoal/15">{faqs.map((faq) => <details class="py-5"><summary class="text-kom-ink cursor-pointer font-black">{faq.q}</summary><p class="mt-3 leading-relaxed text-kom-charcoal/75">{faq.a}</p></details>)}</div></div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-cream"><div class="mx-auto max-w-6xl px-4 sm:px-6"><AdaptiveRequestForm line={line} intent={intent} heading={cta} /></div></section>
+</BaseLayout>

@@ -1,68 +1,25 @@
 ---
+import { Image } from "astro:assets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import SectionHeader from "../../components/common/SectionHeader.astro";
-import { getStories, storyDate } from "../../lib/storyblok";
+import chimney from "../../assets/images/projects/chimney-cap-before-after.jpeg";
+import powderRoom from "../../assets/images/projects/marble-powder-room.jpeg";
+import openPlan from "../../assets/images/projects/open-plan-interior.jpeg";
+import shower from "../../assets/images/projects/tiled-shower.jpeg";
+import marbleShower from "../../assets/images/projects/marble-shower-led.jpeg";
+import mediaWall from "../../assets/images/projects/custom-media-wall.jpeg";
 
-const stories = await getStories("project");
-stories.sort((a, b) => storyDate(b).getTime() - storyDate(a).getTime());
-
-const serviceChipLabels: Record<string, string> = {
-  locksmith: "Locksmith",
-  "water-heaters": "Water heater",
-  "chimney-care": "Chimney care",
-  other: "Other",
-};
+const projects = [
+  { image: chimney, title: "Chimney crown and cap repair", category: "Maintenance", alt: "Before and after view of a repaired chimney crown with new cap and liner cap" },
+  { image: powderRoom, title: "Marble powder-room remodel", category: "Construction", alt: "Remodeled powder room with sculpted white tile and matte black fixtures" },
+  { image: openPlan, title: "Open-plan interior refresh", category: "Construction", alt: "Bright open-plan kitchen and living area after renovation" },
+  { image: shower, title: "Accessible tiled shower", category: "Construction", alt: "Walk-in stone-tile shower with body jets and grab bars" },
+  { image: marbleShower, title: "Marble shower and illuminated niche", category: "Construction", alt: "Marble shower with rainfall fixture and illuminated mirror niche" },
+  { image: mediaWall, title: "Custom media wall", category: "Construction", alt: "Custom media wall with backlit acoustic panels" },
+];
 ---
 
-<BaseLayout
-  title="Recent Projects | KOM USA"
-  description="Locksmith, water heater, and chimney projects completed by the KOM USA crew across Metro Detroit."
->
-  <section class="section-pad">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6">
-      <SectionHeader
-        eyebrow="Our work"
-        title="Recent projects"
-        lead="A look at real jobs completed for homeowners across Metro Detroit."
-      />
-
-      {
-        stories.length === 0 ? (
-          <p class="reveal text-muted-foreground mt-12 text-center text-lg">
-            Project photos are coming soon.
-          </p>
-        ) : (
-          <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {stories.map((story, index) => (
-              <a
-                href={`/projects/${story.slug}`}
-                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white transition-colors hover:border-kom-field/50 focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-                style={`--rd: ${index * 90}ms`}
-              >
-                {story.content.photos?.[0]?.filename && (
-                  <img
-                    src={story.content.photos[0].filename}
-                    alt={story.content.title}
-                    class="h-48 w-full object-cover"
-                    loading="lazy"
-                  />
-                )}
-                <span class="flex flex-1 flex-col p-6">
-                  {story.content.service_category && serviceChipLabels[story.content.service_category] && (
-                    <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
-                      {serviceChipLabels[story.content.service_category]}
-                    </span>
-                  )}
-                  <span class="text-kom-charcoal-deep group-hover:text-kom-field mt-3 text-xl font-black transition-colors">
-                    {story.content.title}
-                  </span>
-                  <span class="text-muted-foreground mt-2 text-sm leading-relaxed">{story.content.city}</span>
-                </span>
-              </a>
-            ))}
-          </div>
-        )
-      }
-    </div>
-  </section>
+<BaseLayout title="KOM USA Projects | Metro Detroit" description="See genuine KOM USA maintenance and construction work completed in Metro Detroit properties.">
+  <section class="bg-kom-ink py-14 text-white sm:py-20"><div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><p class="text-kom-tan font-extrabold">Real work by KOM USA</p><h1 class="mt-3 max-w-4xl text-4xl font-black tracking-[-0.03em] text-balance sm:text-5xl lg:text-6xl">Maintenance and construction projects across Metro Detroit</h1><p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/75">A selection of genuine project photography showing repair, finish, and remodeling work.</p></div></section>
+  <section class="section-pad bg-kom-cream"><div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{projects.map((project) => <li class="bg-white"><Image src={project.image} alt={project.alt} class="aspect-[4/3] w-full object-cover" widths={[420, 680, 900]} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" loading="lazy" /><div class="p-5"><p class="text-kom-field text-sm font-extrabold">{project.category}</p><h2 class="text-kom-ink mt-1 text-xl font-black">{project.title}</h2></div></li>)}</ul></div></section>
+  <section class="section-pad bg-white"><div class="mx-auto max-w-4xl px-4 text-center sm:px-6"><h2 class="text-kom-ink text-3xl font-black sm:text-4xl">Tell us about the work you have in mind</h2><p class="mx-auto mt-3 max-w-2xl leading-relaxed text-kom-charcoal/70">Choose Maintenance or Construction and send the location, timing, photos, and available project details.</p><a href="/request-service/" class="bg-kom-field mt-6 inline-flex h-12 items-center rounded-md px-6 font-extrabold text-white">Request Service or an Estimate</a></div></section>
 </BaseLayout>

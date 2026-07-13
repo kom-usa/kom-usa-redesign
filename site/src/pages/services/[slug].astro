@@ -1,25 +1,11 @@
 ---
-import ServicePage from "../../layouts/ServicePage.astro";
-import { services } from "../../data/services";
-import doorLock from "../../assets/images/door-lock.jpg";
-import workerElectrical from "../../assets/images/worker-electrical.jpg";
-import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
-import homeExterior from "../../assets/images/home-exterior.jpg";
-
-const heroImages: Record<string, ImageMetadata> = {
-  locksmith: doorLock,
-  "water-heaters": workerElectrical,
-  "chimney-care": fireplaceChimney,
-};
-
-export async function getStaticPaths() {
-  return services.map((service) => ({
-    params: { slug: service.slug },
-    props: { service },
-  }));
+export function getStaticPaths() {
+  return ["locksmith", "water-heaters", "chimney-care"].map((slug) => ({ params: { slug } }));
 }
 
-const { service } = Astro.props as { service: (typeof services)[number] };
+return Astro.redirect(({
+  locksmith: "/maintenance/locksmith/",
+  "water-heaters": "/maintenance/water-heaters/",
+  "chimney-care": "/maintenance/chimney-care/",
+} as Record<string, string>)[Astro.params.slug ?? ""] ?? "/maintenance/", 301);
 ---
-
-<ServicePage service={service} heroImage={heroImages[service.slug] ?? homeExterior} />

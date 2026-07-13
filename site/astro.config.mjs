@@ -16,7 +16,11 @@ const STORYBLOK_TOKEN = env.STORYBLOK_TOKEN ?? process.env.STORYBLOK_TOKEN;
 // Data helpers in src/lib/storyblok.ts degrade to empty results without a token.
 const integrations = [
   sitemap({
-    filter: (page) => !page.includes('/thank-you'),
+    filter: (page) =>
+      !page.includes('/thank-you') &&
+      !page.includes('/maintenance/subscription-maintenance') &&
+      !page.includes('/services/') &&
+      !page.includes('/locations/'),
   }),
 ];
 

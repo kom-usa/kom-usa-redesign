@@ -1,0 +1,13 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import AdaptiveRequestForm from "../components/sections/AdaptiveRequestForm.astro";
+import constructionFraming from "../assets/images/construction-framing.jpg";
+import { business } from "../data/business";
+---
+
+<BaseLayout title="Home Building Materials in Metro Detroit | KOM USA" description="Contact KOM USA about home-building material needs for Metro Detroit residential and contractor projects." serviceLine="construction">
+  <section class="bg-kom-ink text-white"><div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-20"><div><p class="text-kom-tan font-extrabold">Construction support</p><h1 class="mt-3 text-4xl font-black tracking-[-0.03em] text-balance sm:text-5xl">Home Building Materials</h1><p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/75">Homeowners and contractors can contact KOM USA about materials connected to a residential project. Share the product type, quantities, specifications, location, and timing so availability and the next step can be reviewed.</p><a href={business.constructionPhoneHref} class="mt-6 inline-flex h-12 items-center rounded-md border border-white/40 px-6 font-extrabold">Call Construction: {business.constructionPhone}</a></div><Image src={constructionFraming} alt="Framing and building materials at a KOM USA residential construction project" class="aspect-[4/3] w-full object-cover" style="border-radius: 14px;" widths={[560, 800, 1100]} sizes="(min-width: 1024px) 45vw, 100vw" loading="eager" /></div></section>
+  <section class="section-pad bg-white"><div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><h2 class="text-kom-ink text-3xl font-black sm:text-4xl">What to include in a materials request</h2><ul class="mt-8 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-4">{["Material or product category", "Dimensions, grade, finish, or specification", "Estimated quantity", "Delivery or project location and desired timing"].map((item) => <li class="border-t-4 border-kom-field py-4 font-bold text-kom-charcoal">{item}</li>)}</ul><p class="mt-8 max-w-3xl leading-relaxed text-kom-charcoal/70">This page does not present an inventory feed, availability guarantee, online checkout, or instant price. KOM USA reviews each request with the project requirements.</p></div></section>
+  <section class="section-pad bg-kom-cream"><div class="mx-auto max-w-6xl px-4 sm:px-6"><AdaptiveRequestForm line="construction" service="new-construction" intent="estimate" heading="Request Materials or Project Support" /></div></section>
+</BaseLayout>

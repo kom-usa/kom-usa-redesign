@@ -1,28 +1,35 @@
 ---
 import Phone from "@tabler/icons/outline/phone.svg";
 import ClipboardCheck from "@tabler/icons/outline/clipboard-check.svg";
-
 import { business } from "../../data/business";
+import type { ServiceLine } from "../../data/service-catalog";
+
+interface Props { serviceLine?: ServiceLine | ""; }
+const { serviceLine = "" } = Astro.props;
+const callClass = (line: ServiceLine) => serviceLine === line
+  ? "bg-kom-field text-white"
+  : "bg-white text-kom-ink border border-kom-charcoal/20";
 ---
 
-<div
-  class="bg-background fixed inset-x-0 bottom-0 z-50 border-t px-3 pt-2.5 md:hidden"
-  style="padding-bottom: calc(0.625rem + env(safe-area-inset-bottom));"
->
-  <div class="mx-auto flex max-w-md gap-2">
-    <a
-      href={business.phoneHref}
-      class="bg-primary text-primary-foreground hover:bg-primary/90 focus-visible:ring-primary/50 flex h-12 flex-1 items-center justify-center gap-1.5 rounded-md text-sm font-bold transition-colors focus-visible:ring-3 focus-visible:outline-none"
-    >
-      <Phone class="size-4.5" aria-hidden="true" />
-      Call
+<div class="fixed inset-x-0 bottom-0 z-50 border-t border-kom-charcoal/15 bg-kom-warm-white px-2 pt-2 md:hidden" style="padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));">
+  <div class="mx-auto grid max-w-md grid-cols-3 gap-2">
+    <a href={business.maintenancePhoneHref} data-mobile-phone="maintenance" class:list={["flex min-h-12 flex-col items-center justify-center rounded-md px-2 text-[0.7rem] font-black leading-tight", callClass("maintenance")] }>
+      <Phone class="mb-0.5 size-4" aria-hidden="true" />Maintenance Call
     </a>
-    <a
-      href="/contact"
-      class="bg-kom-ink hover:bg-kom-ink/90 focus-visible:ring-outline/50 flex h-12 flex-[1.4] items-center justify-center gap-1.5 rounded-md text-sm font-bold text-white transition-colors focus-visible:ring-3 focus-visible:outline-none"
-    >
-      <ClipboardCheck class="size-4.5" aria-hidden="true" />
-      Request a Call
+    <a href={business.constructionPhoneHref} data-mobile-phone="construction" class:list={["flex min-h-12 flex-col items-center justify-center rounded-md px-2 text-[0.7rem] font-black leading-tight", callClass("construction")] }>
+      <Phone class="mb-0.5 size-4" aria-hidden="true" />Construction Call
+    </a>
+    <a href="/request-service/" class="bg-kom-ink flex min-h-12 flex-col items-center justify-center rounded-md px-2 text-[0.7rem] font-black leading-tight text-white">
+      <ClipboardCheck class="mb-0.5 size-4" aria-hidden="true" />Request
     </a>
   </div>
 </div>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>("[data-mobile-phone]").forEach((link) => {
+    link.addEventListener("click", () => {
+      const w = window as typeof window & { dataLayer?: Record<string, unknown>[] };
+      (w.dataLayer ??= []).push({ event: "phone_click", service_line: link.dataset.mobilePhone, source_page: window.location.pathname });
+    });
+  });
+</script>

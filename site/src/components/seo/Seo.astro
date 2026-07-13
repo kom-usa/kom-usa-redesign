@@ -5,7 +5,7 @@ import {
   serviceAreaCities,
   faqs as homepageFaqs,
 } from "../../data/business";
-import { services } from "../../data/services";
+import { allServices } from "../../data/service-catalog";
 import { getReviewStats } from "../../lib/google-reviews";
 
 interface Props {
@@ -40,7 +40,7 @@ const ids = {
   logo: new URL("/#logo", site).href,
 };
 
-const serviceList = includeBusinessGraph ? services : [];
+const serviceList = includeBusinessGraph ? allServices : [];
 const faqList = includeBusinessGraph ? homepageFaqs : [];
 const reviewStats = includeBusinessGraph ? await getReviewStats() : null;
 
@@ -67,12 +67,26 @@ const graph: Record<string, unknown>[] = [
 if (includeBusinessGraph) {
   graph.push(
     {
-      "@type": ["LocalBusiness", "Locksmith"],
+      "@type": ["LocalBusiness", "GeneralContractor"],
       "@id": ids.business,
       name: business.name,
       url: site.href,
       telephone: business.phone,
       email: business.email,
+      contactPoint: [
+        {
+          "@type": "ContactPoint",
+          telephone: business.maintenancePhone,
+          contactType: "maintenance service",
+          areaServed: "Metro Detroit",
+        },
+        {
+          "@type": "ContactPoint",
+          telephone: business.constructionPhone,
+          contactType: "construction estimates",
+          areaServed: "Metro Detroit",
+        },
+      ],
       image: ogImageUrl,
       logo: {
         "@type": "ImageObject",
@@ -86,19 +100,6 @@ if (includeBusinessGraph) {
           name: `${city}, MI`,
         })),
       ],
-      openingHoursSpecification: {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        opens: "08:00",
-        closes: "17:00",
-      },
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: reviewStats?.rating ?? googleReviews.rating,
@@ -112,29 +113,15 @@ if (includeBusinessGraph) {
       })),
       hasOfferCatalog: {
         "@type": "OfferCatalog",
-        name: "KOM USA services — standard pricing",
-        itemListElement: serviceList.flatMap((s) =>
-          s.pricing
-            .filter((item) => /^\$[\d,]+$/.test(item.price) || item.price.startsWith("from "))
-            .map((item) => {
-              const isFlat = /^\$[\d,]+$/.test(item.price);
-              return {
-                "@type": "Offer",
-                itemOffered: { "@type": "Service", name: `${s.title} — ${item.service}` },
-                priceSpecification: isFlat
-                  ? {
-                      "@type": "PriceSpecification",
-                      price: item.price.replace(/[^0-9.]/g, ""),
-                      priceCurrency: "USD",
-                    }
-                  : {
-                      "@type": "PriceSpecification",
-                      minPrice: item.price.replace(/[^0-9.]/g, ""),
-                      priceCurrency: "USD",
-                    },
-              };
-            }),
-        ),
+        name: "KOM USA maintenance and construction services",
+        itemListElement: serviceList.map((service) => ({
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: service.title,
+            serviceType: service.line === "maintenance" ? "Home maintenance" : "Residential construction",
+          },
+        })),
       },
     },
     {
@@ -172,4 +159,4 @@ const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": grap
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImageUrl} />
 
-<script type="application/ld+json" set:html={jsonLd} />
+<script is:inline type="application/ld+json" set:html={jsonLd} />

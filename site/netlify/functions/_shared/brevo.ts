@@ -42,6 +42,7 @@ export async function upsertContact(submission: ParsedSubmission): Promise<void>
   if (submission.preferredContact) {
     attributes.PREFERRED_CONTACT = submission.preferredContact;
   }
+  if (submission.serviceLine) attributes.SERVICE_LINE = submission.serviceLine;
 
   const body: Record<string, unknown> = {
     email: submission.email,

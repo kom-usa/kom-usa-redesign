@@ -1,0 +1,12 @@
+---
+import ServiceDetailPage from "../../layouts/ServiceDetailPage.astro";
+import { maintenanceServices } from "../../data/service-catalog";
+
+export function getStaticPaths() {
+  return maintenanceServices.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props;
+---
+
+<ServiceDetailPage {service} />

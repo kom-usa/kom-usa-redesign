@@ -10,6 +10,7 @@ import Seo from "../components/seo/Seo.astro";
 import Header from "../components/layout/Header.astro";
 import Footer from "../components/layout/Footer.astro";
 import MobileStickyBar from "../components/layout/MobileStickyBar.astro";
+import type { ServiceLine } from "../data/service-catalog";
 
 interface Props {
   title: string;
@@ -17,9 +18,10 @@ interface Props {
   ogImage?: string;
   noindex?: boolean;
   includeBusinessGraph?: boolean;
+  serviceLine?: ServiceLine | "";
 }
 
-const { title, description, ogImage, noindex, includeBusinessGraph } = Astro.props;
+const { title, description, ogImage, noindex, includeBusinessGraph, serviceLine = "" } = Astro.props;
 ---
 
 <!doctype html>
@@ -35,7 +37,7 @@ const { title, description, ogImage, noindex, includeBusinessGraph } = Astro.pro
     </script>
     <Seo {title} {description} {ogImage} {noindex} {includeBusinessGraph} />
   </head>
-  <body class="pb-20 md:pb-0">
+  <body class="pb-20 text-kom-charcoal md:pb-0">
     <a
       href="#main"
       class="bg-primary text-primary-foreground focus-visible:ring-primary/50 sr-only rounded-md px-4 py-2 font-bold focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-100"
@@ -47,7 +49,7 @@ const { title, description, ogImage, noindex, includeBusinessGraph } = Astro.pro
       <slot />
     </main>
     <Footer />
-    <MobileStickyBar />
+    <MobileStickyBar {serviceLine} />
     <script>
       // Scroll-reveal observer, matching kom-usa-redesign-preview.netlify.app:
       // reveal once at 12% visibility, then stop observing.

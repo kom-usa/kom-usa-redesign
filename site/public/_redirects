@@ -1,25 +1,14 @@
-# KOM USA — Wix → Astro migration redirect map (301s)
-#
-# HOW TO USE: before launch, export the list of live URLs from the old Wix site
-# (Google Search Console "Pages" report + Wix sitemap.xml) and add one rule per
-# old URL below. Never launch with high-value old URLs unredirected.
-#
-# Format:  /old-path  /new-path  301
-#
-# Retired sections (cleaning, memberships, houses for sale, subscriptions,
-# real estate listings) should 301 to the homepage until a better target exists:
-#   /cleaning            /    301
-#   /memberships         /    301
-#   /houses-for-sale     /    301
-#
-# Likely Wix paths to verify against the real site before enabling:
-#   /services            /#services            301
-#   /locksmith           /#locksmith-pricing   301
-#   /contact             /#request-service     301
-#   /about               /                     301
-#
-# (Rules above are commented out on purpose — uncomment and adjust once the
-# real Wix URL inventory is confirmed.)
+# KOM USA canonical route redirects
 
-/locksmith            /services/locksmith        301
-/locksmith/           /services/locksmith        301
+/services/locksmith              /maintenance/locksmith/               301
+/services/locksmith/             /maintenance/locksmith/               301
+/services/water-heaters          /maintenance/water-heaters/           301
+/services/water-heaters/         /maintenance/water-heaters/           301
+/services/chimney-care           /maintenance/chimney-care/            301
+/services/chimney-care/          /maintenance/chimney-care/            301
+/locksmith                       /maintenance/locksmith/                301
+/locksmith/                      /maintenance/locksmith/                301
+/locations                       /service-areas/                        301
+/locations/                      /service-areas/                        301
+/locations/*                     /service-areas/                        301
+/services/*                      /maintenance/                          301

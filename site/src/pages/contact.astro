@@ -1,15 +1,21 @@
 ---
+import Phone from "@tabler/icons/outline/phone.svg";
+import Mail from "@tabler/icons/outline/mail.svg";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import RequestService from "../components/sections/RequestService.astro";
-import HowItWorks from "../components/sections/HowItWorks.astro";
-import ServiceArea from "../components/sections/ServiceArea.astro";
+import AdaptiveRequestForm from "../components/sections/AdaptiveRequestForm.astro";
+import { business } from "../data/business";
 ---
 
-<BaseLayout
-  title="Request a Call | KOM USA — Metro Detroit Home Services"
-  description="Tell us what you need and a real person from KOM USA calls you back — usually the same day. Locksmith, water heaters, and chimney care across Metro Detroit."
->
-  <RequestService />
-  <HowItWorks />
-  <ServiceArea />
+<BaseLayout title="Contact KOM USA | Metro Detroit" description="Call KOM USA's Maintenance or Construction team, email contact@kom-usa.com, or send a service or estimate request.">
+  <section class="section-pad bg-kom-warm-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl"><p class="text-kom-field font-extrabold">Contact KOM USA</p><h1 class="text-kom-ink mt-3 text-4xl font-black tracking-[-0.03em] text-balance sm:text-5xl">Call the right team or send one request</h1><p class="mt-4 text-lg leading-relaxed text-kom-charcoal/75">Maintenance handles repairs, upkeep, and handyman work. Construction handles remodeling, building, materials, and larger project scopes.</p></div>
+      <div class="mt-10 grid gap-5 md:grid-cols-3">
+        <a href={business.maintenancePhoneHref} class="border border-kom-charcoal/15 bg-white p-6 hover:border-kom-field" style="border-radius: 14px;"><span class="text-kom-charcoal/60 text-sm font-bold">Maintenance</span><span class="text-kom-field mt-2 flex items-center gap-2 text-xl font-black"><Phone class="size-5" aria-hidden="true" />{business.maintenancePhone}</span></a>
+        <a href={business.constructionPhoneHref} class="border border-kom-charcoal/15 bg-white p-6 hover:border-kom-field" style="border-radius: 14px;"><span class="text-kom-charcoal/60 text-sm font-bold">Construction</span><span class="text-kom-field mt-2 flex items-center gap-2 text-xl font-black"><Phone class="size-5" aria-hidden="true" />{business.constructionPhone}</span></a>
+        <a href={business.emailHref} class="border border-kom-charcoal/15 bg-white p-6 hover:border-kom-field" style="border-radius: 14px;"><span class="text-kom-charcoal/60 text-sm font-bold">Email</span><span class="text-kom-field mt-2 flex items-center gap-2 text-lg font-black"><Mail class="size-5" aria-hidden="true" />{business.email}</span></a>
+      </div>
+    </div>
+  </section>
+  <section class="section-pad bg-kom-cream"><div class="mx-auto max-w-6xl px-4 sm:px-6"><AdaptiveRequestForm /></div></section>
 </BaseLayout>

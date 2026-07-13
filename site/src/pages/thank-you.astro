@@ -1,38 +1,23 @@
 ---
 import CircleCheck from "@tabler/icons/outline/circle-check.svg";
 import Phone from "@tabler/icons/outline/phone.svg";
-
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/starwind/button/Button.astro";
 import { business } from "../data/business";
 ---
 
-<BaseLayout
-  title="Request received | KOM USA"
-  description="Thanks for your service request. KOM USA will follow up shortly to confirm details and scheduling."
-  noindex
->
-  <section class="section-pad">
-    <div class="mx-auto max-w-xl px-4 text-center sm:px-6">
-      <span class="bg-kom-sage-tint text-primary mx-auto flex size-16 items-center justify-center rounded-full">
-        <CircleCheck class="size-9" aria-hidden="true" />
-      </span>
-      <h1 class="text-kom-charcoal mt-6 text-3xl font-extrabold sm:text-4xl">
-        Got it — your request is in.
-      </h1>
-      <p class="text-muted-foreground mt-4 text-lg leading-relaxed">
-        We'll call you back — usually the same business day — to talk it through and give you a
-        quote. If anything is urgent in the meantime, call us directly.
-      </p>
-      <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <Button href={business.phoneHref} variant="primary" size="lg" class="font-bold">
-          <Phone aria-hidden="true" />
-          Call {business.phone}
-        </Button>
-        <Button href="/" variant="outline" size="lg" class="font-bold">
-          Back to homepage
-        </Button>
-      </div>
-    </div>
-  </section>
+<BaseLayout title="Request Received | KOM USA" description="KOM USA received your maintenance or construction request." noindex>
+  <section class="section-pad bg-kom-warm-white"><div class="mx-auto max-w-3xl px-4 text-center sm:px-6"><span class="bg-kom-sage-tint text-kom-field mx-auto flex size-16 items-center justify-center rounded-full"><CircleCheck class="size-9" aria-hidden="true" /></span><h1 class="text-kom-ink mt-6 text-4xl font-black sm:text-5xl">Thanks — we received your request.</h1><p class="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-kom-charcoal/75">Our team will review the details and contact you to discuss the next step. If you need to speak with someone sooner, call the appropriate service line below.</p><p class="text-kom-field mt-5 font-black" data-confirmation-summary>Your request has been sent to KOM USA.</p><div class="mt-8 grid gap-4 sm:grid-cols-2"><a href={business.maintenancePhoneHref} class="border border-kom-field bg-white p-5 text-kom-field" style="border-radius: 14px;"><span class="block text-sm font-bold text-kom-charcoal/60">Maintenance</span><span class="mt-1 flex items-center justify-center gap-2 text-lg font-black"><Phone class="size-5" aria-hidden="true" />{business.maintenancePhone}</span></a><a href={business.constructionPhoneHref} class="border border-kom-field bg-white p-5 text-kom-field" style="border-radius: 14px;"><span class="block text-sm font-bold text-kom-charcoal/60">Construction</span><span class="mt-1 flex items-center justify-center gap-2 text-lg font-black"><Phone class="size-5" aria-hidden="true" />{business.constructionPhone}</span></a></div><a href="/" class="text-kom-field mt-8 inline-block font-black">Return to the homepage</a></div></section>
 </BaseLayout>
+
+<script>
+  const summary = document.querySelector<HTMLElement>("[data-confirmation-summary]");
+  const stored = sessionStorage.getItem("kom-request-confirmation");
+  if (stored && summary) {
+    try {
+      const data = JSON.parse(stored) as { service?: string; line?: string };
+      const line = data.line === "construction" ? "Construction" : "Maintenance";
+      summary.textContent = `${line} · ${data.service || "Service request"}`;
+      sessionStorage.removeItem("kom-request-confirmation");
+    } catch { /* keep the generic confirmation */ }
+  }
+</script>

@@ -15,6 +15,11 @@ export default {
       return;
     }
 
+    if (!submission.email) {
+      console.info("Netlify captured a phone-only request; Brevo email sync was skipped.");
+      return;
+    }
+
     if (!process.env.BREVO_API_KEY) {
       console.warn(
         "BREVO_API_KEY is not set — Netlify captured the submission but Brevo sync was skipped.",

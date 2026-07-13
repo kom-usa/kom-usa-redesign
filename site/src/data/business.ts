@@ -5,25 +5,31 @@
  */
 
 import { offerFormValue } from "./offer-client";
+import { allServices } from "./service-catalog";
 
 export const business = {
   name: "KOM USA",
   legalName: "KOM Construction LLC",
-  tagline: "Locksmith, water heater, and chimney services in Metro Detroit",
-  phone: "313-804-0844",
-  phoneHref: "tel:+13138040844",
-  smsHref: "sms:+13138040844",
+  tagline: "Home maintenance and construction across Metro Detroit",
+  phone: "248-264-3631",
+  phoneHref: "tel:+12482643631",
+  smsHref: "sms:+12482643631",
+  maintenancePhone: "248-264-3631",
+  maintenancePhoneHref: "tel:+12482643631",
+  constructionPhone: "248-215-2634",
+  constructionPhoneHref: "tel:+12482152634",
   email: "contact@kom-usa.com",
   emailHref: "mailto:contact@kom-usa.com",
   serviceArea: "Metro Detroit",
   url: "https://kom-usa.com",
-  hoursShort: "Mon–Sat 8am–5pm",
+  availability: "Service requests accepted 24/7",
+  hoursShort: "Service requests accepted 24/7",
   googleReviewsUrl: "https://share.google/gfFHF6KBpnBz5FchG",
 } as const;
 
 export const hours = [
-  { days: "Monday – Saturday", time: "8:00 am – 5:00 pm" },
-  { days: "Sunday", time: "Closed" },
+  { days: "Online requests", time: "Accepted 24/7" },
+  { days: "Phone and field service", time: "Timing confirmed with the appropriate team" },
 ];
 
 export const googleReviews = {
@@ -50,12 +56,11 @@ export const googleReviews = {
 };
 
 export const offer = {
-  headline: "$10 Off",
-  sub: "Your First Service With KOM USA",
+  headline: "Request Service",
+  sub: "Tell KOM USA what you need",
   terms: [
-    "For first-time customers. One per household.",
-    "Just mention this offer when we call you — no code to remember.",
-    "Can't be combined with other offers.",
+    "Scope, timing, and pricing are confirmed after review.",
+    "Submitting a request does not create a booking.",
   ],
   formValue: offerFormValue,
 };
@@ -72,54 +77,44 @@ export interface Faq {
 }
 
 export const pricingDisclaimer =
-  "Standard pricing — we confirm your exact quote by phone before any work starts.";
+  "KOM USA confirms scope and current pricing before work is scheduled.";
 
 /** Code-side pricing guardrails appended to every service page, keyed by slug.
  *  Editors cannot remove these — that is deliberate. */
-export const serviceGuardrails: Record<string, string[]> = {
-  locksmith: [
-    "A 50% deposit is required before a technician is dispatched.",
-    "Jobs more than 25 miles from our location add a $50 distance fee.",
-  ],
-};
+export const serviceGuardrails: Record<string, string[]> = {};
 
 /** Homepage FAQ block. Code-owned so the funnel copy and the FAQPage schema
  *  entity stay in sync and can never be emptied by a CMS outage. */
 export const faqs: Faq[] = [
   {
-    question: "What happens after I send the form?",
+    question: "What happens after I send a request?",
     answer:
-      "We call you — usually the same business day. We talk through what you need, answer your questions, and give you a quote. If it sounds good, we schedule the work right on the call. No pressure, no obligation.",
+      "KOM USA reviews the service, location, timing, and project details, then contacts you to discuss the next step. Project-specific pricing is provided after the scope is understood.",
   },
   {
-    question: "What areas do you serve?",
+    question: "Where does KOM USA work?",
     answer:
-      "Metro Detroit — communities across Wayne, Oakland, and Macomb counties. Not sure if you're in range? Call 313-804-0844 and we'll tell you right away. Locksmith jobs more than 25 miles from our location add a $50 distance fee.",
+      "KOM USA serves Metro Detroit, including communities across Wayne, Oakland, and Macomb counties. Send the address or ZIP with your request so the team can confirm the service area.",
   },
   {
-    question: "How does the $10 first-service offer work?",
+    question: "Which phone number should I use?",
     answer:
-      "If it's your first time using KOM USA, you get $10 off — just mention the offer when we call you, or hit \"Claim Offer\" on the coupon and we'll see it on your request. One per household; can't be combined with other offers.",
+      "Call 248-264-3631 for repairs, routine work, and handyman needs. Call 248-215-2634 for remodeling, construction, materials, and larger projects.",
   },
   {
-    question: "Are your prices really the prices?",
+    question: "Can I request a price online?",
     answer:
-      "The prices on this site are our standard pricing, published so there are no surprises. Your exact quote can vary with your home's setup and hardware, and we always confirm it by phone before any work starts.",
+      "Yes. Use the request form and include enough detail for the team to review the scope. KOM USA does not promise instant pricing; dimensions, access, materials, condition, and project complexity may affect the estimate.",
   },
   {
-    question: "I'm locked out right now. What do I do?",
+    question: "Can contractors use the request form?",
     answer:
-      "Call us at 313-804-0844. Lockouts are handled by phone so we can confirm your location, verify the property, and dispatch a technician after the 50% deposit.",
+      "Yes. Contractors can choose Construction, describe the required scope, and include the project stage, location, timing, and available documents or photos.",
   },
   {
-    question: "Are you licensed and insured?",
+    question: "Are requests accepted around the clock?",
     answer:
-      "Yes — KOM USA is licensed and insured, and we've been serving Metro Detroit homeowners under the same local ownership since day one.",
-  },
-  {
-    question: "Do you only do locksmith, water heater, and chimney work?",
-    answer:
-      "Those are the services we offer online today. Have something related in mind? Ask when we call — if we can't help, we'll say so honestly.",
+      "Online service requests are accepted 24/7. This does not mean technicians are dispatched or phones are answered around the clock; the team will review the details and contact you about the next step.",
   },
 ];
 
@@ -151,18 +146,18 @@ export const trustPoints = [
     icon: "home-heart",
   },
   {
-    title: "Upfront standard pricing",
-    description: "Our prices are on this site before you ever call. No surprises at the door.",
+    title: "Clear service paths",
+    description: "Maintenance and Construction requests reach the team responsible for that work.",
     icon: "clipboard-check",
   },
   {
-    title: "Licensed & insured",
-    description: "Real credentials behind every job, big or small.",
+    title: "Real project experience",
+    description: "The site shows genuine work completed in Metro Detroit properties.",
     icon: "shield-check",
   },
   {
-    title: "We pick up the phone",
-    description: "Call or send the form — a person gets back to you, usually the same day.",
+    title: "Requests accepted 24/7",
+    description: "Send the details whenever it is convenient; the team reviews each request and follows up.",
     icon: "phone",
   },
   {
@@ -174,40 +169,30 @@ export const trustPoints = [
 
 export const howItWorks = [
   {
-    title: "Tell us what you need",
+    title: "Choose your service",
     description:
-      "Send the quick form or call 313-804-0844. A couple of details — your city, the service, and when you need it — is all it takes.",
+      "Select Maintenance for repairs, routine work, and handyman needs, or Construction for remodeling and larger projects.",
     icon: "message-circle",
   },
   {
-    title: "We call you to talk it through",
+    title: "Call or send a request",
     description:
-      "A real person calls you back, answers your questions, and gives you a clear quote. No pressure, no obligation.",
+      "Speak with the appropriate team or use one short form to describe the service, location, and timing.",
     icon: "phone",
   },
   {
-    title: "We schedule and do the work",
+    title: "We review and follow up",
     description:
-      "Pick a time that works for you. We show up when we say we will and leave your home better than we found it.",
+      "KOM USA discusses the scope, explains the next step, and provides an estimate when project-specific pricing is required.",
     icon: "calendar-check",
   },
-  {
-    title: "You're set",
-    description: "We close the loop, confirm the work is complete, and keep notes for next time.",
-    icon: "circle-check",
-  },
 ];
 
-export const serviceOptions = [
-  "Locksmith",
-  "Water heater",
-  "Chimney care",
-  "Something else",
-];
+export const serviceOptions = [...allServices.map((service) => service.title), "Not sure / other"];
 
 export const urgencyOptions = [
-  "Emergency — locked out now",
-  "Urgent — within a few days",
-  "Soon — within a few weeks",
-  "Flexible — planning ahead",
+  "Urgent",
+  "Soon",
+  "Planning ahead",
+  "Flexible",
 ];

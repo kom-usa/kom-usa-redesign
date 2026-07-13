@@ -14,7 +14,7 @@ const callLead = parseFormSubmission({
   city: "48088",
   service: "Locksmith",
   note: "Locked out of garage",
-  offer: "$10 first service",
+  offer: "",
 });
 
 assert.ok(callLead);
@@ -31,21 +31,22 @@ const serviceLead = parseFormSubmission({
   urgency: "Urgent — within a few days",
   message: "No hot water since Tuesday",
   "preferred-contact": "Phone call",
+  "service-line": "maintenance",
 });
 
 assert.ok(serviceLead);
 assert.equal(serviceLead.formName, "request-service");
 assert.equal(serviceLead.firstName, "Jordan");
+assert.equal(serviceLead.serviceLine, "maintenance");
 
 assert.equal(parseFormSubmission({ "form-name": "newsletter", email: "x@y.com" }), null);
-assert.equal(parseFormSubmission({ "form-name": "request-call" }), null);
+assert.ok(parseFormSubmission({ "form-name": "request-call" }));
 
 const html = buildAckEmailHtml(callLead);
 assert.match(html, /logo-email\.png/);
 assert.match(html, /#2f6b3b/);
 assert.match(html, /Sam/);
 assert.match(html, /Locksmith/);
-assert.match(html, /\$10 first-service offer/);
 
 const subject = buildAckEmailSubject(callLead);
 assert.match(subject, /Locksmith/);

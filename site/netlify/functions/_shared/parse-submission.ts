@@ -10,6 +10,7 @@ export interface ParsedSubmission {
   offer?: string;
   urgency?: string;
   preferredContact?: string;
+  serviceLine?: string;
 }
 
 const LEAD_FORMS = new Set(["request-call", "request-service"]);
@@ -24,9 +25,6 @@ export function parseFormSubmission(
   }
 
   const email = (data.email ?? "").trim();
-  if (!email) {
-    return null;
-  }
 
   if (formName === "request-call") {
     return {
@@ -54,5 +52,6 @@ export function parseFormSubmission(
     note: (data.message ?? "").trim(),
     urgency: (data.urgency ?? "").trim() || undefined,
     preferredContact: (data["preferred-contact"] ?? "").trim() || undefined,
+    serviceLine: (data["service-line"] ?? "").trim() || undefined,
   };
 }

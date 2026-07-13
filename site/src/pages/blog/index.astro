@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import SectionHeader from "../../components/common/SectionHeader.astro";
 import { getStories, storyDate } from "../../lib/storyblok";
 
 const stories = await getStories("article");
@@ -19,15 +18,15 @@ function formatDate(story: any) {
 
 <BaseLayout
   title="Blog & Updates | KOM USA"
-  description="News, tips, and updates from the KOM USA crew — locksmith, water heater, and chimney care for Metro Detroit homes."
+  description="Maintenance, construction, project, and company updates from the KOM USA team in Metro Detroit."
 >
   <section class="section-pad">
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
-      <SectionHeader
-        eyebrow="From the crew"
-        title="Blog & Updates"
-        lead="News, tips, and the occasional behind-the-scenes look at KOM USA."
-      />
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="text-kom-field font-extrabold">From the crew</p>
+        <h1 class="text-kom-ink mt-3 text-4xl font-black tracking-[-0.03em] text-balance sm:text-5xl">Blog & Updates</h1>
+        <p class="mt-4 text-lg leading-relaxed text-kom-charcoal/70">Maintenance, construction, project, and company updates from KOM USA.</p>
+      </div>
 
       {
         stories.length === 0 ? (

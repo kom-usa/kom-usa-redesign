@@ -1,33 +1,114 @@
 ---
+import { Image } from "astro:assets";
+import Phone from "@tabler/icons/outline/phone.svg";
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
+import StarFilled from "@tabler/icons/filled/star.svg";
 import BaseLayout from "../layouts/BaseLayout.astro";
-
-import Hero from "../components/sections/Hero.astro";
-import IntroStrip from "../components/sections/IntroStrip.astro";
-import Services from "../components/sections/Services.astro";
-import CouponOffer from "../components/sections/CouponOffer.astro";
+import Gallery from "../components/sections/Gallery.astro";
 import GoogleReviews from "../components/sections/GoogleReviews.astro";
-import WhyChooseUs from "../components/sections/WhyChooseUs.astro";
 import HowItWorks from "../components/sections/HowItWorks.astro";
 import ServiceArea from "../components/sections/ServiceArea.astro";
-import Gallery from "../components/sections/Gallery.astro";
 import Faq from "../components/sections/Faq.astro";
-import CtaBand from "../components/sections/CtaBand.astro";
+import AdaptiveRequestForm from "../components/sections/AdaptiveRequestForm.astro";
+import { business, googleReviews } from "../data/business";
+import { maintenanceServices, constructionServices, servicePath } from "../data/service-catalog";
+import { getReviewStats } from "../lib/google-reviews";
+import homeExterior from "../assets/images/home-exterior.jpg";
+import workerPortrait from "../assets/images/worker-portrait.jpg";
+
+const reviews = await getReviewStats();
+const popularMaintenance = ["handyman-services", "drain-cleaning", "locksmith", "water-heaters", "air-duct-cleaning", "drywall-repair"].map((slug) => maintenanceServices.find((service) => service.slug === slug)!);
 ---
 
 <BaseLayout
-  title="Locksmith, Water Heaters & Chimney Care in Metro Detroit | KOM USA"
-  description="KOM USA is a friendly, locally owned crew for locksmith service, water heater replacement, and chimney care across Metro Detroit. Upfront pricing — request a call and we'll take it from there."
+  title="Home Maintenance & Construction in Metro Detroit | KOM USA"
+  description="KOM USA provides home maintenance, handyman, remodeling, construction, and project support across Metro Detroit for homeowners and contractors."
   includeBusinessGraph
 >
-  <Hero />
-  <IntroStrip />
-  <Services />
-  <CouponOffer />
-  <GoogleReviews />
-  <WhyChooseUs />
+  <section class="bg-kom-ink text-white">
+    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:py-20">
+      <div>
+        <p class="text-kom-tan text-base font-extrabold">Local maintenance and construction across Metro Detroit</p>
+        <h1 class="mt-3 max-w-4xl text-4xl font-black leading-[1.02] tracking-[-0.035em] text-balance sm:text-5xl lg:text-6xl">One Local Team for Home Maintenance and Construction</h1>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/75">From everyday repairs and handyman work to remodeling and new construction, KOM USA makes it easy to get your project started. Choose the service you need, call the right team, or request a callback and estimate.</p>
+        <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+          <a href="/request-service/?line=maintenance&intent=service" class="bg-kom-field hover:bg-kom-field-hover inline-flex h-12 items-center justify-center rounded-md px-7 text-lg font-extrabold text-white focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-sage">Request Service<ArrowRight class="ml-2 size-5" aria-hidden="true" /></a>
+          <a href="/request-service/?line=construction&intent=estimate" class="inline-flex h-12 items-center justify-center rounded-md border border-white/40 px-7 text-lg font-extrabold text-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white/50">Request an Estimate</a>
+        </div>
+        <a href={googleReviews.url} target="_blank" rel="noopener" class="mt-7 inline-flex items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-tan/60">
+          <span class="flex text-kom-tan" aria-hidden="true">{Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}</span>
+          <span class="text-sm font-bold"><span data-g-rating>{reviews.rating}</span> from <span data-g-count>{reviews.count}</span> Google reviews</span>
+        </a>
+      </div>
+      <figure class="relative">
+        <Image src={homeExterior} alt="Metro Detroit home served by KOM USA maintenance and construction teams" class="aspect-[4/3] w-full object-cover" style="border-radius: 14px;" widths={[600, 900, 1200]} sizes="(min-width: 1024px) 43vw, 100vw" loading="eager" />
+        <figcaption class="bg-kom-warm-white text-kom-ink absolute right-4 bottom-4 left-4 grid gap-3 p-4 sm:grid-cols-2" style="border-radius: 10px;">
+          <a href={business.maintenancePhoneHref} class="group"><span class="text-kom-charcoal/60 block text-xs font-bold">Need maintenance or a repair?</span><span class="text-kom-field mt-1 flex items-center gap-1.5 font-black"><Phone class="size-4" aria-hidden="true" />{business.maintenancePhone}</span></a>
+          <a href={business.constructionPhoneHref} class="group"><span class="text-kom-charcoal/60 block text-xs font-bold">Planning a construction project?</span><span class="text-kom-field mt-1 flex items-center gap-1.5 font-black"><Phone class="size-4" aria-hidden="true" />{business.constructionPhone}</span></a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section aria-label="Trust highlights" class="border-b border-kom-charcoal/10 bg-white">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-3 px-4 py-5 text-sm font-extrabold text-kom-charcoal sm:px-6 lg:px-8">
+      <span>Locally owned in Metro Detroit</span><span aria-hidden="true" class="text-kom-brass">●</span><span>Real project photography</span><span aria-hidden="true" class="text-kom-brass">●</span><span>{business.availability}</span><span aria-hidden="true" class="text-kom-brass">●</span><span>One clear request form</span>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-warm-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl"><h2 class="text-kom-ink text-3xl font-black text-balance sm:text-4xl">How can we help?</h2><p class="mt-3 text-lg leading-relaxed text-kom-charcoal/75">Start with the kind of work—not a long list of unfamiliar categories.</p></div>
+      <div class="mt-9 grid gap-6 lg:grid-cols-2">
+        <article class="bg-white p-7 sm:p-9" style="border-radius: 14px;"><p class="text-kom-field font-extrabold">Repairs, routine work, and smaller jobs</p><h3 class="text-kom-ink mt-2 text-3xl font-black">Maintenance</h3><p class="mt-3 max-w-[58ch] leading-relaxed text-kom-charcoal/75">Home systems, handyman work, drywall patches, exterior repairs, locksmith needs, vent cleaning, cleanup, and property upkeep.</p><div class="mt-6 flex flex-wrap gap-3"><a href="/maintenance/" class="text-kom-field inline-flex items-center gap-2 font-black">Explore Maintenance<ArrowRight class="size-4" aria-hidden="true" /></a><a href={business.maintenancePhoneHref} class="text-kom-ink inline-flex items-center gap-2 font-black"><Phone class="size-4" aria-hidden="true" />{business.maintenancePhone}</a></div></article>
+        <article class="bg-kom-field p-7 text-white sm:p-9" style="border-radius: 14px;"><p class="text-kom-tan font-extrabold">Remodeling, building, and larger scopes</p><h3 class="mt-2 text-3xl font-black">Construction</h3><p class="mt-3 max-w-[58ch] leading-relaxed text-white/75">Kitchens, bathrooms, tile, flooring, concrete, painting, new drywall, new construction, and home-building materials.</p><div class="mt-6 flex flex-wrap gap-3"><a href="/construction/" class="text-white inline-flex items-center gap-2 font-black">Explore Construction<ArrowRight class="size-4" aria-hidden="true" /></a><a href={business.constructionPhoneHref} class="text-white inline-flex items-center gap-2 font-black"><Phone class="size-4" aria-hidden="true" />{business.constructionPhone}</a></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><h2 class="text-kom-ink text-3xl font-black sm:text-4xl">Popular Maintenance services</h2><p class="mt-3 text-kom-charcoal/70">Call to confirm scope or send one short request.</p></div><a href="/maintenance/" class="text-kom-field inline-flex items-center gap-2 font-black">View all Maintenance services<ArrowRight class="size-4" aria-hidden="true" /></a></div>
+      <ul class="mt-8 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
+        {popularMaintenance.map((service) => <li class="border-b border-kom-charcoal/15"><a href={servicePath(service)} class="group flex min-h-28 items-center justify-between gap-4 py-5"><span><span class="text-kom-ink group-hover:text-kom-field block text-lg font-black">{service.title}</span><span class="mt-1 block text-sm leading-relaxed text-kom-charcoal/65">{service.summary}</span></span><ArrowRight class="text-kom-field size-5 shrink-0" aria-hidden="true" /></a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-ink text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl"><h2 class="text-3xl font-black sm:text-4xl">Construction capabilities</h2><p class="mt-3 text-white/70">A clear starting point for homeowners and contractors—from one-room improvements to new construction.</p></div>
+      <ul class="mt-8 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
+        {constructionServices.map((service) => <li class="border-b border-white/15"><a href={servicePath(service)} class="group flex min-h-20 items-center justify-between gap-3 py-4 font-black text-white hover:text-kom-tan">{service.title}<ArrowRight class="size-4 shrink-0" aria-hidden="true" /></a></li>)}
+      </ul>
+      <a href="/construction/" class="bg-kom-field hover:bg-kom-field-hover mt-8 inline-flex h-12 items-center rounded-md px-6 font-extrabold">Explore Construction<ArrowRight class="ml-2 size-4" aria-hidden="true" /></a>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-sage-tint">
+    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
+      <Image src={workerPortrait} alt="KOM USA team member ready for a Metro Detroit handyman service request" class="aspect-[4/3] w-full object-cover" style="border-radius: 14px;" widths={[520, 760, 1000]} sizes="(min-width: 1024px) 40vw, 100vw" loading="lazy" />
+      <div><h2 class="text-kom-ink text-3xl font-black text-balance sm:text-4xl">Have a list of smaller jobs?</h2><p class="mt-4 max-w-[62ch] text-lg leading-relaxed text-kom-charcoal/75">Group shelf installation, closet-system work, small-area painting, touch-ups, minor installations, and related household repairs into one Handyman Services request.</p><a href="/maintenance/handyman-services/" class="bg-kom-field hover:bg-kom-field-hover mt-6 inline-flex h-12 items-center rounded-md px-6 font-extrabold text-white">Explore Handyman Services<ArrowRight class="ml-2 size-4" aria-hidden="true" /></a></div>
+    </div>
+  </section>
+
   <HowItWorks />
-  <ServiceArea />
   <Gallery />
+  <GoogleReviews />
+  <ServiceArea />
+
+  <section class="section-pad bg-white"><div class="mx-auto max-w-6xl px-4 sm:px-6"><AdaptiveRequestForm /></div></section>
   <Faq />
-  <CtaBand />
+
+  <section class="section-pad bg-kom-field text-white">
+    <div class="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8"><h2 class="text-3xl font-black text-balance sm:text-4xl">Ready to get the right team involved?</h2><p class="mx-auto mt-3 max-w-2xl text-lg text-white/75">Call Maintenance, call Construction, or send one request and KOM USA will review the details.</p><div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row"><a href={business.maintenancePhoneHref} class="inline-flex h-12 items-center justify-center rounded-md bg-white px-6 font-extrabold text-kom-field"><Phone class="mr-2 size-5" aria-hidden="true" />Maintenance {business.maintenancePhone}</a><a href={business.constructionPhoneHref} class="inline-flex h-12 items-center justify-center rounded-md border border-white/50 px-6 font-extrabold text-white"><Phone class="mr-2 size-5" aria-hidden="true" />Construction {business.constructionPhone}</a></div></div>
+  </section>
 </BaseLayout>
+
+<script>
+  fetch("/api/google-reviews").then((response) => response.ok ? response.json() : null).then((stats) => {
+    if (!stats) return;
+    document.querySelectorAll("[data-g-rating]").forEach((el) => el.textContent = stats.rating);
+    document.querySelectorAll("[data-g-count]").forEach((el) => el.textContent = String(stats.count));
+  }).catch(() => {});
+</script>
