@@ -1,0 +1,28 @@
+name: Content Update Request
+description: Request a change to pricing, services, copy, or other site content
+title: "[Content]: "
+labels: ["content"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For routine edits (pricing, hours, FAQs, testimonials), staff can usually make this change directly in Storyblok — see [`docs/EDITOR-GUIDE.md`](../../docs/EDITOR-GUIDE.md). Use this form when the change needs a code or schema update.
+  - type: textarea
+    id: what
+    attributes:
+      label: What needs to change
+      description: Be specific about the page(s) and the exact wording or values
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why
+      description: Business reason for the change (new service area, price change, promo, etc.)
+    validations:
+      required: true
+  - type: input
+    id: deadline
+    attributes:
+      label: Needed by
+      placeholder: "2026-07-15, or 'no rush'"

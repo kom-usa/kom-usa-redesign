@@ -4,6 +4,10 @@ node_modules/
 # Build output
 site/dist/
 site/.astro/
+.astro/
+
+# Full-res job photos — hosted via CMS media, not versioned in git
+Before & After Photos/
 
 # Netlify
 site/.netlify/
