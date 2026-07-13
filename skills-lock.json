@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "skills": {
+    "astro-github-actions": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "astro-github-actions/SKILL.md",
+      "computedHash": "33668b1d3572821d6f1cab45a7d18f52da5b068649ac152e6d2f7934171fa643"
+    },
+    "astro-seo": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "astro-seo/SKILL.md",
+      "computedHash": "254a3027bc81e23f6ce5753f6920f97d8513f7b66c729a773816a74fc9793248"
+    },
+    "content-seo": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "content-seo/SKILL.md",
+      "computedHash": "0faf7869faa1afbb417f684bf97b19df88e3db172c8772208d7aaf0b3b381899"
+    },
+    "emdash-github-actions": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "emdash-github-actions/SKILL.md",
+      "computedHash": "649e4edaeb6f714d693c16b25eac12d9d0df000ecf446e780e91d10d4075a69e"
+    },
+    "github-profile": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "github-profile/SKILL.md",
+      "computedHash": "c284e7f75802e9804af934647e4ef2732985001f69477a91a0c56d12b03aee42"
+    },
+    "github-repo": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "github-repo/SKILL.md",
+      "computedHash": "4cb219eaff257415f10f47c7c0e4882e3271b016f902a01c7bc1087b1877effb"
+    },
+    "metadata-check": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "metadata-check/SKILL.md",
+      "computedHash": "978846a6d4427a2aaabc2faf00c94cbadab712fe484ce6c910ffa37583bed0f4"
+    },
+    "readability-check": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "readability-check/SKILL.md",
+      "computedHash": "eee158755a4a41a5d6f21290c24cddacf0df1349a3a210bc3acd2092809af278"
+    },
+    "static-seo": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "static-seo/SKILL.md",
+      "computedHash": "9be1ae7a974e15b1a580b564d101485c14d1614f426cf53f1f8c5f3589dd76e6"
+    },
+    "wp-github-actions": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "wp-github-actions/SKILL.md",
+      "computedHash": "8d0aea1d40a9b6b4b8940a15d88e83f56922f36cf4d337e088c61f3836ddf400"
+    },
+    "wp-readme-optimizer": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "wp-readme-optimizer/SKILL.md",
+      "computedHash": "83925a9812be2567abe4e62aba0db24b1fa58d466abb78d0e8ee0a06b7a35cad"
+    },
+    "wp-static-clone": {
+      "source": "jdevalk/skills",
+      "sourceType": "github",
+      "skillPath": "wp-static-clone/SKILL.md",
+      "computedHash": "41492f8a3c1e3783262ff32aeed70265a1c8ab4d9ddf650d054df7a8736c9d65"
+    }
+  }
+}

@@ -3,10 +3,12 @@ import StarFilled from "@tabler/icons/filled/star.svg";
 import ExternalLink from "@tabler/icons/outline/external-link.svg";
 
 import SectionHeader from "../common/SectionHeader.astro";
+import TestimonialCard from "../ui/TestimonialCard.astro";
 import { googleReviews } from "../../data/business";
 import { getReviewStats } from "../../lib/google-reviews";
 
 const reviews = await getReviewStats();
+const featuredReviews = reviews.reviews.slice(0, 3);
 ---
 
 <section id="reviews" class="section-pad scroll-mt-16 bg-kom-warm-white">
@@ -28,24 +30,26 @@ const reviews = await getReviewStats();
       </span>
     </p>
 
-    <div class="mt-10 grid gap-6 md:grid-cols-3">
+    <div class="mt-10 grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3" data-review-grid>
       {
-        googleReviews.featured.map((review, index) => (
-          <figure class="reveal border-border flex flex-col rounded-xl border bg-white p-6 shadow-card" style={`--rd: ${index * 90}ms`}>
-            <span class="flex text-kom-brass" aria-hidden="true">
-              {Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}
-            </span>
-            <blockquote class="text-kom-charcoal mt-4 flex-1 text-sm leading-relaxed">
-              “{review.quote}”
-            </blockquote>
-            <figcaption class="text-kom-charcoal-deep mt-4 text-sm font-extrabold">
-              {review.name}
-              <span class="text-muted-foreground block text-xs font-medium">Google review</span>
-            </figcaption>
-          </figure>
+        featuredReviews.map((review, index) => (
+          <TestimonialCard
+            name={review.authorName}
+            role={`Google Maps${review.relativePublishTimeDescription ? ` · ${review.relativePublishTimeDescription}` : ""}`}
+            testimonial={review.text}
+            rating={review.rating}
+            image={review.authorPhotoUri}
+            authorUrl={review.authorUri}
+            reviewUrl={review.googleMapsUri}
+            style={`--rd: ${index * 90}ms`}
+          />
         ))
       }
     </div>
+
+    <p class="text-muted-foreground reveal mx-auto mt-5 max-w-2xl text-center text-xs leading-relaxed">
+      Featured reviews are selected and ordered by Google Maps based on relevance.
+    </p>
 
     <p class="reveal mt-8 text-center">
       <a href={googleReviews.url} target="_blank" rel="noopener" class="text-kom-field inline-flex items-center gap-1.5 text-sm font-extrabold hover:underline focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none">
@@ -62,13 +66,76 @@ const reviews = await getReviewStats();
   // silently — the baked values are already correct as of the last deploy.
   fetch("/api/google-reviews")
     .then((res) => (res.ok ? res.json() : null))
-    .then((stats: { rating: string; count: number } | null) => {
+    .then((stats: {
+      rating: string;
+      count: number;
+      reviews?: Array<{
+        authorName: string;
+        authorUri?: string;
+        authorPhotoUri?: string;
+        text: string;
+        rating: number;
+        relativePublishTimeDescription?: string;
+        googleMapsUri: string;
+      }>;
+    } | null) => {
       if (!stats) return;
       document.querySelectorAll("[data-g-rating]").forEach((el) => {
         el.textContent = stats.rating;
       });
       document.querySelectorAll("[data-g-count]").forEach((el) => {
         el.textContent = String(stats.count);
+      });
+
+      const liveReviews = stats.reviews?.filter((review) => review.text).slice(0, 3) ?? [];
+      if (!liveReviews.length) return;
+
+      document.querySelectorAll<HTMLElement>("[data-google-review]").forEach((card, index) => {
+        const review = liveReviews[index];
+        card.hidden = !review;
+        if (!review) return;
+
+        const text = card.querySelector<HTMLElement>("[data-review-text]");
+        const author = card.querySelector<HTMLAnchorElement>("[data-review-author]");
+        const source = card.querySelector<HTMLAnchorElement>("[data-review-source]");
+        const image = card.querySelector<HTMLImageElement>("[data-review-image]");
+        const initials = card.querySelector<HTMLElement>("[data-review-initials]");
+        const stars = card.querySelector<HTMLElement>("[data-review-stars]");
+
+        if (text) text.textContent = review.text;
+        if (author) {
+          author.textContent = review.authorName;
+          author.href = review.authorUri ?? review.googleMapsUri;
+        }
+        if (source) {
+          source.textContent = `Google Maps${review.relativePublishTimeDescription ? ` · ${review.relativePublishTimeDescription}` : ""}`;
+          source.href = review.googleMapsUri;
+        }
+        if (initials) {
+          initials.textContent = review.authorName
+            .split(/\s+/)
+            .filter(Boolean)
+            .slice(0, 2)
+            .map((part) => part[0])
+            .join("")
+            .toUpperCase();
+          initials.classList.toggle("hidden", Boolean(review.authorPhotoUri));
+        }
+        if (image) {
+          image.classList.toggle("hidden", !review.authorPhotoUri);
+          if (review.authorPhotoUri) {
+            image.src = review.authorPhotoUri;
+            image.alt = `${review.authorName} profile photo`;
+          } else {
+            image.removeAttribute("src");
+            image.alt = "";
+          }
+        }
+        if (stars) stars.setAttribute("aria-label", `${review.rating} out of 5 stars`);
+        card.querySelectorAll<SVGElement>("[data-review-star]").forEach((star, starIndex) => {
+          star.classList.toggle("text-kom-brass", starIndex < review.rating);
+          star.classList.toggle("text-kom-concrete", starIndex >= review.rating);
+        });
       });
     })
     .catch(() => {});

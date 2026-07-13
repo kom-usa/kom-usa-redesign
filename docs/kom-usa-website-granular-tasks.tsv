@@ -1,0 +1,181 @@
+Topic	Task	Notes
+PHASE 1: Design + SEO	Finalize homepage hero layout	
+	Finalize homepage section order	
+	Finalize header navigation	
+	Finalize footer layout	
+	Finalize mobile sticky CTA bar	
+	Finalize button styles	
+	Finalize form styles	
+	Finalize service card styles	
+	Finalize FAQ layout	
+	Finalize gallery layout	
+	Finalize property manager section	
+	Finalize locksmith pricing section	
+	Finalize service area section	
+	Mobile design QA	
+	Desktop design QA	
+	Accessibility QA	
+	Page speed QA	
+	SEO title pass	
+	SEO meta description pass	
+	Heading structure pass	
+	Canonical URL pass	
+	Schema markup pass	
+	Sitemap and robots pass	
+	Open Graph image pass	
+	Storyblok CMS decision	
+	Storyblok account setup	
+	Storyblok content model plan	
+	Storyblok Astro test page	
+	Conversion form cleanup	
+	Netlify form detection test	
+	Spam protection check	
+	Thank-you page cleanup	
+	Form notification setup	
+	Form submission test	
+	GA4 setup	
+	Google Search Console setup	
+	Bing Webmaster setup	
+	Ahrefs Webmaster Tools setup	
+	Phone click tracking	
+	Form conversion tracking	
+	Download Google Business Profile photos	
+	Sort photos by service type	
+	Rename photo files	
+	Compress photo files	
+	Add photo alt text	
+	Replace placeholder photos	
+	Add Google Maps embed	
+	Add NAP consistency block	Name, address, phone consistency.
+	Brevo account setup	
+	Brevo list setup	
+	Brevo form connection	
+	Brevo test contact submission	
+PHASE 2: Wix Site Migration	ServiceM8 workflow discovery	Confirm what booking should do before full automation.
+	ServiceM8 account/API access check	
+	ServiceM8 booking fields list	
+	ServiceM8 test booking flow	
+	ServiceM8 booking CTA placement	
+	Wix page inventory	
+	Wix URL inventory	
+	Wix SEO title export	
+	Wix meta description export	
+	Wix image export	
+	Wix form inventory	
+	Wix reviews/testimonials export	
+	Wix content cleanup list	
+	Build About page	
+	Build Contact page	
+	Build Services overview page	
+	Build Locksmith page	
+	Build Construction & Remodeling page	
+	Build Property Maintenance page	
+	Build Chimney Care page	
+	Build Property Management page	
+	Build Thank You page final version	
+	Create old-to-new URL redirect map	
+	Add Netlify redirects	
+	Test all redirects	
+	Check broken links	
+	Check missing images	
+	Check duplicate titles	
+	Check duplicate descriptions	
+	Final migration QA	
+PHASE 3: Content Operations	Set up markdown blog	
+	Create blog content collection	
+	Create blog index page	
+	Create blog post template	
+	Add blog SEO fields	
+	Add blog author/date fields	
+	Add blog category field	
+	Add first blog post	
+	Add seasonal blog post	
+	Add locksmith blog post	
+	Add property management blog post	
+	Add remodeling blog post	
+	Create services content collection	
+	Create locations content collection	
+	Create FAQs content collection	
+	Create testimonials content collection	
+	Create project gallery collection	
+	Create case study template	
+	Add first case study	
+	Add project photo workflow	
+	Add image naming rules	
+	Add content publishing checklist	
+	Add AI writing prompt template	
+	Add SEO QA checklist	
+	Add monthly content calendar	
+PHASE 4: Customer Accounts	Choose account stack	
+	Database schema plan	
+	User authorization plan	
+	Customer profile table	
+	Property address table	
+	Service request table	
+	Subscription table	
+	Sign up page	
+	Login page	
+	Logout flow	
+	Password reset flow	
+	Account dashboard shell	
+	Customer profile screen	
+	Saved addresses screen	
+	Service request history screen	
+	Upcoming appointments screen	
+	Membership status screen	
+	Account privacy copy	
+	Account terms copy	
+	Account mobile QA	
+	Stripe account setup	
+	Stripe product setup	
+	Stripe price setup	
+	Stripe checkout setup	
+	Stripe success page	
+	Stripe cancel page	
+	Stripe webhook setup	
+	Subscription purchase test	
+	Subscription renewal test	
+	Subscription cancellation test	
+	Member benefits page	
+	Member discount rules	
+PHASE 5: ServiceM8 Booking Automation	ServiceM8 API credential storage	
+	ServiceM8 customer sync	
+	ServiceM8 job creation function	
+	ServiceM8 job status field map	
+	ServiceM8 schedule field map	
+	ServiceM8 attachment upload plan	
+	Send website form to ServiceM8	
+	Send uploaded photos to ServiceM8	
+	Add staff notification	
+	Add customer confirmation email	
+	Add ServiceM8 webhook endpoint	
+	Sync job status updates	
+	Sync appointment updates	
+	Show ServiceM8 jobs in account dashboard	
+	Test booking end-to-end	
+	Test reschedule flow	
+	Test failed API fallback	
+PHASE 6: Job Estimator Tool	Estimator requirements list	
+	Estimator service list	
+	Estimator pricing input list	
+	Labor rate rules	
+	Material cost rules	
+	Distance fee rules	
+	Urgency fee rules	
+	Membership discount rules	
+	Estimator disclaimer copy	
+	Estimator landing page	
+	Estimator step 1 service type	
+	Estimator step 2 job details	
+	Estimator step 3 property details	
+	Estimator step 4 photos	
+	Estimator result screen	
+	Estimator lead capture form	
+	Email estimate to customer	
+	Send estimate request to KOM	
+	Save estimate to account	
+	Admin pricing settings	
+	Admin estimator rules screen	
+	Estimator calculation tests	
+	Estimator mobile QA	
+	Estimator conversion tracking	
