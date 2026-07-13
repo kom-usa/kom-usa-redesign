@@ -141,7 +141,7 @@ Starwind UI is the default foundation, not a cage. The agent may incorporate any
 
 Use this decision order:
 
-1. Prefer native `.astro` components, Starwind UI source components, Tailwind CSS v4, semantic HTML, and CSS transitions.
+1. Prefer native `.astro` components, Tailwind CSS v4, semantic HTML, and CSS transitions.
 2. If a pattern from another ecosystem is better, adapt it into Astro instead of forcing the whole page into React.
 3. Use React, Svelte, Vue, Solid, or another island only for the smallest interactive part that truly needs client-side state.
 4. Never convert an Astro page into a client-rendered app just to use an animation or component demo.
