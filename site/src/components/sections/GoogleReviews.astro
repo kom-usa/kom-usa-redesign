@@ -35,7 +35,7 @@ const featuredReviews = reviews.reviews.slice(0, 3);
         featuredReviews.map((review, index) => (
           <TestimonialCard
             name={review.authorName}
-            role={`Google Maps${review.relativePublishTimeDescription ? ` · ${review.relativePublishTimeDescription}` : ""}`}
+            dateLabel={review.relativePublishTimeDescription}
             testimonial={review.text}
             rating={review.rating}
             image={review.authorPhotoUri}
@@ -61,6 +61,8 @@ const featuredReviews = reviews.reviews.slice(0, 3);
 </section>
 
 <script>
+  import { createReviewExcerpt } from "../../lib/review-excerpt";
+
   // Live review counter: the page ships with build-time numbers; this upgrades
   // them from /api/google-reviews (Netlify function, CDN-cached ~1h). Fails
   // silently — the baked values are already correct as of the last deploy.
@@ -98,19 +100,23 @@ const featuredReviews = reviews.reviews.slice(0, 3);
         const text = card.querySelector<HTMLElement>("[data-review-text]");
         const author = card.querySelector<HTMLAnchorElement>("[data-review-author]");
         const source = card.querySelector<HTMLAnchorElement>("[data-review-source]");
+        const date = card.querySelector<HTMLElement>("[data-review-date]");
+        const readMore = card.querySelector<HTMLAnchorElement>("[data-review-read-more]");
         const image = card.querySelector<HTMLImageElement>("[data-review-image]");
         const initials = card.querySelector<HTMLElement>("[data-review-initials]");
         const stars = card.querySelector<HTMLElement>("[data-review-stars]");
 
-        if (text) text.textContent = review.text;
+        if (text) text.textContent = createReviewExcerpt(review.text);
         if (author) {
           author.textContent = review.authorName;
           author.href = review.authorUri ?? review.googleMapsUri;
         }
         if (source) {
-          source.textContent = `Google Maps${review.relativePublishTimeDescription ? ` · ${review.relativePublishTimeDescription}` : ""}`;
           source.href = review.googleMapsUri;
+          source.setAttribute("aria-label", `Read ${review.authorName}'s review on Google Maps`);
         }
+        if (date) date.textContent = review.relativePublishTimeDescription ?? "Google review";
+        if (readMore) readMore.href = review.googleMapsUri;
         if (initials) {
           initials.textContent = review.authorName
             .split(/\s+/)
