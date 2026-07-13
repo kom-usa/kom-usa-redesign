@@ -4,24 +4,24 @@ import { Image } from "astro:assets";
 import SectionHeader from "../common/SectionHeader.astro";
 import { getStories, storyDate } from "../../lib/storyblok";
 
-import homeExterior from "../../assets/images/home-exterior.jpg";
-import doorLock from "../../assets/images/door-lock.jpg";
-import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
-import workerElectrical from "../../assets/images/worker-electrical.jpg";
-import basementInterior from "../../assets/images/basement-interior.jpg";
-import interiorRenovation from "../../assets/images/interior-renovation.jpg";
+import chimneyCapBeforeAfter from "../../assets/images/projects/chimney-cap-before-after.jpeg";
+import marblePowderRoom from "../../assets/images/projects/marble-powder-room.jpeg";
+import openPlanInterior from "../../assets/images/projects/open-plan-interior.jpeg";
+import tiledShower from "../../assets/images/projects/tiled-shower.jpeg";
+import marbleShowerLed from "../../assets/images/projects/marble-shower-led.jpeg";
+import customMediaWall from "../../assets/images/projects/custom-media-wall.jpeg";
 
 /**
- * Placeholder photos (see src/assets/images) — used as a fallback until at
- * least 3 projects are published in Storyblok.
+ * Real photos from KOM USA jobs (src/assets/images/projects) — used until at
+ * least 3 projects are published in the CMS, at which point those take over.
  */
 const stockPhotos: { image: ImageMetadata; alt: string }[] = [
-  { image: homeExterior, alt: "Sample photo — well-kept Metro Detroit home exterior" },
-  { image: doorLock, alt: "Sample photo — smart lock on a residential door" },
-  { image: fireplaceChimney, alt: "Sample photo — fireplace and chimney" },
-  { image: workerElectrical, alt: "Sample photo — technician at work on a water heater install" },
-  { image: basementInterior, alt: "Sample photo — clean, finished basement interior" },
-  { image: interiorRenovation, alt: "Sample photo — interior in progress during a home project" },
+  { image: chimneyCapBeforeAfter, alt: "Before and after — crumbling chimney crown rebuilt with a new cap and liner cap" },
+  { image: marblePowderRoom, alt: "Remodeled powder room with sculpted white tile and matte black fixtures" },
+  { image: tiledShower, alt: "Walk-in shower rebuilt with gray stone tile, body jets, and grab bars" },
+  { image: openPlanInterior, alt: "Bright open-plan kitchen and living area after a full interior refresh" },
+  { image: marbleShowerLed, alt: "Marble-tiled shower with rainfall head and LED-lit mirror niche" },
+  { image: customMediaWall, alt: "Custom media wall with backlit acoustic panels in a finished office" },
 ];
 
 const projectStories = await getStories("project");
@@ -47,11 +47,7 @@ const projectPhotos = usesProjects
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
       title="A look at the work"
-      lead={
-        usesProjects
-          ? "Recent projects from homes we've worked in across Metro Detroit."
-          : "Sample photos of the kinds of homes we work in across Metro Detroit."
-      }
+      lead="Real photos from recent KOM USA jobs in Metro Detroit homes."
     />
 
     {

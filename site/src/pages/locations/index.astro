@@ -31,7 +31,7 @@ stories.sort((a, b) => (a.content.city ?? a.slug).localeCompare(b.content.city ?
             {stories.map((story, index) => (
               <a
                 href={`/locations/${story.slug}`}
-                class="reveal border-border group flex flex-col rounded-xl border bg-white p-6 shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                class="reveal border-border group flex flex-col rounded-xl border bg-white p-6 transition-colors hover:border-kom-field/50 focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
                 style={`--rd: ${index * 90}ms`}
               >
                 <span class="text-kom-charcoal-deep group-hover:text-kom-field text-xl font-black transition-colors">

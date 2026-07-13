@@ -77,7 +77,7 @@ const introHtml = renderRichText(content.intro);
             {services.map((service, index) => (
               <a
                 href={`/services/${service.slug}`}
-                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white transition-colors hover:border-kom-field/50 focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
                 style={`--rd: ${index * 90}ms`}
               >
                 {service.content?.hero_image?.filename ? (
@@ -167,7 +167,7 @@ const introHtml = renderRichText(content.intro);
             {projects.map((project, index) => (
               <a
                 href={`/projects/${project.slug}`}
-                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white transition-colors hover:border-kom-field/50 focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
                 style={`--rd: ${index * 90}ms`}
               >
                 {project.content?.photos?.[0]?.filename && (

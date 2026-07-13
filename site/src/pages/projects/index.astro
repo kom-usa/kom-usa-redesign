@@ -36,7 +36,7 @@ const serviceChipLabels: Record<string, string> = {
             {stories.map((story, index) => (
               <a
                 href={`/projects/${story.slug}`}
-                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
+                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white transition-colors hover:border-kom-field/50 focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
                 style={`--rd: ${index * 90}ms`}
               >
                 {story.content.photos?.[0]?.filename && (
