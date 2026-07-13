@@ -14,6 +14,12 @@
 [build.environment]
   NODE_VERSION = "22"
 
+# Event-triggered function: formSubmitted → Brevo contact sync + acknowledgement email.
+# Path is relative to `base` (site/).
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # Hashed, content-addressed assets never change under a given name.
 [[headers]]
   for = "/_astro/*"
