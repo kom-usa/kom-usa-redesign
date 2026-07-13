@@ -6,6 +6,14 @@ import Roofline from "../common/Roofline.astro";
 import { business, serviceAreaCities, serviceAreaCounties } from "../../data/business";
 
 const countiesSentence = serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ", and $1");
+
+// Google Map of the service area. With an API key we use the official Maps
+// Embed API (pin on the KOM USA listing); without one we fall back to the
+// keyless embed so the build never ships a broken map.
+const embedKey = import.meta.env.GOOGLE_MAPS_EMBED_KEY ?? import.meta.env.GOOGLE_MAPS_API_KEY;
+const mapSrc = embedKey
+  ? `https://www.google.com/maps/embed/v1/place?key=${embedKey}&q=${encodeURIComponent("KOM USA, Metro Detroit, MI")}&center=42.383,-83.102&zoom=9`
+  : "https://maps.google.com/maps?ll=42.383,-83.102&z=9&output=embed";
 ---
 
 <section id="service-area" class="section-pad scroll-mt-16 bg-kom-cream">
@@ -18,10 +26,11 @@ const countiesSentence = serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ",
     <div class="mt-12 grid items-stretch gap-6 lg:grid-cols-2">
       <div class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card">
         <iframe
-          src="https://www.openstreetmap.org/export/embed.html?bbox=-83.85%2C42.00%2C-82.60%2C42.90&layer=mapnik&marker=42.383%2C-83.102"
-          title="Map of the KOM USA service area across Metro Detroit"
+          src={mapSrc}
+          title="Google Map of the KOM USA service area across Metro Detroit"
           class="h-full min-h-80 w-full border-0"
           loading="lazy"
+          allowfullscreen
           referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
 

@@ -6,6 +6,7 @@ import {
   faqs as homepageFaqs,
 } from "../../data/business";
 import { services } from "../../data/services";
+import { getReviewStats } from "../../lib/google-reviews";
 
 interface Props {
   title: string;
@@ -41,6 +42,7 @@ const ids = {
 
 const serviceList = includeBusinessGraph ? services : [];
 const faqList = includeBusinessGraph ? homepageFaqs : [];
+const reviewStats = includeBusinessGraph ? await getReviewStats() : null;
 
 const graph: Record<string, unknown>[] = [
   {
@@ -99,8 +101,8 @@ if (includeBusinessGraph) {
       },
       aggregateRating: {
         "@type": "AggregateRating",
-        ratingValue: googleReviews.rating,
-        reviewCount: String(googleReviews.count),
+        ratingValue: reviewStats?.rating ?? googleReviews.rating,
+        reviewCount: String(reviewStats?.count ?? googleReviews.count),
       },
       sameAs: [googleReviews.url],
       knowsAbout: serviceList.map((s) => s.title),

@@ -6,7 +6,10 @@ import Phone from "@tabler/icons/outline/phone.svg";
 import Button from "../starwind/button/Button.astro";
 import LeadCallForm from "./LeadCallForm.astro";
 import { business, googleReviews } from "../../data/business";
+import { getReviewStats } from "../../lib/google-reviews";
 import doorLock from "../../assets/images/door-lock.jpg";
+
+const reviews = await getReviewStats();
 ---
 
 <section class="relative">
@@ -40,13 +43,13 @@ import doorLock from "../../assets/images/door-lock.jpg";
             rel="noopener"
             class="flex items-center gap-3 rounded-lg border border-white/15 bg-white/10 px-4 py-2.5 transition-colors hover:bg-white/20 focus-visible:ring-3 focus-visible:ring-white/50 focus-visible:outline-none"
           >
-            <span class="text-3xl font-black text-white">{googleReviews.rating}</span>
+            <span class="text-3xl font-black text-white" data-g-rating>{reviews.rating}</span>
             <span>
               <span class="flex text-kom-brass" aria-hidden="true">
                 {Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}
               </span>
               <span class="block text-xs font-bold text-white/85">
-                {googleReviews.count} Google reviews
+                <span data-g-count>{reviews.count}</span> Google reviews
               </span>
             </span>
           </a>

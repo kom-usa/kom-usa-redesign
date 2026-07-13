@@ -4,6 +4,9 @@ import ExternalLink from "@tabler/icons/outline/external-link.svg";
 
 import SectionHeader from "../common/SectionHeader.astro";
 import { googleReviews } from "../../data/business";
+import { getReviewStats } from "../../lib/google-reviews";
+
+const reviews = await getReviewStats();
 ---
 
 <section id="reviews" class="section-pad scroll-mt-16 bg-kom-warm-white">
@@ -14,13 +17,13 @@ import { googleReviews } from "../../data/business";
     />
 
     <p class="reveal mt-6 flex items-center justify-center gap-3">
-      <span class="text-kom-charcoal-deep text-5xl font-black">{googleReviews.rating}</span>
+      <span class="text-kom-charcoal-deep text-5xl font-black" data-g-rating>{reviews.rating}</span>
       <span>
         <span class="flex text-kom-brass" aria-hidden="true">
           {Array.from({ length: 5 }).map(() => <StarFilled class="size-5" />)}
         </span>
         <a href={googleReviews.url} target="_blank" rel="noopener" class="text-kom-field mt-1 block text-sm font-extrabold hover:underline">
-          {googleReviews.count} reviews on Google
+          <span data-g-count>{reviews.count}</span> reviews on Google
         </a>
       </span>
     </p>
@@ -46,9 +49,27 @@ import { googleReviews } from "../../data/business";
 
     <p class="reveal mt-8 text-center">
       <a href={googleReviews.url} target="_blank" rel="noopener" class="text-kom-field inline-flex items-center gap-1.5 text-sm font-extrabold hover:underline focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none">
-        Read all {googleReviews.count} reviews on Google
+        Read all <span data-g-count>{reviews.count}</span> reviews on Google
         <ExternalLink class="size-4" aria-hidden="true" />
       </a>
     </p>
   </div>
 </section>
+
+<script>
+  // Live review counter: the page ships with build-time numbers; this upgrades
+  // them from /api/google-reviews (Netlify function, CDN-cached ~1h). Fails
+  // silently — the baked values are already correct as of the last deploy.
+  fetch("/api/google-reviews")
+    .then((res) => (res.ok ? res.json() : null))
+    .then((stats: { rating: string; count: number } | null) => {
+      if (!stats) return;
+      document.querySelectorAll("[data-g-rating]").forEach((el) => {
+        el.textContent = stats.rating;
+      });
+      document.querySelectorAll("[data-g-count]").forEach((el) => {
+        el.textContent = String(stats.count);
+      });
+    })
+    .catch(() => {});
+</script>
