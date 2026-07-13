@@ -473,6 +473,36 @@ export const maintenanceGroups: NavGroup[] = [
   },
 ];
 
+/** Icon name (see components/common/Icon.astro) for each service card. */
+export const serviceIcons: Record<string, string> = {
+  "heating-cooling": "temperature",
+  "drain-cleaning": "droplet",
+  "electrical-services": "bolt",
+  "water-heaters": "flame",
+  "air-duct-cleaning": "wind",
+  locksmith: "lock",
+  "handyman-services": "tool",
+  "drywall-repair": "wall",
+  "gutter-cleaning": "bucket-droplet",
+  "fence-repair-installation": "fence",
+  "roof-repair-maintenance": "home-shield",
+  "siding-repair-installation": "texture",
+  "window-repair-installation": "window",
+  "brick-mortar-repair": "trowel",
+  "chimney-care": "ladder",
+  "demolition-debris-removal": "trash",
+  "kitchen-remodeling": "chef-hat",
+  "bathroom-remodeling": "bath",
+  "tile-installation": "layout-grid",
+  "flooring-installation": "ruler-2",
+  "concrete-services": "shovel",
+  painting: "paint",
+  "drywall-installation": "wall",
+  "new-construction": "crane",
+};
+
+export const serviceIcon = (service: ServiceDefinition) => serviceIcons[service.slug] ?? "tool";
+
 export const servicePath = (service: ServiceDefinition) => `/${service.line}/${service.slug}/`;
 
 export function getService(line: ServiceLine, slug: string): ServiceDefinition | undefined {

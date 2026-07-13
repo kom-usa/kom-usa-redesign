@@ -2,6 +2,7 @@
 import Phone from "@tabler/icons/outline/phone.svg";
 import Mail from "@tabler/icons/outline/mail.svg";
 import MapPin from "@tabler/icons/outline/map-pin.svg";
+import BrandInstagram from "@tabler/icons/outline/brand-instagram.svg";
 import { business } from "../../data/business";
 import logoWhite from "../../assets/logos/kom-usa-logo-white.svg";
 
@@ -38,6 +39,9 @@ const columns = [
         </a>
         <p class="mt-4 max-w-xs text-sm leading-relaxed">Home maintenance, repairs, remodeling, construction, and project support across Metro Detroit.</p>
         <p class="mt-4 text-sm font-bold text-white">{business.availability}</p>
+        <a href={business.instagramUrl} target="_blank" rel="noopener" aria-label="KOM USA on Instagram" class="mt-4 inline-flex size-10 items-center justify-center rounded-md border border-white/20 text-white/75 transition-colors hover:border-kom-tan hover:text-kom-tan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-tan">
+          <BrandInstagram class="size-5" aria-hidden="true" />
+        </a>
       </div>
 
       {columns.map((column) => (

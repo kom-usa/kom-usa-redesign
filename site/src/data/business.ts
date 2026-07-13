@@ -25,6 +25,7 @@ export const business = {
   availability: "Service requests accepted 24/7",
   hoursShort: "Service requests accepted 24/7",
   googleReviewsUrl: "https://share.google/gfFHF6KBpnBz5FchG",
+  instagramUrl: "https://www.instagram.com/kom_usa_/",
 } as const;
 
 export const hours = [

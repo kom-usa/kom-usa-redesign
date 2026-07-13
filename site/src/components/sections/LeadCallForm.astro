@@ -2,7 +2,9 @@
 import Button from "../starwind/button/Button.astro";
 import Input from "../starwind/input/Input.astro";
 import Label from "../starwind/label/Label.astro";
-import { business, serviceOptions } from "../../data/business";
+import { business } from "../../data/business";
+
+const serviceTypeOptions = ["Maintenance", "Construction"];
 
 interface Props {
   preselectService?: string;
@@ -40,9 +42,9 @@ const errClass = "lead-error text-error mt-1 hidden text-xs font-semibold";
 
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div class="space-y-1.5">
-        <Label for="lead-name">First name <span class="text-error">*</span></Label>
-        <Input type="text" id="lead-name" name="first-name" required autocomplete="given-name" placeholder="e.g. Sam" aria-describedby="lead-name-error" class={invalidClass} />
-        <p id="lead-name-error" class={errClass} role="alert">Please enter your first name.</p>
+        <Label for="lead-name">Name <span class="text-error">*</span></Label>
+        <Input type="text" id="lead-name" name="first-name" required autocomplete="name" placeholder="e.g. Sam Miller" aria-describedby="lead-name-error" class={invalidClass} />
+        <p id="lead-name-error" class={errClass} role="alert">Please enter your name.</p>
       </div>
       <div class="space-y-1.5">
         <Label for="lead-phone">Phone <span class="text-error">*</span></Label>
@@ -55,19 +57,19 @@ const errClass = "lead-error text-error mt-1 hidden text-xs font-semibold";
         <p id="lead-email-error" class={errClass} role="alert">Enter a valid email address.</p>
       </div>
       <div class="space-y-1.5">
-        <Label for="lead-city">City or ZIP <span class="text-error">*</span></Label>
-        <Input type="text" id="lead-city" name="city" required autocomplete="postal-code" placeholder="e.g. Warren or 48088" aria-describedby="lead-city-error" class={invalidClass} />
-        <p id="lead-city-error" class={errClass} role="alert">Let us know your city or ZIP.</p>
+        <Label for="lead-city">ZIP code <span class="text-error">*</span></Label>
+        <Input type="text" id="lead-city" name="city" required autocomplete="postal-code" placeholder="e.g. 48088" aria-describedby="lead-city-error" class={invalidClass} />
+        <p id="lead-city-error" class={errClass} role="alert">Let us know your ZIP code.</p>
       </div>
       <div class="space-y-1.5">
-        <Label for="lead-service">What do you need? <span class="text-error">*</span></Label>
+        <Label for="lead-service">Type of service <span class="text-error">*</span></Label>
         <select id="lead-service" name="service" required class={selectClass} aria-describedby="lead-service-error">
-          <option value="" disabled selected={!preselectService}>Choose a service</option>
-          {serviceOptions.map((option) => (
+          <option value="" disabled selected={!preselectService}>Maintenance or Construction?</option>
+          {serviceTypeOptions.map((option) => (
             <option value={option} selected={option === preselectService}>{option}</option>
           ))}
         </select>
-        <p id="lead-service-error" class={errClass} role="alert">Pick the service you need.</p>
+        <p id="lead-service-error" class={errClass} role="alert">Choose Maintenance or Construction.</p>
       </div>
       <div class="space-y-1.5">
         <Label for="lead-note">Anything else? <span class="text-muted-foreground font-normal">(optional)</span></Label>

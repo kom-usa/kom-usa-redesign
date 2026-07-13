@@ -39,7 +39,12 @@ export function parseFormSubmission(
     };
   }
 
-  const fullName = (data.name ?? "").trim();
+  const fullName =
+    (data.name ?? "").trim() ||
+    [data["first-name"], data["last-name"]]
+      .map((part) => (part ?? "").trim())
+      .filter(Boolean)
+      .join(" ");
   const firstName = fullName.split(/\s+/)[0] ?? fullName;
 
   return {

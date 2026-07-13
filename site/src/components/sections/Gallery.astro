@@ -1,53 +1,144 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
+import ArrowLeft from "@tabler/icons/outline/arrow-left.svg";
+import X from "@tabler/icons/outline/x.svg";
+import ArrowsHorizontal from "@tabler/icons/outline/arrows-horizontal.svg";
 
 import SectionHeader from "../common/SectionHeader.astro";
 
-import chimneyCapBeforeAfter from "../../assets/images/projects/chimney-cap-before-after.jpeg";
+import chimneyRebuildBefore from "../../assets/images/projects/chimney-rebuild-before.jpeg";
+import chimneyRebuildAfter from "../../assets/images/projects/chimney-rebuild-after.jpeg";
+import chimneyCapsBefore from "../../assets/images/projects/chimney-caps-before.jpeg";
+import chimneyCapsAfter from "../../assets/images/projects/chimney-caps-after.jpeg";
+import houseExterior from "../../assets/images/projects/house-exterior.jpeg";
+import whiteKitchen from "../../assets/images/projects/white-kitchen.jpeg";
 import marblePowderRoom from "../../assets/images/projects/marble-powder-room.jpeg";
 import openPlanInterior from "../../assets/images/projects/open-plan-interior.jpeg";
 import tiledShower from "../../assets/images/projects/tiled-shower.jpeg";
 import marbleShowerLed from "../../assets/images/projects/marble-shower-led.jpeg";
 import customMediaWall from "../../assets/images/projects/custom-media-wall.jpeg";
+import freestandingTub from "../../assets/images/projects/freestanding-tub.jpeg";
+import sunroomWindows from "../../assets/images/projects/sunroom-windows.jpeg";
+import porchConstruction from "../../assets/images/projects/porch-construction.jpeg";
+import tubWindowView from "../../assets/images/projects/tub-window-view.jpeg";
+import finishedInterior from "../../assets/images/projects/finished-interior.jpeg";
 
 const projectPhotos: { image: ImageMetadata; alt: string }[] = [
-  { image: chimneyCapBeforeAfter, alt: "Before and after — crumbling chimney crown rebuilt with a new cap and liner cap" },
+  { image: houseExterior, alt: "Fully renovated two-story Detroit home with a rebuilt front porch" },
+  { image: whiteKitchen, alt: "Remodeled kitchen with white shaker cabinets and a custom range hood" },
   { image: marblePowderRoom, alt: "Remodeled powder room with sculpted white tile and matte black fixtures" },
   { image: tiledShower, alt: "Walk-in shower rebuilt with gray stone tile, body jets, and grab bars" },
+  { image: freestandingTub, alt: "Primary bath remodel with a freestanding tub and marble-tile surround" },
   { image: openPlanInterior, alt: "Bright open-plan kitchen and living area after a full interior refresh" },
+  { image: sunroomWindows, alt: "Sunroom addition wrapped in new windows and finished flooring" },
   { image: marbleShowerLed, alt: "Marble-tiled shower with rainfall head and LED-lit mirror niche" },
+  { image: porchConstruction, alt: "New two-story front porch framed and built by the KOM USA crew" },
   { image: customMediaWall, alt: "Custom media wall with backlit acoustic panels in a finished office" },
+  { image: tubWindowView, alt: "Freestanding tub set beneath a picture window in a remodeled bath" },
+  { image: finishedInterior, alt: "Finished open interior with new flooring, trim, and lighting" },
 ];
 
+const beforeAfterPairs = [
+  {
+    id: "chimney-rebuild",
+    title: "Chimney rebuild",
+    before: { image: chimneyRebuildBefore, alt: "Chimney with crumbling brick and a failing crown before repair" },
+    after: { image: chimneyRebuildAfter, alt: "Same chimney rebuilt with new brick, crown, and caps" },
+  },
+  {
+    id: "chimney-caps",
+    title: "Crown & cap replacement",
+    before: { image: chimneyCapsBefore, alt: "Worn chimney crown with deteriorated caps before service" },
+    after: { image: chimneyCapsAfter, alt: "Restored chimney crown with new caps installed" },
+  },
+];
+
+const pairImages = await Promise.all(
+  beforeAfterPairs.map(async (pair) => ({
+    ...pair,
+    beforeSrc: await getImage({ src: pair.before.image, width: 900, format: "webp" }),
+    afterSrc: await getImage({ src: pair.after.image, width: 900, format: "webp" }),
+  })),
+);
 ---
 
 <section id="gallery" class="section-pad scroll-mt-16 bg-kom-cream">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
       title="Recent Projects"
-      lead="Real photos from recent KOM USA jobs in Metro Detroit homes."
+      lead="Real photos from recent KOM USA jobs in Metro Detroit homes. Drag the sliders to compare, or tap any photo for a closer look."
     />
 
-    {
-      <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-12 grid gap-6 sm:grid-cols-2" data-ba-group>
+      {pairImages.map((pair) => (
+        <figure class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card">
+          <div class="ba-slider relative select-none overflow-hidden" data-ba-slider>
+            <img src={pair.afterSrc.src} alt={pair.after.alt} class="block aspect-[3/4] w-full object-cover" loading="lazy" decoding="async" draggable="false" />
+            <img src={pair.beforeSrc.src} alt={pair.before.alt} class="ba-before absolute inset-0 aspect-[3/4] size-full object-cover" loading="lazy" decoding="async" draggable="false" data-ba-before />
+            <span class="pointer-events-none absolute left-3 top-3 rounded-md bg-kom-ink/80 px-2.5 py-1 text-xs font-black uppercase tracking-wide text-white">Before</span>
+            <span class="pointer-events-none absolute right-3 top-3 rounded-md bg-kom-field px-2.5 py-1 text-xs font-black uppercase tracking-wide text-white">After</span>
+            <div class="ba-divider pointer-events-none absolute inset-y-0 w-0.5 bg-white shadow-[0_0_6px_rgb(0_0_0/0.45)]" data-ba-divider>
+              <span class="absolute left-1/2 top-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-kom-field shadow-md">
+                <ArrowsHorizontal class="size-5" aria-hidden="true" />
+              </span>
+            </div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              step="1"
+              aria-label={`Compare before and after: ${pair.title}`}
+              class="ba-range absolute inset-0 size-full cursor-ew-resize opacity-0"
+              data-ba-range
+            />
+          </div>
+          <figcaption class="px-5 py-4 text-sm font-extrabold text-kom-ink">{pair.title} — drag to compare</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <ul class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" data-gallery-grid>
+      {projectPhotos.map((photo, index) => (
+        <li class="reveal" style={`--rd: ${(index % 3) * 70}ms`}>
+          <button
+            type="button"
+            class="group border-border block w-full cursor-zoom-in overflow-hidden rounded-xl border bg-white shadow-card transition-shadow hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/50"
+            data-gallery-open={index}
+            aria-label={`View larger: ${photo.alt}`}
+          >
+            <Image
+              src={photo.image}
+              alt={photo.alt}
+              class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+              widths={[400, 600, 800]}
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              loading="lazy"
+            />
+          </button>
+        </li>
+      ))}
+    </ul>
+
+    <dialog data-gallery-lightbox class="m-auto max-h-[100dvh] w-full max-w-5xl bg-transparent p-4 backdrop:bg-kom-ink/90">
+      <div class="relative">
+        <div data-lightbox-stage>
           {projectPhotos.map((photo, index) => (
-            <li
-              class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card"
-              style={`--rd: ${(index % 3) * 70}ms`}
-            >
-              <Image
-                src={photo.image}
-                alt={photo.alt}
-                class="aspect-[4/3] w-full object-cover"
-                widths={[400, 600, 800]}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                loading="lazy"
-              />
-            </li>
+            <figure class="hidden" data-lightbox-slide={index}>
+              <Image src={photo.image} alt={photo.alt} class="mx-auto max-h-[78dvh] w-auto rounded-lg object-contain" widths={[900, 1400]} sizes="90vw" loading="lazy" />
+              <figcaption class="mt-3 text-center text-sm font-bold text-white/85">{photo.alt}</figcaption>
+            </figure>
           ))}
-        </ul>
-    }
+        </div>
+        <div class="mt-4 flex items-center justify-center gap-3">
+          <button type="button" class="flex size-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-kom-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white" data-lightbox-prev aria-label="Previous photo"><ArrowLeft class="size-6" aria-hidden="true" /></button>
+          <span class="min-w-16 text-center text-sm font-black text-white/85" data-lightbox-counter>1 / {projectPhotos.length}</span>
+          <button type="button" class="flex size-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-kom-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white" data-lightbox-next aria-label="Next photo"><ArrowRight class="size-6" aria-hidden="true" /></button>
+        </div>
+        <button type="button" class="absolute -top-2 right-0 flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-kom-field focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white" data-lightbox-close aria-label="Close gallery"><X class="size-6" aria-hidden="true" /></button>
+      </div>
+    </dialog>
 
     <p class="reveal mt-10 text-center">
       <a href="/projects/" class="inline-flex min-h-11 items-center gap-2 rounded-md border-2 border-kom-field px-6 font-extrabold text-kom-field transition-colors hover:bg-kom-field hover:text-white focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/40">
@@ -57,3 +148,68 @@ const projectPhotos: { image: ImageMetadata; alt: string }[] = [
     </p>
   </div>
 </section>
+
+<style>
+  .ba-before {
+    clip-path: inset(0 calc(100% - var(--ba, 50%)) 0 0);
+  }
+  .ba-divider {
+    left: var(--ba, 50%);
+  }
+  /* The range thumb spans the full height so the whole card stays draggable. */
+  .ba-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 3rem;
+    height: 100%;
+  }
+  .ba-range::-moz-range-thumb {
+    width: 3rem;
+    height: 100%;
+    border: 0;
+  }
+</style>
+
+<script>
+  // Before/after sliders: the invisible range input drives --ba so the
+  // comparison works with mouse, touch, and keyboard alike.
+  document.querySelectorAll<HTMLElement>("[data-ba-slider]").forEach((slider) => {
+    const range = slider.querySelector<HTMLInputElement>("[data-ba-range]");
+    const update = () => slider.style.setProperty("--ba", `${range?.value ?? 50}%`);
+    range?.addEventListener("input", update);
+    update();
+  });
+
+  // Lightbox gallery.
+  document.querySelectorAll<HTMLElement>("[data-gallery-grid]").forEach((grid) => {
+    const section = grid.closest("section");
+    const lightbox = section?.querySelector<HTMLDialogElement>("[data-gallery-lightbox]");
+    if (!lightbox) return;
+    const slides = [...lightbox.querySelectorAll<HTMLElement>("[data-lightbox-slide]")];
+    const counter = lightbox.querySelector<HTMLElement>("[data-lightbox-counter]");
+    let current = 0;
+
+    const show = (index: number) => {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle("hidden", i !== current));
+      if (counter) counter.textContent = `${current + 1} / ${slides.length}`;
+    };
+
+    grid.querySelectorAll<HTMLButtonElement>("[data-gallery-open]").forEach((button) => {
+      button.addEventListener("click", () => {
+        show(Number(button.dataset.galleryOpen ?? 0));
+        lightbox.showModal();
+      });
+    });
+
+    lightbox.querySelector("[data-lightbox-prev]")?.addEventListener("click", () => show(current - 1));
+    lightbox.querySelector("[data-lightbox-next]")?.addEventListener("click", () => show(current + 1));
+    lightbox.querySelector("[data-lightbox-close]")?.addEventListener("click", () => lightbox.close());
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) lightbox.close();
+    });
+    lightbox.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") show(current - 1);
+      if (event.key === "ArrowRight") show(current + 1);
+    });
+  });
+</script>

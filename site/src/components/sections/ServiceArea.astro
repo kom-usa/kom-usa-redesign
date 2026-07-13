@@ -4,8 +4,17 @@ import MapPin from "@tabler/icons/outline/map-pin.svg";
 import SectionHeader from "../common/SectionHeader.astro";
 import Roofline from "../common/Roofline.astro";
 import { business, serviceAreaCities, serviceAreaCounties } from "../../data/business";
+import { getLocations } from "../../lib/sanity";
 
 const countiesSentence = serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ", and $1");
+
+// Location pages exist per city in Sanity; linking each chip back to its page
+// keeps internal links flowing to the location content for SEO.
+const locations = await getLocations();
+const locationPath = (city: string) => {
+  const match = locations.find((location) => location.city.toLowerCase() === city.toLowerCase());
+  return match ? `/locations/${match.slug}/` : undefined;
+};
 
 // Google Map of the service area. With an API key we use the official Maps
 // Embed API (pin on the KOM USA listing); without one we fall back to the
@@ -37,12 +46,24 @@ const mapSrc = embedKey
       <div class="reveal flex flex-col justify-center" style="--rd: 100ms">
         <ul class="flex flex-wrap gap-2.5">
           {
-            serviceAreaCities.map((city) => (
-              <li class="border-border text-kom-ink flex items-center gap-1.5 rounded-full border bg-white px-3.5 py-1.5 text-sm font-medium">
-                <MapPin class="text-kom-field size-3.5" aria-hidden="true" />
-                {city}
-              </li>
-            ))
+            serviceAreaCities.map((city) => {
+              const href = locationPath(city);
+              return (
+                <li>
+                  {href ? (
+                    <a href={href} class="border-border text-kom-ink hover:border-kom-field/40 hover:text-kom-field flex items-center gap-1.5 rounded-full border bg-white px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-field/40">
+                      <MapPin class="text-kom-field size-3.5" aria-hidden="true" />
+                      {city}
+                    </a>
+                  ) : (
+                    <span class="border-border text-kom-ink flex items-center gap-1.5 rounded-full border bg-white px-3.5 py-1.5 text-sm font-medium">
+                      <MapPin class="text-kom-field size-3.5" aria-hidden="true" />
+                      {city}
+                    </span>
+                  )}
+                </li>
+              );
+            })
           }
           <li class="text-muted-foreground flex items-center px-2 py-1.5 text-sm font-medium">
             …and surrounding Metro Detroit communities
