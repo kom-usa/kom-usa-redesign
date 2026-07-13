@@ -12,16 +12,25 @@ interface Props {
 const { preselectService, headline = "Let us call you" } = Astro.props;
 
 const selectClass =
-  "border-input focus-visible:outline-outline flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1";
+  "border-input aria-[invalid=true]:border-error flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-outline";
+const invalidClass = "aria-[invalid=true]:border-error";
+const errClass = "lead-error text-error mt-1 hidden text-xs font-semibold";
 ---
 
-<div id="lead-form" class="border-border scroll-mt-24 rounded-xl border bg-white p-6 shadow-card-hover sm:p-8">
+<div id="lead-form" class="border-border scroll-mt-24 rounded-xl border bg-white p-6 sm:p-8">
   <h2 class="text-kom-field text-2xl font-black">{headline}</h2>
   <p class="text-muted-foreground mt-1 text-sm">
     Share a few details and a real person calls you back — usually the same day.
   </p>
 
-  <form name="request-call" method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field" class="mt-5">
+  <form
+    name="request-call"
+    method="POST"
+    action="/thank-you"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    class="lead-call-form mt-5"
+  >
     <input type="hidden" name="form-name" value="request-call" />
     <input type="hidden" name="subject" value="New call request — kom-usa.com" />
     <input type="hidden" id="offer-field" name="offer" value="" />
@@ -32,28 +41,33 @@ const selectClass =
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       <div class="space-y-1.5">
         <Label for="lead-name">First name <span class="text-error">*</span></Label>
-        <Input type="text" id="lead-name" name="first-name" required autocomplete="given-name" placeholder="e.g. Sam" />
+        <Input type="text" id="lead-name" name="first-name" required autocomplete="given-name" placeholder="e.g. Sam" aria-describedby="lead-name-error" class={invalidClass} />
+        <p id="lead-name-error" class={errClass} role="alert">Please enter your first name.</p>
       </div>
       <div class="space-y-1.5">
         <Label for="lead-phone">Phone <span class="text-error">*</span></Label>
-        <Input type="tel" id="lead-phone" name="phone" required autocomplete="tel" placeholder="(555) 555-5555" />
+        <Input type="tel" id="lead-phone" name="phone" required autocomplete="tel" placeholder="(555) 555-5555" aria-describedby="lead-phone-error" class={invalidClass} />
+        <p id="lead-phone-error" class={errClass} role="alert">Enter a phone number we can reach you at.</p>
       </div>
       <div class="space-y-1.5">
         <Label for="lead-email">Email <span class="text-error">*</span></Label>
-        <Input type="email" id="lead-email" name="email" required autocomplete="email" />
+        <Input type="email" id="lead-email" name="email" required autocomplete="email" placeholder="you@email.com" aria-describedby="lead-email-error" class={invalidClass} />
+        <p id="lead-email-error" class={errClass} role="alert">Enter a valid email address.</p>
       </div>
       <div class="space-y-1.5">
         <Label for="lead-city">City or ZIP <span class="text-error">*</span></Label>
-        <Input type="text" id="lead-city" name="city" required autocomplete="postal-code" placeholder="e.g. Warren or 48088" />
+        <Input type="text" id="lead-city" name="city" required autocomplete="postal-code" placeholder="e.g. Warren or 48088" aria-describedby="lead-city-error" class={invalidClass} />
+        <p id="lead-city-error" class={errClass} role="alert">Let us know your city or ZIP.</p>
       </div>
       <div class="space-y-1.5">
         <Label for="lead-service">What do you need? <span class="text-error">*</span></Label>
-        <select id="lead-service" name="service" required class={selectClass}>
+        <select id="lead-service" name="service" required class={selectClass} aria-describedby="lead-service-error">
           <option value="" disabled selected={!preselectService}>Choose a service</option>
           {serviceOptions.map((option) => (
             <option value={option} selected={option === preselectService}>{option}</option>
           ))}
         </select>
+        <p id="lead-service-error" class={errClass} role="alert">Pick the service you need.</p>
       </div>
       <div class="space-y-1.5">
         <Label for="lead-note">Anything else? <span class="text-muted-foreground font-normal">(optional)</span></Label>
@@ -72,3 +86,58 @@ const selectClass =
     </div>
   </form>
 </div>
+
+<script>
+  // Progressive enhancement: native `required`/type validation is the no-JS
+  // fallback. With JS, we take over to show inline, recover-on-fix errors and a
+  // clear submit state — without touching Netlify's form submission.
+  const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const REQUIRED = ["first-name", "phone", "email", "city", "service"];
+
+  document.querySelectorAll<HTMLFormElement>("form.lead-call-form").forEach((form) => {
+    form.noValidate = true;
+    const submitBtn = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const field = (name: string) =>
+      form.querySelector<HTMLInputElement | HTMLSelectElement>(`[name="${name}"]`);
+
+    const validate = (el: HTMLInputElement | HTMLSelectElement) => {
+      const value = (el.value || "").trim();
+      let ok = value !== "";
+      if (ok && el.getAttribute("type") === "email") ok = EMAIL.test(value);
+      if (ok && el.getAttribute("type") === "tel") ok = value.replace(/\D/g, "").length >= 7;
+      el.setAttribute("aria-invalid", ok ? "false" : "true");
+      const describedBy = el.getAttribute("aria-describedby");
+      const err = describedBy ? form.querySelector(`#${describedBy}`) : null;
+      err?.classList.toggle("hidden", ok);
+      return ok;
+    };
+
+    for (const name of REQUIRED) {
+      const el = field(name);
+      if (!el) continue;
+      el.addEventListener("blur", () => validate(el));
+      el.addEventListener("change", () => validate(el));
+      el.addEventListener("input", () => {
+        if (el.getAttribute("aria-invalid") === "true") validate(el);
+      });
+    }
+
+    form.addEventListener("submit", (event) => {
+      let firstInvalid: (HTMLInputElement | HTMLSelectElement) | null = null;
+      for (const name of REQUIRED) {
+        const el = field(name);
+        if (el && !validate(el) && !firstInvalid) firstInvalid = el;
+      }
+      if (firstInvalid) {
+        event.preventDefault();
+        firstInvalid.focus();
+        firstInvalid.scrollIntoView({ block: "center", behavior: "smooth" });
+        return;
+      }
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending…";
+      }
+    });
+  });
+</script>
