@@ -14,6 +14,7 @@ The site is a lead-capture funnel: visitors share their contact info and job det
 - [Tailwind CSS 4](https://tailwindcss.com) + [Starwind](https://starwind.dev) components
 - [Storyblok](https://www.storyblok.com) headless CMS (services, blog, locations, FAQs, testimonials)
 - [Netlify](https://www.netlify.com) — hosting, forms (`request-call`, `request-service`), and CI deploys
+- [Brevo](https://www.brevo.com) — lead CRM + customer acknowledgement emails (see [`docs/brevo-netlify-forms.md`](docs/brevo-netlify-forms.md))
 
 ## Project structure
 
@@ -25,8 +26,9 @@ site/               Astro application (see site/README.md for local dev)
 │   ├── data/         Business facts (phone, email, hours, pricing) — single source of truth
 │   ├── storyblok/    CMS-driven component bindings
 │   └── lib/          Storyblok data helpers
-├── public/          Static assets
-└── scripts/          Storyblok webhook + tooling
+├── public/          Static assets (incl. logo-email.png for transactional email)
+├── netlify/functions/  formSubmitted → Brevo sync + acknowledgement email
+└── scripts/          Storyblok webhook + Brevo setup tooling
 
 docs/                Project docs: editor guide, roadmap, migration specs
 netlify.toml         Netlify build & deploy config
