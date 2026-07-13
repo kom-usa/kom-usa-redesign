@@ -1,58 +1,43 @@
 ---
-import { getLiveStory, storyblokEditable } from "@storyblok/astro";
-
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import CtaBand from "../../components/sections/CtaBand.astro";
-import { getStories, getStory } from "../../lib/storyblok";
-
-const serviceChipLabels: Record<string, string> = {
-  locksmith: "Locksmith",
-  "water-heaters": "Water heater",
-  "chimney-care": "Chimney care",
-  other: "Other",
-};
+import { getProject, getProjects } from "../../lib/sanity";
+import { urlFor } from "../../lib/sanity-image";
 
 export async function getStaticPaths() {
-  const stories = await getStories("project");
-  return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
+  const projects = await getProjects();
+  return projects.map((project: any) => ({ params: { slug: project.slug } }));
 }
 
-const liveStory = await getLiveStory(Astro);
-let story = liveStory ?? (Astro.props as { story?: any }).story;
-if (!story) {
-  story = await getStory(`projects/${Astro.params.slug}`);
-  if (!story) return Astro.redirect("/404");
-}
+const project = await getProject(Astro.params.slug!);
+if (!project) return Astro.redirect("/404");
 
-const { content } = story;
-const photos = (content.photos ?? []) as { filename: string; alt?: string }[];
+const photos = (project.photos ?? []) as unknown[];
 const heroPhoto = photos[0];
 const otherPhotos = photos.slice(1);
-
-const metaTitle = content.seo_title || `${content.title} | KOM USA Projects`;
-const metaDescription = content.seo_description || content.problem;
-const ogImage: string | undefined = content.seo_image?.filename ?? heroPhoto?.filename;
+const metaTitle = project.seoTitle || `${project.title} | KOM USA Projects`;
+const metaDescription = project.seoDescription || project.problem || `See this KOM USA project completed in Metro Detroit.`;
+const ogImage = heroPhoto
+  ? urlFor(heroPhoto).width(1200).height(630).fit("crop").auto("format").url()
+  : undefined;
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription} ogImage={ogImage}>
-  <article class="section-pad" {...storyblokEditable(content)}>
+  <article class="section-pad">
     <div class="mx-auto max-w-4xl px-4 sm:px-6">
-      <p class="reveal flex flex-wrap items-center gap-3">
-        {content.service_category && serviceChipLabels[content.service_category] && (
-          <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
-            {serviceChipLabels[content.service_category]}
-          </span>
-        )}
-        {content.city && <span class="text-muted-foreground text-xs font-medium">{content.city}</span>}
-      </p>
+      {project.date && (
+        <p class="reveal text-muted-foreground text-xs font-medium">
+          {new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(new Date(project.date))}
+        </p>
+      )}
       <h1 class="reveal text-kom-charcoal-deep mt-4 text-4xl leading-[1.05] font-black tracking-tight text-balance sm:text-5xl" style="--rd: 60ms">
-        {content.title}
+        {project.title}
       </h1>
 
-      {heroPhoto?.filename && (
+      {heroPhoto && (
         <img
-          src={heroPhoto.filename}
-          alt={heroPhoto.alt || content.title}
+          src={urlFor(heroPhoto).width(1400).auto("format").url()}
+          alt={project.title}
           class="reveal mt-8 w-full rounded-xl object-cover shadow-card"
           style="--rd: 120ms"
           loading="eager"
@@ -63,8 +48,8 @@ const ogImage: string | undefined = content.seo_image?.filename ?? heroPhoto?.fi
         <div class="reveal mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3" style="--rd: 150ms">
           {otherPhotos.map((photo) => (
             <img
-              src={photo.filename}
-              alt={photo.alt || content.title}
+              src={urlFor(photo).width(700).height(500).fit("crop").auto("format").url()}
+              alt={project.title}
               class="h-40 w-full rounded-lg object-cover shadow-card"
               loading="lazy"
             />
@@ -73,18 +58,24 @@ const ogImage: string | undefined = content.seo_image?.filename ?? heroPhoto?.fi
       )}
 
       <div class="mt-10 grid gap-6 sm:grid-cols-3">
-        <div class="reveal border-border rounded-xl border bg-white p-6 shadow-card" style="--rd: 180ms">
-          <h2 class="text-kom-charcoal-deep text-lg font-black">The problem</h2>
-          <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{content.problem}</p>
-        </div>
-        <div class="reveal border-border rounded-xl border bg-white p-6 shadow-card" style="--rd: 240ms">
-          <h2 class="text-kom-charcoal-deep text-lg font-black">What we did</h2>
-          <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{content.work}</p>
-        </div>
-        <div class="reveal border-border rounded-xl border bg-white p-6 shadow-card" style="--rd: 300ms">
-          <h2 class="text-kom-charcoal-deep text-lg font-black">The result</h2>
-          <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{content.result}</p>
-        </div>
+        {project.problem && (
+          <div class="reveal border-border rounded-xl border bg-white p-6 shadow-card" style="--rd: 180ms">
+            <h2 class="text-kom-charcoal-deep text-lg font-black">The problem</h2>
+            <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{project.problem}</p>
+          </div>
+        )}
+        {project.work && (
+          <div class="reveal border-border rounded-xl border bg-white p-6 shadow-card" style="--rd: 240ms">
+            <h2 class="text-kom-charcoal-deep text-lg font-black">What we did</h2>
+            <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{project.work}</p>
+          </div>
+        )}
+        {project.result && (
+          <div class="reveal border-border rounded-xl border bg-white p-6 shadow-card" style="--rd: 300ms">
+            <h2 class="text-kom-charcoal-deep text-lg font-black">The result</h2>
+            <p class="text-muted-foreground mt-2 text-sm leading-relaxed">{project.result}</p>
+          </div>
+        )}
       </div>
     </div>
   </article>

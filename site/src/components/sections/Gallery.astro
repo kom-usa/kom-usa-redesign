@@ -1,8 +1,8 @@
 ---
 import { Image } from "astro:assets";
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
 
 import SectionHeader from "../common/SectionHeader.astro";
-import { getStories, storyDate } from "../../lib/storyblok";
 
 import chimneyCapBeforeAfter from "../../assets/images/projects/chimney-cap-before-after.jpeg";
 import marblePowderRoom from "../../assets/images/projects/marble-powder-room.jpeg";
@@ -11,11 +11,7 @@ import tiledShower from "../../assets/images/projects/tiled-shower.jpeg";
 import marbleShowerLed from "../../assets/images/projects/marble-shower-led.jpeg";
 import customMediaWall from "../../assets/images/projects/custom-media-wall.jpeg";
 
-/**
- * Real photos from KOM USA jobs (src/assets/images/projects) — used until at
- * least 3 projects are published in the CMS, at which point those take over.
- */
-const stockPhotos: { image: ImageMetadata; alt: string }[] = [
+const projectPhotos: { image: ImageMetadata; alt: string }[] = [
   { image: chimneyCapBeforeAfter, alt: "Before and after — crumbling chimney crown rebuilt with a new cap and liner cap" },
   { image: marblePowderRoom, alt: "Remodeled powder room with sculpted white tile and matte black fixtures" },
   { image: tiledShower, alt: "Walk-in shower rebuilt with gray stone tile, body jets, and grab bars" },
@@ -24,55 +20,18 @@ const stockPhotos: { image: ImageMetadata; alt: string }[] = [
   { image: customMediaWall, alt: "Custom media wall with backlit acoustic panels in a finished office" },
 ];
 
-const projectStories = await getStories("project");
-const usesProjects = projectStories.length >= 3;
-
-const projectPhotos = usesProjects
-  ? [...projectStories]
-      .sort((a, b) => storyDate(b).getTime() - storyDate(a).getTime())
-      .slice(0, 6)
-      .map((story) => {
-        const firstPhoto = (story.content.photos ?? [])[0] as { filename: string } | undefined;
-        return {
-          src: firstPhoto?.filename,
-          title: story.content.title as string,
-          slug: story.slug,
-        };
-      })
-      .filter((p) => p.src)
-  : [];
 ---
 
 <section id="gallery" class="section-pad scroll-mt-16 bg-kom-cream">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
-      title="A look at the work"
+      title="Recent Projects"
       lead="Real photos from recent KOM USA jobs in Metro Detroit homes."
     />
 
     {
-      usesProjects ? (
-        <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {projectPhotos.map((photo, index) => (
-            <li
-              class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card"
-              style={`--rd: ${(index % 3) * 70}ms`}
-            >
-              <a href={`/projects/${photo.slug}`} class="block">
-                <img
-                  src={photo.src}
-                  alt={photo.title}
-                  class="aspect-[4/3] w-full object-cover"
-                  loading="lazy"
-                />
-                <span class="sr-only">{photo.title}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <ul class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {stockPhotos.map((photo, index) => (
             <li
               class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card"
               style={`--rd: ${(index % 3) * 70}ms`}
@@ -88,7 +47,13 @@ const projectPhotos = usesProjects
             </li>
           ))}
         </ul>
-      )
     }
+
+    <p class="reveal mt-10 text-center">
+      <a href="/projects/" class="inline-flex min-h-11 items-center gap-2 rounded-md border-2 border-kom-field px-6 font-extrabold text-kom-field transition-colors hover:bg-kom-field hover:text-white focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/40">
+        View all Projects
+        <ArrowRight class="size-4" aria-hidden="true" />
+      </a>
+    </p>
   </div>
 </section>

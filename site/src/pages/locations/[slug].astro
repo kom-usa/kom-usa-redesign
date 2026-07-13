@@ -1,204 +1,50 @@
 ---
-import { Image } from "astro:assets";
-import { getLiveStory, renderRichText, storyblokEditable } from "@storyblok/astro";
-import StarFilled from "@tabler/icons/filled/star.svg";
-import ExternalLink from "@tabler/icons/outline/external-link.svg";
-import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
-
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import SectionHeader from "../../components/common/SectionHeader.astro";
 import LeadCallForm from "../../components/sections/LeadCallForm.astro";
-import { getStories, getStory } from "../../lib/storyblok";
+import PortableText from "../../sanity/PortableText.astro";
+import { getLocation, getLocations } from "../../lib/sanity";
 import { business } from "../../data/business";
-import doorLock from "../../assets/images/door-lock.jpg";
-import workerElectrical from "../../assets/images/worker-electrical.jpg";
-import fireplaceChimney from "../../assets/images/fireplace-chimney.jpg";
-import homeExterior from "../../assets/images/home-exterior.jpg";
-
-const imageMap: Record<string, ImageMetadata> = {
-  locksmith: doorLock,
-  "water-heaters": workerElectrical,
-  "chimney-care": fireplaceChimney,
-};
 
 export async function getStaticPaths() {
-  const stories = await getStories("location", {
-    resolve_relations: "location.services_offered,location.featured_testimonials,location.featured_projects",
-  });
-  return stories.map((story) => ({ params: { slug: story.slug }, props: { story } }));
+  const locations = await getLocations();
+  return locations.map((location: any) => ({ params: { slug: location.slug } }));
 }
 
-const liveStory = await getLiveStory(Astro);
-let story = liveStory ?? (Astro.props as { story?: any }).story;
-if (!story) {
-  story = await getStory(`locations/${Astro.params.slug}`, {
-    resolve_relations: "location.services_offered,location.featured_testimonials,location.featured_projects",
-  });
-  if (!story) return Astro.redirect("/404");
-}
+const location = await getLocation(Astro.params.slug!);
+if (!location) return Astro.redirect("/404");
 
-const { content } = story;
-
-const services = ((content.services_offered ?? []) as any[]).filter((s) => s && typeof s === "object");
-const testimonials = ((content.featured_testimonials ?? []) as any[]).filter((t) => t && typeof t === "object");
-const projects = ((content.featured_projects ?? []) as any[]).filter((p) => p && typeof p === "object");
-
-const metaTitle = content.seo_title || `${content.city} Home Services | KOM USA`;
-const metaDescription = content.seo_description;
-const ogImage: string | undefined = content.seo_image?.filename;
-
-const introHtml = renderRichText(content.intro);
+const metaTitle = location.seoTitle || `${location.city} Home Services | KOM USA`;
+const metaDescription = location.seoDescription || location.heroIntro || `KOM USA home services in ${location.city}, Michigan.`;
 ---
 
-<BaseLayout title={metaTitle} description={metaDescription} ogImage={ogImage}>
-  <div {...storyblokEditable(content)}>
+<BaseLayout title={metaTitle} description={metaDescription}>
   <section class="section-pad">
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
       <p class="reveal text-primary text-xs font-bold tracking-[0.18em] uppercase">
-        Home services in {content.city}, MI
+        Home services in {location.city}, MI
       </p>
       <h1 class="reveal text-kom-ink mt-2 text-4xl leading-[1.05] font-black tracking-tight text-balance sm:text-5xl" style="--rd: 60ms">
-        {content.city}
+        {location.city}
       </h1>
-      <div
-        class="reveal article-body text-kom-charcoal mt-6 max-w-2xl leading-relaxed [&_a]:text-kom-field [&_a]:font-bold [&_a]:hover:underline [&_p]:mt-3"
-        style="--rd: 120ms"
-        set:html={introHtml}
-      />
+      {location.heroIntro && (
+        <p class="reveal text-kom-charcoal mt-6 max-w-2xl text-lg leading-relaxed" style="--rd: 120ms">
+          {location.heroIntro}
+        </p>
+      )}
+      {location.body && (
+        <div class="reveal article-body text-kom-charcoal mt-8 max-w-3xl leading-relaxed" style="--rd: 150ms">
+          <PortableText value={location.body} />
+        </div>
+      )}
     </div>
   </section>
 
-  {
-    services.length > 0 && (
-      <section class="section-pad scroll-mt-16 bg-kom-cream">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6">
-          <SectionHeader eyebrow="What we do" title={`Services in ${content.city}`} />
-          <div class="mt-12 grid gap-6 md:grid-cols-3">
-            {services.map((service, index) => (
-              <a
-                href={`/services/${service.slug}`}
-                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white transition-colors hover:border-kom-field/50 focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-                style={`--rd: ${index * 90}ms`}
-              >
-                {service.content?.hero_image?.filename ? (
-                  <img
-                    src={service.content.hero_image.filename}
-                    alt={service.content.title}
-                    class="h-48 w-full object-cover"
-                    loading="lazy"
-                  />
-                ) : (
-                  <Image
-                    src={imageMap[service.slug] ?? homeExterior}
-                    alt={service.content?.title ?? service.slug}
-                    class="h-48 w-full object-cover"
-                    widths={[400, 600, 800]}
-                    sizes="(min-width: 768px) 30vw, 100vw"
-                  />
-                )}
-                <span class="flex flex-1 flex-col p-6">
-                  <span class="bg-kom-sage-tint text-kom-field self-start rounded-full px-3 py-1 text-xs font-extrabold">
-                    {service.content?.anchor_price}
-                  </span>
-                  <span class="text-kom-charcoal-deep group-hover:text-kom-field mt-3 text-xl font-black transition-colors">
-                    {service.content?.title}
-                  </span>
-                  <span class="text-muted-foreground mt-2 flex-1 text-sm leading-relaxed">
-                    {service.content?.card_blurb}
-                  </span>
-                  <span class="text-kom-field mt-4 flex items-center gap-1.5 text-sm font-extrabold">
-                    See details & pricing
-                    <ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                  </span>
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  {
-    testimonials.length > 0 && (
-      <section class="section-pad scroll-mt-16 bg-kom-warm-white">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6">
-          <SectionHeader eyebrow="Reviews" title={`What ${content.city} homeowners say`} />
-          <div class="mt-10 grid gap-6 md:grid-cols-3">
-            {testimonials.map((testimonial, index) => (
-              <figure class="reveal border-border flex flex-col rounded-xl border bg-white p-6 shadow-card" style={`--rd: ${index * 90}ms`}>
-                <span class="flex text-kom-brass" aria-hidden="true">
-                  {Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}
-                </span>
-                <blockquote class="text-kom-charcoal mt-4 flex-1 text-sm leading-relaxed">
-                  “{testimonial.content?.quote}”
-                </blockquote>
-                <figcaption class="text-kom-charcoal-deep mt-4 text-sm font-extrabold">
-                  {testimonial.content?.name}
-                  {testimonial.content?.city && (
-                    <span class="text-muted-foreground block text-xs font-medium">{testimonial.content.city}</span>
-                  )}
-                </figcaption>
-                {testimonial.content?.source_url && (
-                  <a
-                    href={testimonial.content.source_url}
-                    target="_blank"
-                    rel="noopener"
-                    class="text-kom-field mt-3 inline-flex items-center gap-1.5 text-xs font-extrabold hover:underline focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-                  >
-                    Read the original review
-                    <ExternalLink class="size-3.5" aria-hidden="true" />
-                  </a>
-                )}
-              </figure>
-            ))}
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  {
-    projects.length > 0 && (
-      <section class="section-pad scroll-mt-16">
-        <div class="mx-auto max-w-6xl px-4 sm:px-6">
-          <SectionHeader eyebrow="Recent work" title={`Projects in ${content.city}`} />
-          <div class="mt-10 grid gap-6 md:grid-cols-3">
-            {projects.map((project, index) => (
-              <a
-                href={`/projects/${project.slug}`}
-                class="reveal border-border group flex flex-col overflow-hidden rounded-xl border bg-white transition-colors hover:border-kom-field/50 focus-visible:ring-3 focus-visible:ring-kom-field/50 focus-visible:outline-none"
-                style={`--rd: ${index * 90}ms`}
-              >
-                {project.content?.photos?.[0]?.filename && (
-                  <img
-                    src={project.content.photos[0].filename}
-                    alt={project.content.title}
-                    class="h-48 w-full object-cover"
-                    loading="lazy"
-                  />
-                )}
-                <span class="flex flex-1 flex-col p-6">
-                  <span class="text-kom-charcoal-deep group-hover:text-kom-field text-xl font-black transition-colors">
-                    {project.content?.title}
-                  </span>
-                  <span class="text-muted-foreground mt-2 text-sm leading-relaxed">{project.content?.city}</span>
-                </span>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-    )
-  }
-
-  <section class="section-pad">
+  <section class="section-pad bg-kom-cream">
     <div class="mx-auto max-w-3xl px-4 sm:px-6">
-      <LeadCallForm headline={`Request a call in ${content.city}`} />
+      <LeadCallForm headline={`Request a call in ${location.city}`} />
       <p class="text-muted-foreground mt-6 text-center text-sm">
-        Proudly serving {business.serviceArea} — including {content.city}.
+        Proudly serving {business.serviceArea} — including {location.city}.
       </p>
     </div>
   </section>
-  </div>
 </BaseLayout>

@@ -19,4 +19,4 @@ Closes #
 - [ ] `npm run astro check` passes
 - [ ] `npm run build` succeeds
 - [ ] Verified in the browser (`npm run dev` or the `preview` branch deploy)
-- [ ] Checked both static and SSR/preview mode if this touches routing, middleware, or Storyblok data fetching
+- [ ] Checked both Sanity-backed and fallback builds if this touches CMS data fetching or dynamic routes

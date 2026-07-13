@@ -2,64 +2,78 @@
 import Phone from "@tabler/icons/outline/phone.svg";
 import Mail from "@tabler/icons/outline/mail.svg";
 import MapPin from "@tabler/icons/outline/map-pin.svg";
-import Clock from "@tabler/icons/outline/clock.svg";
 import { business } from "../../data/business";
 import logoWhite from "../../assets/logos/kom-usa-logo-white.svg";
 
 const year = new Date().getFullYear();
-const links = [
-  { label: "Maintenance", href: "/maintenance/" },
-  { label: "Construction", href: "/construction/" },
-  { label: "Handyman Services", href: "/maintenance/handyman-services/" },
-  { label: "Home Building Materials", href: "/home-building-materials/" },
-  { label: "Projects", href: "/projects/" },
-  { label: "Service Areas", href: "/service-areas/" },
-  { label: "About", href: "/about/" },
-  { label: "Contact", href: "/contact/" },
-  { label: "Subscription Maintenance — Coming Soon", href: "/maintenance/subscription-maintenance/" },
-  { label: "Privacy Policy", href: "/privacy/" },
+const columns = [
+  {
+    title: "Services",
+    links: [
+      { label: "Maintenance", href: "/maintenance/" },
+      { label: "Construction", href: "/construction/" },
+      { label: "Handyman Services", href: "/maintenance/handyman-services/" },
+      { label: "Home Building Materials", href: "/home-building-materials/" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "Projects", href: "/projects/" },
+      { label: "Service Areas", href: "/service-areas/" },
+      { label: "About", href: "/about/" },
+      { label: "Blog", href: "/blog/" },
+      { label: "Contact", href: "/contact/" },
+    ],
+  },
 ];
-const linkClass = "rounded-sm text-white/75 transition-colors hover:text-kom-tan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-tan";
 ---
 
-<footer class="bg-kom-ink text-white">
-  <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.2fr_1fr_1fr]">
+<footer class="bg-kom-ink text-white/75">
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
       <div>
-        <img src={logoWhite.src} alt="KOM USA" class="h-14 w-auto" width="150" height="55" />
-        <p class="mt-5 max-w-md text-sm leading-relaxed text-white/70">
-          Home maintenance, repairs, remodeling, construction, and project support across Metro Detroit for homeowners and contractors.
-        </p>
-        <p class="mt-5 inline-flex items-center gap-2 text-sm font-bold"><Clock class="size-4 text-kom-tan" aria-hidden="true" />{business.availability}</p>
+        <a href="/" class="inline-flex rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-tan">
+          <img src={logoWhite.src} alt="KOM USA" class="h-12 w-auto" width="150" height="55" />
+        </a>
+        <p class="mt-4 max-w-xs text-sm leading-relaxed">Home maintenance, repairs, remodeling, construction, and project support across Metro Detroit.</p>
+        <p class="mt-4 text-sm font-bold text-white">{business.availability}</p>
       </div>
 
-      <div>
-        <h2 class="text-base font-black">Call the right team</h2>
-        <div class="mt-4 space-y-4 text-sm">
-          <a href={business.maintenancePhoneHref} class:list={["block", linkClass]}>
-            <span class="text-white/55 block text-xs">Maintenance Phone</span>
-            <span class="mt-1 flex items-center gap-2 font-black text-white"><Phone class="size-4 text-kom-tan" aria-hidden="true" />{business.maintenancePhone}</span>
-          </a>
-          <a href={business.constructionPhoneHref} class:list={["block", linkClass]}>
-            <span class="text-white/55 block text-xs">Construction Phone</span>
-            <span class="mt-1 flex items-center gap-2 font-black text-white"><Phone class="size-4 text-kom-tan" aria-hidden="true" />{business.constructionPhone}</span>
-          </a>
-          <a href={business.emailHref} class:list={["flex items-center gap-2", linkClass]}><Mail class="size-4 text-kom-tan" aria-hidden="true" />{business.email}</a>
-          <p class="flex items-start gap-2 text-white/70"><MapPin class="mt-0.5 size-4 shrink-0 text-kom-tan" aria-hidden="true" />Serving Metro Detroit, including communities across Wayne, Oakland, and Macomb counties.</p>
-        </div>
-      </div>
+      {columns.map((column) => (
+        <nav aria-label={column.title}>
+          <h2 class="text-sm font-black uppercase tracking-wider text-white">{column.title}</h2>
+          <ul class="mt-4 space-y-2.5 text-sm">
+            {column.links.map((link) => (
+              <li><a href={link.href} class="transition-colors hover:text-kom-tan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-tan">{link.label}</a></li>
+            ))}
+          </ul>
+        </nav>
+      ))}
 
-      <nav aria-label="Footer">
-        <h2 class="text-base font-black">Explore KOM USA</h2>
-        <ul class="mt-4 grid grid-cols-2 gap-x-5 gap-y-2.5 text-sm">
-          {links.map((link) => <li><a href={link.href} class={linkClass}>{link.label}</a></li>)}
+      <div>
+        <h2 class="text-sm font-black uppercase tracking-wider text-white">Contact</h2>
+        <ul class="mt-4 space-y-4 text-sm">
+          <li>
+            <span class="block text-xs text-white/45">Maintenance</span>
+            <a href={business.maintenancePhoneHref} class="mt-1 flex items-center gap-2 font-black text-white hover:text-kom-tan"><Phone class="size-4" aria-hidden="true" />{business.maintenancePhone}</a>
+          </li>
+          <li>
+            <span class="block text-xs text-white/45">Construction</span>
+            <a href={business.constructionPhoneHref} class="mt-1 flex items-center gap-2 font-black text-white hover:text-kom-tan"><Phone class="size-4" aria-hidden="true" />{business.constructionPhone}</a>
+          </li>
+          <li><a href={business.emailHref} class="flex items-center gap-2 hover:text-kom-tan"><Mail class="size-4" aria-hidden="true" />{business.email}</a></li>
+          <li class="flex items-start gap-2"><MapPin class="mt-0.5 size-4 shrink-0" aria-hidden="true" />Wayne, Oakland, and Macomb counties</li>
         </ul>
-      </nav>
+      </div>
     </div>
 
-    <div class="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/50 sm:flex-row sm:items-center sm:justify-between">
+    <div class="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
       <p>© {year} {business.name}. All rights reserved.</p>
-      <p>Request details are reviewed before scope, pricing, or scheduling is confirmed.</p>
+      <div class="flex gap-5">
+        <a href="/privacy/" class="hover:text-white">Privacy Policy</a>
+        <a href="/request-service/" class="hover:text-white">Request Service</a>
+      </div>
     </div>
   </div>
 </footer>

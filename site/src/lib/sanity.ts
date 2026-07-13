@@ -76,6 +76,11 @@ export interface ArticleCard {
   slug: string; title: string; category?: string; excerpt?: string; date?: string;
   coverImage?: unknown; coverAlt?: string;
 }
+export interface Article extends ArticleCard {
+  body?: unknown;
+  seoTitle?: string;
+  seoDescription?: string;
+}
 export async function getArticles(): Promise<ArticleCard[]> {
   return safe(
     (c) => c.fetch<ArticleCard[]>(`*[_type == "article" && defined(slug.current)] | order(date desc){
@@ -84,9 +89,9 @@ export async function getArticles(): Promise<ArticleCard[]> {
     "getArticles",
   );
 }
-export async function getArticle(slug: string) {
-  return safe(
-    (c) => c.fetch(`*[_type == "article" && slug.current == $slug][0]{
+export async function getArticle(slug: string): Promise<Article | null> {
+  return safe<Article | null>(
+    (c) => c.fetch<Article | null>(`*[_type == "article" && slug.current == $slug][0]{
       "slug": slug.current, title, category, excerpt, date, coverImage, coverAlt, body,
       "seoTitle": seo.title, "seoDescription": seo.description }`, { slug }),
     null,
@@ -94,34 +99,57 @@ export async function getArticle(slug: string) {
   );
 }
 
-export async function getLocations() {
-  return safe(
-    (c) => c.fetch(`*[_type == "location" && defined(slug.current)] | order(city asc){
+export interface LocationCard {
+  slug: string;
+  city: string;
+  heroIntro?: string;
+}
+export interface Location extends LocationCard {
+  body?: unknown;
+  seoTitle?: string;
+  seoDescription?: string;
+}
+export async function getLocations(): Promise<LocationCard[]> {
+  return safe<LocationCard[]>(
+    (c) => c.fetch<LocationCard[]>(`*[_type == "location" && defined(slug.current)] | order(city asc){
       "slug": slug.current, city, heroIntro }`),
     [],
     "getLocations",
   );
 }
-export async function getLocation(slug: string) {
-  return safe(
-    (c) => c.fetch(`*[_type == "location" && slug.current == $slug][0]{
+export async function getLocation(slug: string): Promise<Location | null> {
+  return safe<Location | null>(
+    (c) => c.fetch<Location | null>(`*[_type == "location" && slug.current == $slug][0]{
       "slug": slug.current, city, heroIntro, body, "seoTitle": seo.title, "seoDescription": seo.description }`, { slug }),
     null,
     "getLocation",
   );
 }
 
-export async function getProjects() {
-  return safe(
-    (c) => c.fetch(`*[_type == "project" && defined(slug.current)] | order(date desc){
+export interface ProjectCard {
+  slug: string;
+  title: string;
+  date?: string;
+  photos?: unknown[];
+  problem?: string;
+  work?: string;
+  result?: string;
+}
+export interface Project extends ProjectCard {
+  seoTitle?: string;
+  seoDescription?: string;
+}
+export async function getProjects(): Promise<ProjectCard[]> {
+  return safe<ProjectCard[]>(
+    (c) => c.fetch<ProjectCard[]>(`*[_type == "project" && defined(slug.current)] | order(date desc){
       "slug": slug.current, title, date, photos, problem, work, result }`),
     [],
     "getProjects",
   );
 }
-export async function getProject(slug: string) {
-  return safe(
-    (c) => c.fetch(`*[_type == "project" && slug.current == $slug][0]{
+export async function getProject(slug: string): Promise<Project | null> {
+  return safe<Project | null>(
+    (c) => c.fetch<Project | null>(`*[_type == "project" && slug.current == $slug][0]{
       "slug": slug.current, title, date, photos, problem, work, result,
       "seoTitle": seo.title, "seoDescription": seo.description }`, { slug }),
     null,

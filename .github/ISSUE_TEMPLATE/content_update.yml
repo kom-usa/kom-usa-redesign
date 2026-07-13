@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        For routine edits (pricing, hours, FAQs, testimonials), staff can usually make this change directly in Storyblok — see [`docs/EDITOR-GUIDE.md`](../../docs/EDITOR-GUIDE.md). Use this form when the change needs a code or schema update.
+        For routine edits to CMS-managed content, staff can usually make the change directly in Sanity — see [`docs/EDITOR-GUIDE.md`](../../docs/EDITOR-GUIDE.md). Use this form when the change needs a code or schema update.
   - type: textarea
     id: what
     attributes:

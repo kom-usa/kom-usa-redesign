@@ -16,7 +16,7 @@ Run from this directory (`site/`):
 
 ## Environment variables
 
-`STORYBLOK_TOKEN` — Storyblok content API token. When unset, the build runs fully static with no CMS integration; data helpers in `src/lib/storyblok.ts` degrade to empty results. Copy `.env.example` (if present) to `.env` for local development.
+Copy `.env.example` to `.env` and set `SANITY_PROJECT_ID`, `SANITY_DATASET`, and `SANITY_API_VERSION` for CMS-backed local development. `SANITY_API_READ_TOKEN` is only needed for a private dataset. When no project ID is set, services and FAQs use code-owned fallbacks and optional CMS collections are empty.
 
 ## Structure
 
@@ -26,15 +26,14 @@ src/
 ├── components/  Astro/UI components
 ├── data/        Business facts (phone, email, hours, pricing) — single source of truth
 ├── layouts/     Page layouts
-├── lib/         Storyblok data helpers
-├── storyblok/   CMS-driven component bindings
-└── middleware.ts
+├── lib/         Sanity data and image helpers
+└── sanity/      Portable Text rendering
 
 public/          Static assets
-scripts/         Storyblok webhook + tooling
+scripts/         Sanity seed + service integrations
 ```
 
 ## Notes
 
 - Start the dev server in background mode: `astro dev --background`. Manage it with `astro dev stop`, `astro dev status`, `astro dev logs`.
-- `astro build` fetches Storyblok content at build time — if content looks stale after a CMS edit, force a clean rebuild (`rm -rf dist node_modules/.astro .astro`) or check the CDN API directly first.
+- `astro build` fetches published Sanity content at build time. A Sanity publish must be followed by a Netlify rebuild before the production site changes.

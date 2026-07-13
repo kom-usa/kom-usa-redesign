@@ -9,6 +9,12 @@ import HomeHeart from "@tabler/icons/outline/home-heart.svg";
 import MessageCircle from "@tabler/icons/outline/message-circle.svg";
 import Phone from "@tabler/icons/outline/phone.svg";
 import ShieldCheck from "@tabler/icons/outline/shield-check.svg";
+import Tool from "@tabler/icons/outline/tool.svg";
+import Droplet from "@tabler/icons/outline/droplet.svg";
+import Lock from "@tabler/icons/outline/lock.svg";
+import Flame from "@tabler/icons/outline/flame.svg";
+import Wind from "@tabler/icons/outline/wind.svg";
+import Brush from "@tabler/icons/outline/brush.svg";
 
 interface Props {
   name: string;
@@ -23,6 +29,12 @@ const icons: Record<string, (props: Record<string, unknown>) => unknown> = {
   "message-circle": MessageCircle,
   phone: Phone,
   "shield-check": ShieldCheck,
+  tool: Tool,
+  droplet: Droplet,
+  lock: Lock,
+  flame: Flame,
+  wind: Wind,
+  brush: Brush,
 };
 
 const { name, class: className } = Astro.props;

@@ -10,4 +10,4 @@ Email **contact@kom-usa.com** with details and, if possible, steps to reproduce.
 
 ## Scope
 
-This applies to the code in this repository and the production/preview deployments built from it. It does not cover third-party services (Netlify, Storyblok) directly — report those issues to the respective provider.
+This applies to the code in this repository and the production/preview deployments built from it. It does not cover third-party services such as Netlify, Sanity, or Brevo directly — report those issues to the respective provider.

@@ -32,16 +32,32 @@
   --color-kom-tan-light: #d9c596;
   --color-kom-ink: #262520;
 
-  /* Flat design — no shadows or drop-shadows anywhere. Separation comes from
-     borders and background tints, not elevation. */
-  --shadow-card: none;
-  --shadow-card-hover: none;
-  --shadow-xs: none;
-  --shadow-sm: none;
-  --shadow-md: none;
-  --shadow-lg: none;
-  --shadow-xl: none;
-  --shadow-2xl: none;
+  /* Small Business Starter compatibility tokens. These keep the starter's
+     component language while preserving KOM USA's established palette. */
+  --color-primary: #2f6b3b;
+  --color-primary-light: #78a866;
+  --color-primary-fg: #ffffff;
+  --color-accent: #c59a42;
+  --color-accent-fg: #262520;
+  --color-background: #ffffff;
+  --color-surface: #f7f7f2;
+  --color-border: #e6e3da;
+  --color-text: #262520;
+  --color-text-muted: #5e676e;
+  --color-dark: #262520;
+  --color-dark-surface: #33383e;
+
+  --container-site: 80rem;
+  --spacing-section: clamp(4rem, 7vw, 6.25rem);
+  --text-topper: clamp(0.75rem, 1.4vw, 0.875rem);
+  --text-lead: clamp(1.0625rem, 1.8vw, 1.25rem);
+  --text-h3: clamp(1.25rem, 2.2vw, 1.5rem);
+  --text-h2: clamp(1.875rem, 3.2vw, 2.5rem);
+  --text-display: clamp(2.65rem, 5.8vw, 4.7rem);
+
+  /* The selected starter uses restrained elevation on cards and photography. */
+  --shadow-card: 0 10px 30px rgb(38 37 32 / 0.07);
+  --shadow-card-hover: 0 16px 38px rgb(38 37 32 / 0.11);
 }
 
 @layer base {
@@ -59,6 +75,17 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     background: #ffffff;
+    color: var(--color-kom-charcoal);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-sans);
+    line-height: 1.15;
   }
 
   ::selection {
@@ -89,9 +116,5 @@
 }
 
 @utility section-pad {
-  padding-block: --spacing(16);
-
-  @variant md {
-    padding-block: --spacing(24);
-  }
+  padding-block: var(--spacing-section);
 }
