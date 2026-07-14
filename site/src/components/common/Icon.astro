@@ -33,6 +33,8 @@ import Ruler2 from "@tabler/icons/outline/ruler-2.svg";
 import Shovel from "@tabler/icons/outline/shovel.svg";
 import Paint from "@tabler/icons/outline/paint.svg";
 import Crane from "@tabler/icons/outline/crane.svg";
+import Building from "@tabler/icons/outline/building.svg";
+import Packages from "@tabler/icons/outline/packages.svg";
 
 interface Props {
   name: string;
@@ -71,6 +73,8 @@ const icons: Record<string, (props: Record<string, unknown>) => unknown> = {
   shovel: Shovel,
   paint: Paint,
   crane: Crane,
+  building: Building,
+  packages: Packages,
 };
 
 const { name, class: className } = Astro.props;
