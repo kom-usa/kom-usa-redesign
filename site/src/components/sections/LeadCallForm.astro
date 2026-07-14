@@ -1,7 +1,7 @@
 ---
-import Button from "../starwind/button/Button.astro";
-import Input from "../starwind/input/Input.astro";
-import Label from "../starwind/label/Label.astro";
+import Button from "../ui/Button.astro";
+import Input from "../ui/Input.astro";
+import Label from "../ui/Label.astro";
 import { business } from "../../data/business";
 
 const serviceTypeOptions = ["Maintenance", "Construction"];
@@ -14,7 +14,7 @@ interface Props {
 const { preselectService, headline = "Let us call you" } = Astro.props;
 
 const selectClass =
-  "border-input aria-[invalid=true]:border-error flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-outline";
+  "border-kom-cream-border aria-[invalid=true]:border-error flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-kom-field";
 const invalidClass = "aria-[invalid=true]:border-error";
 const errClass = "lead-error text-error mt-1 hidden text-xs font-semibold";
 ---
@@ -78,7 +78,7 @@ const errClass = "lead-error text-error mt-1 hidden text-xs font-semibold";
     </div>
 
     <div class="mt-5 flex flex-col items-center gap-3 sm:flex-row">
-      <Button type="submit" variant="primary" size="lg" class="w-full font-extrabold sm:w-auto">
+      <Button type="submit" variant="primary" size="lg" class="w-full sm:w-auto">
         Request a Call
       </Button>
       <p class="text-muted-foreground text-xs">

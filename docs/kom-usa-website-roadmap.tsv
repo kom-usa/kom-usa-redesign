@@ -1,5 +1,5 @@
 Topic	Task	Notes
-PHASE 1	Finalize homepage layout and design system	Lock the visual direction, spacing, buttons, forms, mobile sticky CTA, section order, and reusable Astro/Starwind patterns. Current site already has the main homepage sections, so this is polish and consistency work first.
+PHASE 1	Finalize homepage layout and design system	Lock the visual direction, spacing, buttons, forms, mobile sticky CTA, section order, and reusable Astro/Tailwind patterns. Current site already has the main homepage sections, so this is polish and consistency work first.
 PHASE 1	Responsive, accessibility, and performance QA	Test desktop, tablet, and mobile. Check focus states, contrast, tap targets, form labels, image sizing, reduced-motion behavior, build output, and Core Web Vitals basics.
 PHASE 1	SEO foundation pass	Centralize page titles/descriptions, canonical URLs, sitemap, robots, Open Graph image, LocalBusiness schema, FAQ schema, service schema, and internal heading structure.
 PHASE 1	Conversion form and thank-you flow	Keep the current Netlify form as the simple launch path. Confirm submissions, spam protection, email notifications, thank-you page, and conversion tracking.

@@ -6,7 +6,7 @@ import CircleCheck from "@tabler/icons/outline/circle-check.svg";
 import AlertCircle from "@tabler/icons/outline/alert-circle.svg";
 import BaseLayout from "./BaseLayout.astro";
 import AdaptiveRequestForm from "../components/sections/AdaptiveRequestForm.astro";
-import Button from "../components/starwind/button/Button.astro";
+import Button from "../components/ui/Button.astro";
 import { business } from "../data/business";
 import { relatedLabel, relatedPath, servicePath, type ServiceDefinition } from "../data/service-catalog";
 
@@ -87,7 +87,7 @@ const jsonLd = JSON.stringify({
           <AlertCircle class="size-4" aria-hidden="true" />{service.pricingLabel}
         </p>
         <div class="mt-7 flex flex-col gap-3 sm:flex-row">
-          <Button href={requestUrl} variant="primary" size="lg" class="font-extrabold">{ctaLabel}<ArrowRight aria-hidden="true" /></Button>
+          <Button href={requestUrl} variant="primary" size="lg">{ctaLabel}<ArrowRight aria-hidden="true" /></Button>
           <a href={phoneHref} data-service-phone={service.line} class:list={["inline-flex h-12 items-center justify-center gap-2 rounded-md px-6 text-lg font-extrabold focus-visible:outline-none focus-visible:ring-3", isMaintenance ? "border border-kom-field text-kom-field hover:bg-kom-sage-tint" : "border border-white/35 text-white hover:bg-white/10"]}>
             <Phone class="size-5" aria-hidden="true" />Call {phone}
           </a>

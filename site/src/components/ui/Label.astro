@@ -1,0 +1,17 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"label">;
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<label
+  class:list={[
+    "text-base leading-none font-medium text-kom-charcoal peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</label>

@@ -1,8 +1,8 @@
 ---
-import Button from "../starwind/button/Button.astro";
-import Input from "../starwind/input/Input.astro";
-import Label from "../starwind/label/Label.astro";
-import Textarea from "../starwind/textarea/Textarea.astro";
+import Button from "../ui/Button.astro";
+import Input from "../ui/Input.astro";
+import Label from "../ui/Label.astro";
+import Textarea from "../ui/Textarea.astro";
 import { maintenanceServices, constructionServices, type ServiceLine } from "../../data/service-catalog";
 
 interface Props {
@@ -22,7 +22,7 @@ const {
 } = Astro.props;
 
 const buttonLabel = intent === "estimate" ? "Request an Estimate" : intent === "callback" ? "Request a Callback" : "Request Service";
-const selectClass = "border-input focus-visible:outline-outline flex h-12 w-full rounded-md border bg-white px-3 py-2 text-base text-kom-charcoal transition-colors focus-visible:outline-2 focus-visible:outline-offset-2";
+const selectClass = "border-kom-cream-border focus-visible:outline-kom-field flex h-12 w-full rounded-md border bg-white px-3 py-2 text-base text-kom-charcoal transition-colors focus-visible:outline-2 focus-visible:outline-offset-2";
 ---
 
 <section id="request-form" class="scroll-mt-28" data-request-form-root>
@@ -155,7 +155,7 @@ const selectClass = "border-input focus-visible:outline-outline flex h-12 w-full
         <p class="text-kom-charcoal/70 mt-2 hidden max-w-3xl text-xs leading-relaxed" data-text-consent>
           By selecting text, you expressly consent to receive text messages about this request at the number provided. Message and data rates may apply. Consent is not a condition of purchase.
         </p>
-        <Button type="submit" variant="primary" size="lg" class="mt-5 w-full font-extrabold sm:w-auto" data-request-submit>
+        <Button type="submit" variant="primary" size="lg" class="mt-5 w-full sm:w-auto" data-request-submit>
           {buttonLabel}
         </Button>
       </div>

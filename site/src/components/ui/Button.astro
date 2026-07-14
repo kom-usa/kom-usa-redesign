@@ -1,0 +1,45 @@
+---
+/**
+ * Brand button. Renders an <a> when `href` is present, otherwise a <button>.
+ * `inverse` variants are for use on dark green (kom-field) backgrounds.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Variant = "primary" | "outline" | "inverse" | "outline-inverse";
+type Size = "md" | "lg";
+
+interface Props extends HTMLAttributes<"button">, Omit<HTMLAttributes<"a">, "type"> {
+  variant?: Variant;
+  size?: Size;
+}
+
+const variants: Record<Variant, string> = {
+  primary: "bg-kom-field text-white hover:bg-kom-field-hover focus-visible:ring-kom-field/50",
+  outline:
+    "border border-kom-field/40 bg-transparent text-kom-field hover:bg-kom-sage-tint focus-visible:ring-kom-field/50",
+  inverse: "bg-white text-kom-field hover:bg-kom-cream focus-visible:ring-white/60",
+  "outline-inverse":
+    "border border-white/50 bg-transparent text-white hover:bg-white/10 focus-visible:ring-white/60",
+};
+
+const sizes: Record<Size, string> = {
+  md: "min-h-11 px-5 text-base [&_svg:not([class*='size-'])]:size-4.5",
+  lg: "min-h-12 px-8 text-lg [&_svg:not([class*='size-'])]:size-5",
+};
+
+const { variant = "primary", size = "lg", class: className, ...rest } = Astro.props;
+
+const Tag = Astro.props.href ? "a" : "button";
+---
+
+<Tag
+  class:list={[
+    "inline-flex items-center justify-center gap-1.5 rounded-md font-extrabold whitespace-nowrap transition-colors outline-none focus-visible:ring-3 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+    variants[variant],
+    sizes[size],
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</Tag>

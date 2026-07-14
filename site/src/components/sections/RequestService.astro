@@ -4,10 +4,10 @@ import Mail from "@tabler/icons/outline/mail.svg";
 import MapPin from "@tabler/icons/outline/map-pin.svg";
 import Clock from "@tabler/icons/outline/clock.svg";
 
-import Button from "../starwind/button/Button.astro";
-import Input from "../starwind/input/Input.astro";
-import Label from "../starwind/label/Label.astro";
-import Textarea from "../starwind/textarea/Textarea.astro";
+import Button from "../ui/Button.astro";
+import Input from "../ui/Input.astro";
+import Label from "../ui/Label.astro";
+import Textarea from "../ui/Textarea.astro";
 import SectionHeader from "../common/SectionHeader.astro";
 import { business, serviceOptions, urgencyOptions } from "../../data/business";
 
@@ -18,7 +18,7 @@ import { business, serviceOptions, urgencyOptions } from "../../data/business";
  * before launch. ServiceM8 booking replaces or augments this in a later phase.
  */
 const selectClass =
-  "border-input focus-visible:outline-outline flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1";
+  "border-kom-cream-border focus-visible:outline-kom-field flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1";
 ---
 
 <section id="request-service" class="section-pad scroll-mt-16 bg-kom-cream">
@@ -158,7 +158,7 @@ const selectClass =
                       name="preferred-contact"
                       value={method}
                       checked={index === 0}
-                      class="text-primary focus:ring-primary border-input size-4"
+                      class="text-primary focus:ring-primary border-kom-cream-border size-4"
                     />
                     {method}
                   </label>
@@ -168,7 +168,7 @@ const selectClass =
           </fieldset>
         </div>
 
-        <Button type="submit" variant="primary" size="lg" class="mt-6 w-full font-bold">
+        <Button type="submit" variant="primary" size="lg" class="mt-6 w-full">
           Send request
         </Button>
         <p class="text-muted-foreground mt-3 text-center text-xs">

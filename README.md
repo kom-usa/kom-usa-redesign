@@ -11,7 +11,7 @@ The site is a lead-capture funnel: visitors share their contact info and job det
 ## Tech stack
 
 - [Astro 7](https://astro.build) — static site generation
-- [Tailwind CSS 4](https://tailwindcss.com) + [Starwind](https://starwind.dev) components
+- [Tailwind CSS 4](https://tailwindcss.com) with hand-rolled Astro components (`site/src/components/ui/`)
 - [Sanity](https://www.sanity.io) — headless CMS and staff editing studio
 - [Netlify](https://www.netlify.com) — hosting, forms (`request-call`, `request-service`), and CI deploys
 - [Brevo](https://www.brevo.com) — lead CRM + customer acknowledgement emails (see [`docs/brevo-netlify-forms.md`](docs/brevo-netlify-forms.md))

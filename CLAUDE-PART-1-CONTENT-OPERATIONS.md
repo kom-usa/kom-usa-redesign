@@ -22,7 +22,7 @@ The agent must build the plumbing before adding AI writing tools, rich formattin
 
 This is **Part 1**.
 
-The Astro + Starwind UI design file is **Part 2**.
+The Astro + Tailwind design file is **Part 2** (`CLAUDE-PART-2-ASTRO-DESIGN.md`).
 
 The required workflow is:
 
@@ -752,7 +752,7 @@ For a rebuild or new project, implement in this order:
 9. Local build gate.
 10. Netlify deploy configuration.
 11. SEO graph, sitemap, RSS, robots, llms.txt, and related outputs.
-12. Starwind UI visual design system.
+12. Astro + Tailwind visual design system.
 13. Animations and advanced components.
 14. AI-assisted drafting, summaries, or content helpers.
 
@@ -784,7 +784,7 @@ If these answers are unknown, make a best-effort assumption based on the repo an
 
 ## Design Handoff Rule
 
-After this Part 1 foundation is understood, continue to the Astro + Starwind UI design file.
+After this Part 1 foundation is understood, continue to the Astro + Tailwind design file (`CLAUDE-PART-2-ASTRO-DESIGN.md`).
 
 The design agent must preserve these operational constraints while implementing layout, branding, animation, components, SEO, and Netlify deployment.
 

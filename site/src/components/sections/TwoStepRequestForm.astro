@@ -5,10 +5,10 @@ import PhoneCall from "@tabler/icons/outline/phone-call.svg";
 import Check from "@tabler/icons/outline/check.svg";
 import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
 import ArrowLeft from "@tabler/icons/outline/arrow-left.svg";
-import Button from "../starwind/button/Button.astro";
-import Input from "../starwind/input/Input.astro";
-import Label from "../starwind/label/Label.astro";
-import Textarea from "../starwind/textarea/Textarea.astro";
+import Button from "../ui/Button.astro";
+import Input from "../ui/Input.astro";
+import Label from "../ui/Label.astro";
+import Textarea from "../ui/Textarea.astro";
 
 interface Props {
   line?: "maintenance" | "construction" | "";
@@ -105,7 +105,7 @@ const invalidClass = "aria-[invalid=true]:border-error";
           </div>
         </div>
         <div class="mx-auto mt-7 max-w-2xl">
-          <Button type="button" variant="primary" size="lg" class="step-continue w-full font-extrabold sm:w-auto" data-continue>
+          <Button type="button" variant="primary" size="lg" class="step-continue w-full sm:w-auto" data-continue>
             Continue
             <ArrowRight class="size-5" aria-hidden="true" />
           </Button>
@@ -142,7 +142,7 @@ const invalidClass = "aria-[invalid=true]:border-error";
               <ArrowLeft class="size-5" aria-hidden="true" />
               Back
             </button>
-            <Button type="submit" variant="primary" size="lg" class="font-extrabold" data-request-submit>
+            <Button type="submit" variant="primary" size="lg" data-request-submit>
               Submit Request
               <Check class="size-5" aria-hidden="true" />
             </Button>

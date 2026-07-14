@@ -1,4 +1,4 @@
-# CLAUDE.md — Part 2: Astro + Starwind UI Website Design & SEO Rules
+# CLAUDE.md — Part 2: Astro + Tailwind Website Design & SEO Rules
 
 > **Read first:** `CLAUDE-PART-1-CONTENT-OPERATIONS.md` must be read before this file. Part 1 defines the content model, publishing safety, Git workflow, image pipeline, validation gates, admin/editor boundaries, and Netlify deployment assumptions. This file begins only after that operational foundation is understood.
 
@@ -8,7 +8,7 @@ This file defines the default implementation standard for all small-business Ast
 
 Build every site as a fast, accessible, SEO-ready, visually distinctive Astro website that deploys cleanly to Netlify.
 
-The final site must feel custom to the business, not like a generic template. It should combine strong local SEO structure, polished visual hierarchy, original brand direction, Starwind UI components, and Astro's static-first performance model.
+The final site must feel custom to the business, not like a generic template. It should combine strong local SEO structure, polished visual hierarchy, original brand direction, project-owned Astro + Tailwind components, and Astro's static-first performance model.
 
 
 ## Grill Me First: Design Discovery Interview
@@ -123,7 +123,7 @@ Do not begin detailed visual implementation until this design brief exists. If t
 Use this stack unless the user explicitly says otherwise:
 
 - **Framework:** Astro
-- **UI foundation:** Starwind UI components
+- **UI foundation:** Hand-rolled Astro components styled with Tailwind, owned by the project in `src/components/ui/`
 - **Styling:** Tailwind CSS v4 through the Astro project setup
 - **Language:** TypeScript where applicable
 - **Content:** Astro content collections for blog posts, service pages, case studies, team profiles, locations, FAQs, testimonials, and resource content
@@ -137,7 +137,7 @@ Do not build new projects as a single `index.html` file. Do not use Tailwind CDN
 
 ## Flexible Astro-First Ecosystem Rule
 
-Starwind UI is the default foundation, not a cage. The agent may incorporate any library, component pattern, animation, or visual treatment that works well with Astro **as long as the final result remains Astro-first**.
+Project-owned Astro + Tailwind components are the default foundation, not a cage. The agent may incorporate any library, component pattern, animation, or visual treatment that works well with Astro **as long as the final result remains Astro-first**.
 
 Use this decision order:
 
@@ -149,7 +149,6 @@ Use this decision order:
 
 Allowed sources of inspiration and implementation include:
 
-- Starwind UI components and Starwind Pro blocks
 - Astro integrations and official Astro examples
 - shadcn-style component patterns adapted into Astro
 - 21st.dev-style interaction ideas, animation ideas, and premium visual patterns when they can be recreated cleanly
@@ -171,38 +170,26 @@ Before writing code:
 4. Check `brand_assets/`, `public/brand/`, `public/images/`, `src/assets/`, and any uploaded design references.
 5. Identify the business type, location, audience, services, calls to action, and trust signals.
 6. If a reference image is provided, match it closely. If no reference is provided, design from scratch using the craft rules below.
-7. Use Starwind UI as the component foundation, but customize it so the finished site does not look like a stock component library.
+7. Build on the project-owned Astro + Tailwind primitives in `src/components/ui/`, and customize so the finished site does not look like a stock component library.
 
-## Starwind UI Rules
+## UI Component Rules
 
-Starwind UI is the default UI system. It provides accessible Astro components styled with Tailwind CSS v4 and gives direct control over component source code. Use this to create custom-feeling sections while preserving consistency and accessibility.
+The UI system is plain Astro components styled with Tailwind CSS v4, owned by the project in `src/components/ui/`. There is no third-party component library. Every primitive is a small `.astro` file with static Tailwind classes, so the source is fully controlled, auditable, and free of runtime dependencies.
 
-### Use Starwind UI For
+### Build Project Primitives For
 
-- Buttons
-- Cards
-- Accordions
-- Alerts
-- Badges
-- Breadcrumbs
-- Carousels
-- Forms
-- Inputs
-- Textareas
-- Selects
-- Tabs
-- Dialogs and sheets when needed
-- Tables
-- Tooltips
-- Theme toggles
-- Navigation/sidebar patterns when appropriate
+- Buttons (variant/size props with explicit class maps — no class-merging libraries)
+- Form controls: inputs, textareas, labels, selects
+- Cards and badges when a pattern repeats
+- Accordions — prefer native `<details>`/`<summary>` (use the `name` attribute for exclusive open) over scripted accordions
+- Navigation patterns (CSS hover/focus-within dropdowns before JavaScript)
 
 ### Customization Rules
 
-- Do not leave Starwind components in their default visual state.
-- Customize tokens, spacing, border radii, typography, shadows, and interaction states to match the business.
-- Prefer native `.astro` components over client-side JavaScript.
-- Use JavaScript only when required for interaction.
+- Express brand decisions through Tailwind theme tokens (`@theme` in `global.css`) and use those tokens (`kom-*`, `primary`, `muted-foreground`, `error`, `border`) in component classes.
+- Avoid class-override APIs that create conflicting utilities; add a variant to the primitive instead of overriding its colors at the call site.
+- Prefer native HTML elements and CSS (`details`, `:hover`, `:focus-within`, scroll-driven effects) over client-side JavaScript.
+- Use JavaScript only when required for interaction, in small inline `<script>` blocks.
 - Keep components accessible: keyboard navigation, visible focus states, semantic HTML, ARIA only where needed.
 - Maintain dark mode support only if the site design calls for it. Do not add a dark-mode toggle by default for every local business.
 
@@ -283,7 +270,7 @@ src/
     layout/
     sections/
     seo/
-    starwind/
+    ui/
   content/
     blog/
     services/
@@ -632,7 +619,7 @@ Implementation expectations:
 
 - Add Pagefind through the Astro integration.
 - Prefer Pagefind's current component-based UI where appropriate.
-- Style the search interface with the site's Starwind/Tailwind design system.
+- Style the search interface with the site’s Tailwind design system.
 - Exclude low-value pages, utility pages, thank-you pages, legal boilerplate, and duplicate content from indexing when appropriate.
 - Ensure the search index works after static Netlify builds.
 - Add `SearchAction` schema to the `WebSite` entity only when search is present.
@@ -1029,7 +1016,7 @@ Build reusable components for:
 - `LocalBusinessSchema.astro` or schema utility
 - `Seo.astro`
 
-Use Starwind components internally when appropriate, but keep project-level components business-specific.
+Compose from the `src/components/ui/` primitives when appropriate, but keep project-level components business-specific.
 
 ## Business-Type Design Guidance
 
@@ -1119,7 +1106,7 @@ If a reference image is provided:
 If no reference image is provided:
 
 - Create a custom design direction from the business type, audience, services, location, and assets.
-- Use high-craft layouts and Starwind UI components as a foundation.
+- Use high-craft layouts built from the project’s own Astro + Tailwind components.
 - Avoid template-like sameness.
 
 ## Local Development and Screenshot Workflow
@@ -1217,7 +1204,7 @@ For Astro SEO, prioritize the documented full-stack approach:
 - Redirects and 404 handling for migrations
 - Lightweight analytics and validation workflows
 
-For Starwind UI, prioritize its core model:
+For UI components, prioritize this model:
 
 - Native Astro components
 - Tailwind CSS v4
@@ -1230,7 +1217,7 @@ For Starwind UI, prioritize its core model:
 
 - Build Astro websites, not static one-file HTML demos.
 - Deploy assumptions must target Netlify.
-- Use Starwind UI as the default component system.
+- Use the project-owned Astro + Tailwind primitives as the default component system.
 - Do not use Tailwind CDN.
 - Do not use `transition-all`.
 - Do not animate layout properties.

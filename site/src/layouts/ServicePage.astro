@@ -5,7 +5,7 @@ import Phone from "@tabler/icons/outline/phone.svg";
 import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
 
 import BaseLayout from "./BaseLayout.astro";
-import Button from "../components/starwind/button/Button.astro";
+import Button from "../components/ui/Button.astro";
 import LeadCallForm from "../components/sections/LeadCallForm.astro";
 import { business, pricingDisclaimer, serviceGuardrails } from "../data/business";
 import type { ServiceDef } from "../data/services";
@@ -38,8 +38,8 @@ const pricingNotes: string[] = [
         </h1>
         <p class="text-muted-foreground mt-5 max-w-xl text-lg leading-relaxed">{service.heroIntro}</p>
         <div class="mt-7 flex flex-wrap gap-3">
-          <Button href="#lead-form" variant="primary" size="lg" class="font-extrabold">Request a Call</Button>
-          <Button href={business.phoneHref} variant="outline" size="lg" class="border-kom-field/40 font-extrabold text-kom-field hover:bg-kom-sage-tint">
+          <Button href="#lead-form" variant="primary" size="lg">Request a Call</Button>
+          <Button href={business.phoneHref} variant="outline" size="lg">
             <Phone aria-hidden="true" />
             {business.phone}
           </Button>

@@ -1,8 +1,5 @@
 ---
-import Accordion from "../starwind/accordion/Accordion.astro";
-import AccordionItem from "../starwind/accordion/AccordionItem.astro";
-import AccordionTrigger from "../starwind/accordion/AccordionTrigger.astro";
-import AccordionContent from "../starwind/accordion/AccordionContent.astro";
+import ChevronDown from "@tabler/icons/outline/chevron-down.svg";
 import SectionHeader from "../common/SectionHeader.astro";
 import { faqs } from "../../data/business";
 ---
@@ -11,19 +8,40 @@ import { faqs } from "../../data/business";
   <div class="mx-auto max-w-3xl px-4 sm:px-6">
     <SectionHeader title="Common questions, straight answers." />
 
-    <Accordion type="single" class="reveal mt-10">
+    <div class="reveal mt-10">
       {
-        faqs.map((faq, index) => (
-          <AccordionItem value={`faq-${index}`}>
-            <AccordionTrigger class="text-left text-base font-bold">
+        faqs.map((faq) => (
+          <details class="faq-item group border-b last:border-b-0" name="faq">
+            <summary class="flex w-full cursor-pointer list-none items-center justify-between gap-4 rounded-md py-4 text-left text-base font-bold transition-colors hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/50 [&::-webkit-details-marker]:hidden">
               {faq.question}
-            </AccordionTrigger>
-            <AccordionContent>
-              <p class="text-muted-foreground leading-relaxed">{faq.answer}</p>
-            </AccordionContent>
-          </AccordionItem>
+              <ChevronDown class="size-5 shrink-0 transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
+            </summary>
+            <p class="pb-4 text-muted-foreground leading-relaxed">{faq.answer}</p>
+          </details>
         ))
       }
-    </Accordion>
+    </div>
   </div>
 </section>
+
+<style>
+  /* Smooth open/close where ::details-content is supported; falls back to an
+     instant toggle elsewhere. `name="faq"` gives native single-open behavior. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (interpolate-size: allow-keywords) {
+      .faq-item {
+        interpolate-size: allow-keywords;
+      }
+      .faq-item::details-content {
+        block-size: 0;
+        overflow-y: clip;
+        transition:
+          content-visibility 0.2s allow-discrete,
+          block-size 0.2s ease-out;
+      }
+      .faq-item[open]::details-content {
+        block-size: auto;
+      }
+    }
+  }
+</style>
