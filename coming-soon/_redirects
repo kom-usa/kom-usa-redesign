@@ -1,0 +1,3 @@
+# The published directory contains no unfinished site routes. Any deep link
+# receives the same temporary coming-soon page while keeping its original URL.
+/*  /index.html  200

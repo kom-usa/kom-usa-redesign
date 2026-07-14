@@ -1,35 +1,31 @@
-# KOM USA — Netlify configuration (repo root).
+# Temporary production configuration for the public coming-soon branch.
 #
-# The Astro app lives in the `site/` subdirectory, so `base` points Netlify
-# there. `command` and `publish` are resolved relative to `base`, i.e. the
-# build runs in `site/` and publishes `site/dist`. This is what makes a freshly
-# connected Netlify site build correctly without setting a base directory by
-# hand in the UI.
+# The full Astro application remains on `main`. This branch publishes only the
+# small static directory below, so unfinished pages and application code can
+# continue to change without becoming publicly reachable at kom-usa.com.
 
 [build]
-  base = "site"
-  command = "npm run build"
-  publish = "dist"
+  command = "echo 'KOM USA coming-soon site is static; no build required.'"
+  publish = "coming-soon"
 
 [build.environment]
   NODE_VERSION = "22"
 
-# Event-triggered function: formSubmitted → Brevo contact sync + acknowledgement email.
-# Path is relative to `base` (site/).
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
-# Hashed, content-addressed assets never change under a given name.
-[[headers]]
-  for = "/_astro/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
 [[headers]]
   for = "/*"
   [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
