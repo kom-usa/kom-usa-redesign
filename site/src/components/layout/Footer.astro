@@ -30,16 +30,16 @@ const columns = [
 ];
 ---
 
-<footer class="bg-kom-ink text-white/75">
+<footer class="bg-kom-charcoal-deep text-white/75">
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
       <div>
-        <a href="/" class="inline-flex rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-tan">
+        <a href="/" class="inline-flex rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-sage">
           <img src={logoWhite.src} alt="KOM USA" class="h-12 w-auto" width="150" height="55" />
         </a>
         <p class="mt-4 max-w-xs text-sm leading-relaxed">Home maintenance, repairs, remodeling, construction, and project support across Metro Detroit.</p>
         <p class="mt-4 text-sm font-bold text-white">{business.availability}</p>
-        <a href={business.instagramUrl} target="_blank" rel="noopener" aria-label="KOM USA on Instagram" class="mt-4 inline-flex size-10 items-center justify-center rounded-md border border-white/20 text-white/75 transition-colors hover:border-kom-tan hover:text-kom-tan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-tan">
+        <a href={business.instagramUrl} target="_blank" rel="noopener" aria-label="KOM USA on Instagram" class="mt-4 inline-flex size-10 items-center justify-center rounded-md border border-white/20 text-white/75 transition-colors hover:border-kom-sage hover:text-kom-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-sage">
           <BrandInstagram class="size-5" aria-hidden="true" />
         </a>
       </div>
@@ -49,7 +49,7 @@ const columns = [
           <h2 class="text-sm font-black uppercase tracking-wider text-white">{column.title}</h2>
           <ul class="mt-4 space-y-2.5 text-sm">
             {column.links.map((link) => (
-              <li><a href={link.href} class="transition-colors hover:text-kom-tan focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-tan">{link.label}</a></li>
+              <li><a href={link.href} class="transition-colors hover:text-kom-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-sage">{link.label}</a></li>
             ))}
           </ul>
         </nav>
@@ -60,22 +60,23 @@ const columns = [
         <ul class="mt-4 space-y-4 text-sm">
           <li>
             <span class="block text-xs text-white/45">Maintenance</span>
-            <a href={business.maintenancePhoneHref} class="mt-1 flex items-center gap-2 font-black text-white hover:text-kom-tan"><Phone class="size-4" aria-hidden="true" />{business.maintenancePhone}</a>
+            <a href={business.maintenancePhoneHref} class="mt-1 flex items-center gap-2 font-black text-white hover:text-kom-sage"><Phone class="size-4" aria-hidden="true" />{business.maintenancePhone}</a>
           </li>
           <li>
             <span class="block text-xs text-white/45">Construction</span>
-            <a href={business.constructionPhoneHref} class="mt-1 flex items-center gap-2 font-black text-white hover:text-kom-tan"><Phone class="size-4" aria-hidden="true" />{business.constructionPhone}</a>
+            <a href={business.constructionPhoneHref} class="mt-1 flex items-center gap-2 font-black text-white hover:text-kom-sage"><Phone class="size-4" aria-hidden="true" />{business.constructionPhone}</a>
           </li>
-          <li><a href={business.emailHref} class="flex items-center gap-2 hover:text-kom-tan"><Mail class="size-4" aria-hidden="true" />{business.email}</a></li>
-          <li class="flex items-start gap-2"><MapPin class="mt-0.5 size-4 shrink-0" aria-hidden="true" />Wayne, Oakland, and Macomb counties</li>
+          <li><a href={business.emailHref} class="flex items-center gap-2 hover:text-kom-sage"><Mail class="size-4" aria-hidden="true" />{business.email}</a></li>
+          <li class="flex items-start gap-2"><MapPin class="mt-0.5 size-4 shrink-0" aria-hidden="true" />Serving all of Metro Detroit</li>
         </ul>
       </div>
     </div>
 
     <div class="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
-      <p>© {year} {business.name}. All rights reserved.</p>
-      <div class="flex gap-5">
+      <p>© {year} {business.legalName}. {business.name} is the service brand. All rights reserved.</p>
+      <div class="flex flex-wrap gap-x-5 gap-y-2">
         <a href="/privacy/" class="hover:text-white">Privacy Policy</a>
+        <a href="/terms/" class="hover:text-white">Website Terms</a>
         <a href="/request-service/" class="hover:text-white">Request Service</a>
       </div>
     </div>

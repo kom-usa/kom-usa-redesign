@@ -1,0 +1,132 @@
+---
+import { Image } from "astro:assets";
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
+import CircleCheck from "@tabler/icons/outline/circle-check.svg";
+import MapPin from "@tabler/icons/outline/map-pin.svg";
+import Phone from "@tabler/icons/outline/phone.svg";
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import LeadCallForm from "../../components/sections/LeadCallForm.astro";
+import PortableText from "../../sanity/PortableText.astro";
+import { business } from "../../data/business";
+import { featuredServiceAreas, getServiceArea } from "../../data/service-areas";
+import { allServices, servicePath } from "../../data/service-catalog";
+import { getLocations, type Location } from "../../lib/sanity";
+import homeExterior from "../../assets/images/home-exterior.jpg";
+
+export async function getStaticPaths() {
+  const cmsLocations = await getLocations();
+  return featuredServiceAreas.map((area) => ({
+    params: { slug: area.slug },
+    props: { cmsLocation: cmsLocations.find((location) => location.slug === area.slug) },
+  }));
+}
+
+const area = getServiceArea(Astro.params.slug!);
+if (!area) return Astro.redirect("/service-areas/");
+
+const { cmsLocation } = Astro.props as { cmsLocation?: Location };
+const title = cmsLocation?.seoTitle || area.metaTitle;
+const description = cmsLocation?.seoDescription || area.metaDescription;
+const heroIntro = cmsLocation?.heroIntro || area.heroIntro;
+
+const maintenanceSlugs = ["handyman-services", "drywall-repair", "electrical-services", "gutter-cleaning"];
+const constructionSlugs = ["kitchen-remodeling", "bathroom-remodeling", "flooring-installation", "new-construction"];
+const maintenanceLinks = maintenanceSlugs.map((slug) => allServices.find((service) => service.slug === slug)!).filter(Boolean);
+const constructionLinks = constructionSlugs.map((slug) => allServices.find((service) => service.slug === slug)!).filter(Boolean);
+const nearbyAreas = area.nearby.map((slug) => getServiceArea(slug)).filter(Boolean);
+---
+
+<BaseLayout {title} {description} serviceAreaCity={area.city}>
+  <section class="overflow-hidden bg-kom-sage-tint">
+    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:px-8 lg:py-20">
+      <div>
+        <nav aria-label="Breadcrumb" class="text-sm font-bold text-kom-charcoal/65"><a href="/service-areas/" class="hover:text-kom-field hover:underline">Service Areas</a><span aria-hidden="true"> / </span><span>{area.city}</span></nav>
+        <p class="mt-6 inline-flex items-center gap-2 font-extrabold text-kom-field"><MapPin class="size-5" aria-hidden="true" />Serving {area.city}, Michigan</p>
+        <h1 class="mt-3 max-w-4xl text-[clamp(2.8rem,5.8vw,4.75rem)] font-black leading-[0.99] tracking-[-0.04em] text-kom-charcoal-deep text-balance">Home Maintenance and Construction in {area.city}</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-kom-charcoal/72 sm:text-xl">{heroIntro}</p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="/request-service/?intent=service" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-kom-field px-6 font-extrabold text-white transition-colors hover:bg-kom-field-hover">Request Service<ArrowRight class="size-4" aria-hidden="true" /></a>
+          <a href={business.maintenancePhoneHref} class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border-2 border-kom-field px-6 font-extrabold text-kom-field transition-colors hover:bg-kom-field hover:text-white"><Phone class="size-5" aria-hidden="true" />{business.maintenancePhone}</a>
+        </div>
+      </div>
+      <figure class="overflow-hidden rounded-xl shadow-lg">
+        <Image src={homeExterior} alt="A completed KOM USA exterior renovation project in Metro Detroit" class="aspect-[4/3] w-full object-cover" widths={[640, 900, 1200]} sizes="(min-width: 1024px) 45vw, 100vw" loading="eager" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section-pad bg-white">
+    <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-8">
+      <div>
+        <h2 class="text-3xl font-black tracking-tight text-kom-charcoal-deep text-balance sm:text-4xl">Local help without the franchise runaround</h2>
+        <p class="mt-5 leading-relaxed text-kom-charcoal/75">{area.localContext}</p>
+        <p class="mt-5 leading-relaxed text-kom-charcoal/75">KOM USA serves the entire Metro Detroit region. This page helps people in {area.city} find a local starting point; it does not represent a separate office or a different company.</p>
+        {cmsLocation?.body && (
+          <div class="article-body mt-7 leading-relaxed text-kom-charcoal/75">
+            <PortableText value={cmsLocation.body} />
+          </div>
+        )}
+      </div>
+      <div class="bg-kom-warm-white p-6 sm:p-8">
+        <h2 class="text-2xl font-black text-kom-charcoal-deep">Common project starting points</h2>
+        <ul class="mt-6 space-y-4">
+          {area.commonNeeds.map((need) => (
+            <li class="flex gap-3 border-b border-kom-charcoal/12 pb-4 last:border-b-0 last:pb-0"><CircleCheck class="mt-0.5 size-5 shrink-0 text-kom-field" aria-hidden="true" /><span class="font-bold text-kom-charcoal">{need}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-charcoal-deep text-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl"><h2 class="text-4xl font-black tracking-tight text-white text-balance sm:text-5xl">Choose the kind of help you need</h2><p class="mt-4 text-lg leading-relaxed text-white/70">You do not need to know the exact trade or service name. Pick the closest starting point and KOM USA will review the scope.</p></div>
+      <div class="mt-10 grid gap-10 lg:grid-cols-2 lg:gap-14">
+        <div>
+          <div class="flex items-end justify-between gap-4 border-b-2 border-kom-sage pb-4"><h3 class="text-2xl font-black text-white">Maintenance</h3><a href="/maintenance/" class="text-sm font-extrabold text-kom-sage hover:underline">View all</a></div>
+          <ul class="mt-2">
+            {maintenanceLinks.map((service) => (
+              <li class="border-b border-white/15"><a href={servicePath(service)} class="group flex min-h-14 items-center justify-between gap-4 py-3 font-bold text-white transition-colors hover:text-kom-sage"><span>{service.title}</span><ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <div class="flex items-end justify-between gap-4 border-b-2 border-kom-sage pb-4"><h3 class="text-2xl font-black text-white">Construction</h3><a href="/construction/" class="text-sm font-extrabold text-kom-sage hover:underline">View all</a></div>
+          <ul class="mt-2">
+            {constructionLinks.map((service) => (
+              <li class="border-b border-white/15"><a href={servicePath(service)} class="group flex min-h-14 items-center justify-between gap-4 py-3 font-bold text-white transition-colors hover:text-kom-sage"><span>{service.title}</span><ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-sage-tint">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+        <div>
+          <h2 class="text-3xl font-black tracking-tight text-kom-charcoal-deep sm:text-4xl">What happens after you contact us</h2>
+          <ol class="mt-7 space-y-6">
+            <li class="flex gap-4"><span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-kom-field font-black text-white">1</span><div><h3 class="font-black text-kom-charcoal-deep">We review the location and scope</h3><p class="mt-1 text-sm leading-relaxed text-kom-charcoal/70">The city, address, project details, access, and timing all help us plan correctly.</p></div></li>
+            <li class="flex gap-4"><span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-kom-field font-black text-white">2</span><div><h3 class="font-black text-kom-charcoal-deep">The right team follows up</h3><p class="mt-1 text-sm leading-relaxed text-kom-charcoal/70">Maintenance or Construction contacts you to discuss the next step and any estimate needed.</p></div></li>
+            <li class="flex gap-4"><span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-kom-field font-black text-white">3</span><div><h3 class="font-black text-kom-charcoal-deep">Scope and timing are confirmed</h3><p class="mt-1 text-sm leading-relaxed text-kom-charcoal/70">Submitting a request starts the review; it does not create an automatic booking.</p></div></li>
+          </ol>
+        </div>
+        <LeadCallForm headline={`Request a call in ${area.city}`} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><h2 class="text-2xl font-black text-kom-charcoal-deep">Nearby local pages</h2><p class="mt-2 text-sm text-kom-charcoal/65">KOM USA serves the entire Metro Detroit area.</p></div><a href="/service-areas/" class="inline-flex items-center gap-2 font-black text-kom-field">View all service areas<ArrowRight class="size-4" aria-hidden="true" /></a></div>
+      <ul class="mt-7 grid border-t border-kom-charcoal/15 sm:grid-cols-2 lg:grid-cols-4">
+        {nearbyAreas.map((nearby) => nearby && (
+          <li class="border-b border-kom-charcoal/15 sm:odd:pr-5 sm:even:pl-5 lg:px-5 lg:first:pl-0 lg:last:pr-0"><a href={`/service-areas/${nearby.slug}/`} class="group flex min-h-16 items-center justify-between gap-3 font-extrabold text-kom-charcoal-deep hover:text-kom-field"><span>{nearby.city}</span><ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

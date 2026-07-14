@@ -27,7 +27,7 @@ const pricingNotes: string[] = [
 ---
 
 <BaseLayout title={service.seoTitle} description={service.seoDescription}>
-  <section class="bg-kom-cream">
+  <section class="bg-kom-warm-white">
     <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:py-20">
       <div class="reveal">
         <p class="text-kom-field text-sm font-extrabold tracking-wider uppercase">
@@ -80,7 +80,7 @@ const pricingNotes: string[] = [
             <caption class="sr-only">{service.title} standard pricing</caption>
             <tbody>
               {service.pricing.map((item, index) => (
-                <tr class={index % 2 === 0 ? "bg-white" : "bg-kom-cream/60"}>
+                <tr class={index % 2 === 0 ? "bg-white" : "bg-kom-warm-white/60"}>
                   <th scope="row" class="px-4 py-3.5 font-bold text-kom-charcoal">
                     {item.service}
                     {item.detail && <span class="text-muted-foreground block text-xs font-medium">{item.detail}</span>}

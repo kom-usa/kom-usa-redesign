@@ -15,8 +15,10 @@ interface Props {
   ogImage?: string;
   ogImageAlt?: string;
   noindex?: boolean;
-  /** Include LocalBusiness + FAQ entities (homepage only). */
+  /** Include expanded offers, rating, and FAQ entities (homepage only). */
   includeBusinessGraph?: boolean;
+  /** Adds a city-specific Service entity without implying a separate office. */
+  serviceAreaCity?: string;
 }
 
 const {
@@ -26,6 +28,7 @@ const {
   ogImageAlt = `${business.name} — ${business.tagline}`,
   noindex = false,
   includeBusinessGraph = false,
+  serviceAreaCity,
 } = Astro.props;
 
 const site = Astro.site ?? new URL(business.url);
@@ -37,12 +40,78 @@ const ids = {
   business: new URL("/#business", site).href,
   webpage: `${canonical}#webpage`,
   faq: `${canonical}#faq`,
+  service: `${canonical}#service`,
   logo: new URL("/#logo", site).href,
 };
 
 const serviceList = includeBusinessGraph ? allServices : [];
 const faqList = includeBusinessGraph ? homepageFaqs : [];
 const reviewStats = includeBusinessGraph ? await getReviewStats() : null;
+
+const localBusiness: Record<string, unknown> = {
+  "@type": ["LocalBusiness", "GeneralContractor"],
+  "@id": ids.business,
+  name: business.name,
+  legalName: business.legalName,
+  url: site.href,
+  telephone: business.phone,
+  email: business.email,
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: business.maintenancePhone,
+      contactType: "maintenance service",
+      areaServed: "Metro Detroit",
+    },
+    {
+      "@type": "ContactPoint",
+      telephone: business.constructionPhone,
+      contactType: "construction estimates",
+      areaServed: "Metro Detroit",
+    },
+  ],
+  image: ogImageUrl,
+  logo: {
+    "@type": "ImageObject",
+    "@id": ids.logo,
+    url: new URL("/logo.svg", site).href,
+  },
+  areaServed: [
+    { "@type": "AdministrativeArea", name: "Metro Detroit, Michigan" },
+    ...serviceAreaCities.map((city) => ({
+      "@type": "City",
+      name: `${city}, MI`,
+    })),
+  ],
+  sameAs: [googleReviews.url, business.instagramUrl],
+};
+
+if (includeBusinessGraph) {
+  Object.assign(localBusiness, {
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: reviewStats?.rating ?? googleReviews.rating,
+      reviewCount: String(reviewStats?.count ?? googleReviews.count),
+    },
+    knowsAbout: serviceList.map((service) => service.title),
+    makesOffer: serviceList.map((service) => ({
+      "@type": "Offer",
+      itemOffered: { "@type": "Service", name: service.title },
+    })),
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "KOM USA maintenance and construction services",
+      itemListElement: serviceList.map((service) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: service.title,
+          serviceType: service.line === "maintenance" ? "Home maintenance" : "Residential construction",
+        },
+      })),
+    },
+  });
+}
 
 const graph: Record<string, unknown>[] = [
   {
@@ -62,68 +131,11 @@ const graph: Record<string, unknown>[] = [
     about: { "@id": ids.business },
     primaryImageOfPage: { "@type": "ImageObject", url: ogImageUrl },
   },
+  localBusiness,
 ];
 
 if (includeBusinessGraph) {
   graph.push(
-    {
-      "@type": ["LocalBusiness", "GeneralContractor"],
-      "@id": ids.business,
-      name: business.name,
-      url: site.href,
-      telephone: business.phone,
-      email: business.email,
-      contactPoint: [
-        {
-          "@type": "ContactPoint",
-          telephone: business.maintenancePhone,
-          contactType: "maintenance service",
-          areaServed: "Metro Detroit",
-        },
-        {
-          "@type": "ContactPoint",
-          telephone: business.constructionPhone,
-          contactType: "construction estimates",
-          areaServed: "Metro Detroit",
-        },
-      ],
-      image: ogImageUrl,
-      logo: {
-        "@type": "ImageObject",
-        "@id": ids.logo,
-        url: new URL("/logo.svg", site).href,
-      },
-      areaServed: [
-        { "@type": "AdministrativeArea", name: "Metro Detroit, Michigan" },
-        ...serviceAreaCities.map((city) => ({
-          "@type": "City",
-          name: `${city}, MI`,
-        })),
-      ],
-      aggregateRating: {
-        "@type": "AggregateRating",
-        ratingValue: reviewStats?.rating ?? googleReviews.rating,
-        reviewCount: String(reviewStats?.count ?? googleReviews.count),
-      },
-      sameAs: [googleReviews.url],
-      knowsAbout: serviceList.map((s) => s.title),
-      makesOffer: serviceList.map((s) => ({
-        "@type": "Offer",
-        itemOffered: { "@type": "Service", name: s.title },
-      })),
-      hasOfferCatalog: {
-        "@type": "OfferCatalog",
-        name: "KOM USA maintenance and construction services",
-        itemListElement: serviceList.map((service) => ({
-          "@type": "Offer",
-          itemOffered: {
-            "@type": "Service",
-            name: service.title,
-            serviceType: service.line === "maintenance" ? "Home maintenance" : "Residential construction",
-          },
-        })),
-      },
-    },
     {
       "@type": "FAQPage",
       "@id": ids.faq,
@@ -136,13 +148,26 @@ if (includeBusinessGraph) {
   );
 }
 
+if (serviceAreaCity) {
+  graph.push({
+    "@type": "Service",
+    "@id": ids.service,
+    name: `Home maintenance and construction in ${serviceAreaCity}`,
+    description,
+    url: canonical,
+    provider: { "@id": ids.business },
+    areaServed: { "@type": "City", name: `${serviceAreaCity}, MI` },
+    serviceType: "Home maintenance, handyman, remodeling, and construction",
+  });
+}
+
 const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
 ---
 
 <title>{title}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
-{noindex && <meta name="robots" content="noindex, nofollow" />}
+{!noindex && <link rel="canonical" href={canonical} />}
+<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"} />
 
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={business.name} />
@@ -155,8 +180,5 @@ const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": grap
 <meta property="og:image:height" content="630" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={title} />
-<meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={ogImageUrl} />
 
 <script is:inline type="application/ld+json" set:html={jsonLd} />

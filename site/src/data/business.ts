@@ -6,6 +6,7 @@
 
 import { offerFormValue } from "./offer-client";
 import { allServices } from "./service-catalog";
+import { featuredServiceAreaCities } from "./service-areas";
 
 export const business = {
   name: "KOM USA",
@@ -95,7 +96,7 @@ export const faqs: Faq[] = [
   {
     question: "Where does KOM USA work?",
     answer:
-      "KOM USA serves Metro Detroit, including communities across Wayne, Oakland, and Macomb counties. Send the address or ZIP with your request so the team can confirm the service area.",
+      "KOM USA serves homes and properties throughout Metro Detroit. Send the address or ZIP with your request so the team can confirm travel, timing, and the right service path.",
   },
   {
     question: "Which phone number should I use?",
@@ -119,26 +120,7 @@ export const faqs: Faq[] = [
   },
 ];
 
-export const serviceAreaCities = [
-  "Detroit",
-  "Warren",
-  "Sterling Heights",
-  "Troy",
-  "Royal Oak",
-  "Ferndale",
-  "Southfield",
-  "Dearborn",
-  "Livonia",
-  "Farmington Hills",
-  "St. Clair Shores",
-  "Grosse Pointe",
-  "Roseville",
-  "Clinton Township",
-  "Madison Heights",
-  "Oak Park",
-];
-
-export const serviceAreaCounties = ["Wayne County", "Oakland County", "Macomb County"];
+export const serviceAreaCities = featuredServiceAreaCities;
 
 export const trustPoints = [
   {

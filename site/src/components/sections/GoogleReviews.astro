@@ -21,7 +21,7 @@ const featuredReviews = reviews.reviews.slice(0, 3);
     <p class="reveal mt-6 flex items-center justify-center gap-3">
       <span class="text-kom-charcoal-deep text-5xl font-black" data-g-rating>{reviews.rating}</span>
       <span>
-        <span class="flex text-kom-brass" aria-hidden="true">
+        <span class="flex text-kom-field" aria-hidden="true">
           {Array.from({ length: 5 }).map(() => <StarFilled class="size-5" />)}
         </span>
         <a href={googleReviews.url} target="_blank" rel="noopener" class="text-kom-field mt-1 block text-sm font-extrabold hover:underline">
@@ -139,7 +139,7 @@ const featuredReviews = reviews.reviews.slice(0, 3);
         }
         if (stars) stars.setAttribute("aria-label", `${review.rating} out of 5 stars`);
         card.querySelectorAll<SVGElement>("[data-review-star]").forEach((star, starIndex) => {
-          star.classList.toggle("text-kom-brass", starIndex < review.rating);
+          star.classList.toggle("text-kom-field", starIndex < review.rating);
           star.classList.toggle("text-kom-concrete", starIndex >= review.rating);
         });
       });

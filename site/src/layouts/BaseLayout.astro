@@ -18,10 +18,11 @@ interface Props {
   ogImage?: string;
   noindex?: boolean;
   includeBusinessGraph?: boolean;
+  serviceAreaCity?: string;
   serviceLine?: ServiceLine | "";
 }
 
-const { title, description, ogImage, noindex, includeBusinessGraph, serviceLine = "" } = Astro.props;
+const { title, description, ogImage, noindex, includeBusinessGraph, serviceAreaCity, serviceLine = "" } = Astro.props;
 ---
 
 <!doctype html>
@@ -35,7 +36,7 @@ const { title, description, ogImage, noindex, includeBusinessGraph, serviceLine 
       // Enables .reveal scroll animations only when JS runs (see global.css).
       document.documentElement.classList.add("js");
     </script>
-    <Seo {title} {description} {ogImage} {noindex} {includeBusinessGraph} />
+    <Seo {title} {description} {ogImage} {noindex} {includeBusinessGraph} {serviceAreaCity} />
   </head>
   <body class="pb-20 text-kom-charcoal md:pb-0">
     <a

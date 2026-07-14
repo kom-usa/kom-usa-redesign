@@ -18,10 +18,10 @@ import { business, serviceOptions, urgencyOptions } from "../../data/business";
  * before launch. ServiceM8 booking replaces or augments this in a later phase.
  */
 const selectClass =
-  "border-kom-cream-border focus-visible:outline-kom-field flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1";
+  "border-kom-concrete focus-visible:outline-kom-field flex h-11 w-full rounded-md border bg-white px-3 py-1 text-base transition-colors focus-visible:outline-2 focus-visible:outline-offset-1";
 ---
 
-<section id="request-service" class="section-pad scroll-mt-16 bg-kom-cream">
+<section id="request-service" class="section-pad scroll-mt-16 bg-kom-warm-white">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
       eyebrow="Request service"
@@ -158,7 +158,7 @@ const selectClass =
                       name="preferred-contact"
                       value={method}
                       checked={index === 0}
-                      class="text-primary focus:ring-primary border-kom-cream-border size-4"
+                      class="text-primary focus:ring-primary border-kom-concrete size-4"
                     />
                     {method}
                   </label>

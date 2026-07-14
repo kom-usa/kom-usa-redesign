@@ -10,5 +10,5 @@
 /locksmith/                      /maintenance/locksmith/                301
 /locations                       /service-areas/                        301
 /locations/                      /service-areas/                        301
-/locations/*                     /service-areas/                        301
+/locations/*                     /service-areas/:splat/                 301
 /services/*                      /maintenance/                          301

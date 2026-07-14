@@ -63,7 +63,7 @@ const pairImages = await Promise.all(
 );
 ---
 
-<section id="gallery" class="section-pad scroll-mt-16 bg-kom-cream">
+<section id="gallery" class="section-pad scroll-mt-16 bg-kom-warm-white">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
     <SectionHeader
       title="Recent Projects"
@@ -76,7 +76,7 @@ const pairImages = await Promise.all(
           <div class="ba-slider relative select-none overflow-hidden" data-ba-slider>
             <img src={pair.afterSrc.src} alt={pair.after.alt} class="block aspect-[3/4] w-full object-cover" loading="lazy" decoding="async" draggable="false" />
             <img src={pair.beforeSrc.src} alt={pair.before.alt} class="ba-before absolute inset-0 aspect-[3/4] size-full object-cover" loading="lazy" decoding="async" draggable="false" data-ba-before />
-            <span class="pointer-events-none absolute left-3 top-3 rounded-md bg-kom-ink/80 px-2.5 py-1 text-xs font-black uppercase tracking-wide text-white">Before</span>
+            <span class="pointer-events-none absolute left-3 top-3 rounded-md bg-kom-charcoal-deep/80 px-2.5 py-1 text-xs font-black uppercase tracking-wide text-white">Before</span>
             <span class="pointer-events-none absolute right-3 top-3 rounded-md bg-kom-field px-2.5 py-1 text-xs font-black uppercase tracking-wide text-white">After</span>
             <div class="ba-divider pointer-events-none absolute inset-y-0 w-0.5 bg-white shadow-[0_0_6px_rgb(0_0_0/0.45)]" data-ba-divider>
               <span class="absolute left-1/2 top-1/2 flex size-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-kom-field shadow-md">
@@ -94,7 +94,7 @@ const pairImages = await Promise.all(
               data-ba-range
             />
           </div>
-          <figcaption class="px-5 py-4 text-sm font-extrabold text-kom-ink">{pair.title} — drag to compare</figcaption>
+          <figcaption class="px-5 py-4 text-sm font-extrabold text-kom-charcoal-deep">{pair.title} — drag to compare</figcaption>
         </figure>
       ))}
     </div>
@@ -121,7 +121,7 @@ const pairImages = await Promise.all(
       ))}
     </ul>
 
-    <dialog data-gallery-lightbox class="m-auto max-h-[100dvh] w-full max-w-5xl bg-transparent p-4 backdrop:bg-kom-ink/90">
+    <dialog data-gallery-lightbox class="m-auto max-h-[100dvh] w-full max-w-5xl bg-transparent p-4 backdrop:bg-kom-charcoal-deep/90">
       <div class="relative">
         <div data-lightbox-stage>
           {projectPhotos.map((photo, index) => (

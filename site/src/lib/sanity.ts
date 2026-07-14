@@ -109,10 +109,11 @@ export interface Location extends LocationCard {
   seoTitle?: string;
   seoDescription?: string;
 }
-export async function getLocations(): Promise<LocationCard[]> {
-  return safe<LocationCard[]>(
-    (c) => c.fetch<LocationCard[]>(`*[_type == "location" && defined(slug.current)] | order(city asc){
-      "slug": slug.current, city, heroIntro }`),
+export async function getLocations(): Promise<Location[]> {
+  return safe<Location[]>(
+    (c) => c.fetch<Location[]>(`*[_type == "location" && defined(slug.current)] | order(city asc){
+      "slug": slug.current, city, heroIntro, body,
+      "seoTitle": seo.title, "seoDescription": seo.description }`),
     [],
     "getLocations",
   );
