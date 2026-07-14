@@ -13,7 +13,7 @@ const reviews = await getReviewStats();
 ---
 
 <section class="relative">
-  <div class="relative isolate overflow-hidden bg-kom-ink pb-40 lg:pb-48">
+  <div class="relative isolate overflow-hidden bg-kom-charcoal-deep pb-40 lg:pb-48">
     <Image
       src={doorLock}
       alt=""
@@ -22,11 +22,11 @@ const reviews = await getReviewStats();
       sizes="100vw"
       loading="eager"
     />
-    <div class="absolute inset-0 -z-10 bg-kom-ink/72" aria-hidden="true"></div>
+    <div class="absolute inset-0 -z-10 bg-kom-charcoal-deep/72" aria-hidden="true"></div>
 
     <div class="mx-auto max-w-7xl px-4 pt-16 pb-10 sm:px-6 lg:pt-24">
       <div class="max-w-2xl">
-        <p class="text-kom-tan text-base font-extrabold sm:text-lg">Maintenance experts you can trust</p>
+        <p class="text-kom-sage text-base font-extrabold sm:text-lg">Maintenance experts you can trust</p>
         <h1 class="mt-3 text-4xl leading-[1.03] font-black tracking-tight text-white text-balance sm:text-5xl lg:text-6xl">
           A friendly local crew for<br class="hidden sm:block" /> locks, water heaters & chimneys
         </h1>
@@ -45,7 +45,7 @@ const reviews = await getReviewStats();
           >
             <span class="text-3xl font-black text-white" data-g-rating>{reviews.rating}</span>
             <span>
-              <span class="flex text-kom-brass" aria-hidden="true">
+              <span class="flex text-kom-sage" aria-hidden="true">
                 {Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}
               </span>
               <span class="block text-xs font-bold text-white/85">

@@ -1,50 +1,9 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import LeadCallForm from "../../components/sections/LeadCallForm.astro";
-import PortableText from "../../sanity/PortableText.astro";
-import { getLocation, getLocations } from "../../lib/sanity";
-import { business } from "../../data/business";
+import { featuredServiceAreas } from "../../data/service-areas";
 
-export async function getStaticPaths() {
-  const locations = await getLocations();
-  return locations.map((location: any) => ({ params: { slug: location.slug } }));
+export function getStaticPaths() {
+  return featuredServiceAreas.map((area) => ({ params: { slug: area.slug } }));
 }
 
-const location = await getLocation(Astro.params.slug!);
-if (!location) return Astro.redirect("/404");
-
-const metaTitle = location.seoTitle || `${location.city} Home Services | KOM USA`;
-const metaDescription = location.seoDescription || location.heroIntro || `KOM USA home services in ${location.city}, Michigan.`;
+return Astro.redirect(`/service-areas/${Astro.params.slug}/`, 301);
 ---
-
-<BaseLayout title={metaTitle} description={metaDescription}>
-  <section class="section-pad">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6">
-      <p class="reveal text-primary text-xs font-bold tracking-[0.18em] uppercase">
-        Home services in {location.city}, MI
-      </p>
-      <h1 class="reveal text-kom-ink mt-2 text-4xl leading-[1.05] font-black tracking-tight text-balance sm:text-5xl" style="--rd: 60ms">
-        {location.city}
-      </h1>
-      {location.heroIntro && (
-        <p class="reveal text-kom-charcoal mt-6 max-w-2xl text-lg leading-relaxed" style="--rd: 120ms">
-          {location.heroIntro}
-        </p>
-      )}
-      {location.body && (
-        <div class="reveal article-body text-kom-charcoal mt-8 max-w-3xl leading-relaxed" style="--rd: 150ms">
-          <PortableText value={location.body} />
-        </div>
-      )}
-    </div>
-  </section>
-
-  <section class="section-pad bg-kom-cream">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6">
-      <LeadCallForm headline={`Request a call in ${location.city}`} />
-      <p class="text-muted-foreground mt-6 text-center text-sm">
-        Proudly serving {business.serviceArea} — including {location.city}.
-      </p>
-    </div>
-  </section>
-</BaseLayout>

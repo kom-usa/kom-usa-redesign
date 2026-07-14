@@ -22,13 +22,13 @@ const {
 } = Astro.props;
 
 const buttonLabel = intent === "estimate" ? "Request an Estimate" : intent === "callback" ? "Request a Callback" : "Request Service";
-const selectClass = "border-kom-cream-border focus-visible:outline-kom-field flex h-12 w-full rounded-md border bg-white px-3 py-2 text-base text-kom-charcoal transition-colors focus-visible:outline-2 focus-visible:outline-offset-2";
+const selectClass = "border-kom-concrete focus-visible:outline-kom-field flex h-12 w-full rounded-md border bg-white px-3 py-2 text-base text-kom-charcoal transition-colors focus-visible:outline-2 focus-visible:outline-offset-2";
 ---
 
 <section id="request-form" class="scroll-mt-28" data-request-form-root>
   <div class="border-kom-charcoal/15 bg-white p-6 sm:p-8 lg:p-10" style="border-width: 1px; border-radius: 14px;">
     <div class="max-w-2xl">
-      <h2 class="text-kom-ink text-3xl font-black text-balance sm:text-4xl">{heading}</h2>
+      <h2 class="text-kom-charcoal-deep text-3xl font-black text-balance sm:text-4xl">{heading}</h2>
       <p class="text-kom-charcoal/75 mt-3 max-w-[65ch] text-base leading-relaxed">{intro}</p>
     </div>
 

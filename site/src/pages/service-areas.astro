@@ -1,12 +1,111 @@
 ---
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
 import MapPin from "@tabler/icons/outline/map-pin.svg";
+import Phone from "@tabler/icons/outline/phone.svg";
+import Route from "@tabler/icons/outline/route.svg";
+import ClipboardCheck from "@tabler/icons/outline/clipboard-check.svg";
+import HomeCheck from "@tabler/icons/outline/home-check.svg";
+
 import BaseLayout from "../layouts/BaseLayout.astro";
 import AdaptiveRequestForm from "../components/sections/AdaptiveRequestForm.astro";
-import { business, serviceAreaCities, serviceAreaCounties } from "../data/business";
+import { business } from "../data/business";
+import { featuredServiceAreas } from "../data/service-areas";
+
+const embedKey = import.meta.env.GOOGLE_MAPS_EMBED_KEY ?? import.meta.env.GOOGLE_MAPS_API_KEY;
+const mapSrc = embedKey
+  ? `https://www.google.com/maps/embed/v1/view?key=${embedKey}&center=42.383,-83.102&zoom=9&maptype=roadmap`
+  : "https://maps.google.com/maps?ll=42.383,-83.102&z=9&output=embed";
+
+const steps = [
+  { icon: MapPin, title: "Share the property location", text: "Include the address or ZIP so we can review travel and access with the project." },
+  { icon: ClipboardCheck, title: "Tell us what needs attention", text: "A short description and a few photos help us identify the right service team." },
+  { icon: HomeCheck, title: "We confirm the next step", text: "KOM USA reviews coverage, scope, timing, and whether an estimate is needed." },
+];
 ---
 
-<BaseLayout title="Metro Detroit Service Areas | KOM USA" description="KOM USA provides maintenance and construction services across Wayne, Oakland, and Macomb counties in Metro Detroit.">
-  <section class="bg-kom-ink py-14 text-white sm:py-20"><div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><p class="text-kom-tan font-extrabold">Wayne · Oakland · Macomb</p><h1 class="mt-3 max-w-4xl text-4xl font-black tracking-[-0.03em] text-balance sm:text-5xl lg:text-6xl">Maintenance and Construction Across Metro Detroit</h1><p class="mt-5 max-w-3xl text-lg leading-relaxed text-white/75">KOM USA serves homeowners, properties, and contractor projects throughout Metro Detroit. Include the job address or ZIP so the appropriate team can confirm coverage.</p></div></section>
-  <section class="section-pad bg-white"><div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8"><div><h2 class="text-kom-ink text-3xl font-black">Three-county service area</h2><ul class="mt-6 space-y-3">{serviceAreaCounties.map((county) => <li class="text-kom-charcoal flex items-center gap-3 border-b border-kom-charcoal/15 pb-3 text-lg font-black"><MapPin class="text-kom-field size-5" aria-hidden="true" />{county}</li>)}</ul><p class="mt-6 leading-relaxed text-kom-charcoal/70">Service availability can vary by job type, travel, site access, and schedule. A city name on this page is not a promise of immediate dispatch.</p></div><div><h2 class="text-kom-ink text-3xl font-black">Communities commonly served</h2><ul class="mt-6 flex flex-wrap gap-2.5">{serviceAreaCities.map((city) => <li class="border border-kom-charcoal/15 bg-kom-warm-white px-4 py-2 text-sm font-bold text-kom-charcoal" style="border-radius: 999px;">{city}</li>)}</ul><p class="mt-6 leading-relaxed text-kom-charcoal/70">Don’t see your city? Submit the property location or call the appropriate team. Maintenance: <a class="text-kom-field font-black" href={business.maintenancePhoneHref}>{business.maintenancePhone}</a>. Construction: <a class="text-kom-field font-black" href={business.constructionPhoneHref}>{business.constructionPhone}</a>.</p></div></div></section>
-  <section class="section-pad bg-kom-cream"><div class="mx-auto max-w-6xl px-4 sm:px-6"><AdaptiveRequestForm heading="Confirm Your Service Area" intro="Include the city or ZIP and the service needed. KOM USA will review the location with the project details." /></div></section>
+<BaseLayout
+  title="Metro Detroit Service Area | KOM USA"
+  description="KOM USA serves homes and properties throughout Metro Detroit with maintenance, handyman, remodeling, and construction services."
+>
+  <section class="overflow-hidden bg-kom-field text-white">
+    <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:px-8 lg:py-24">
+      <div>
+        <p class="inline-flex items-center gap-2 font-extrabold text-white/85"><MapPin class="size-5" aria-hidden="true" />KOM USA service area</p>
+        <h1 class="mt-4 max-w-4xl text-5xl font-black leading-[1] tracking-[-0.04em] text-white text-balance sm:text-6xl lg:text-7xl">Anywhere in Metro Detroit.</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/80 sm:text-xl">KOM USA serves homes, rental properties, small businesses, and project sites throughout the Metro Detroit area. You do not need to find your county or city in a long list before contacting us.</p>
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="/request-service/" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 font-extrabold text-kom-field transition-colors hover:bg-kom-sage-tint">Request Service<ArrowRight class="size-4" aria-hidden="true" /></a>
+          <a href={business.maintenancePhoneHref} class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border-2 border-white/40 px-6 font-extrabold text-white transition-colors hover:border-white hover:bg-white/10"><Phone class="size-5" aria-hidden="true" />Call {business.maintenancePhone}</a>
+        </div>
+      </div>
+      <div class="border-t border-white/20 pt-7 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-10">
+        <Route class="size-10 text-white/80" aria-hidden="true" />
+        <p class="mt-5 text-2xl font-black text-white">One regional team, two service paths.</p>
+        <p class="mt-3 leading-relaxed text-white/75">Maintenance handles repairs, routine work, and handyman needs. Construction handles remodeling, building, and larger projects. If you choose the wrong one, we will route it for you.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-warm-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="grid overflow-hidden rounded-xl bg-white shadow-lg lg:grid-cols-[1.25fr_0.75fr]">
+        <iframe
+          src={mapSrc}
+          title="Map centered on the KOM USA Metro Detroit service area"
+          class="h-[28rem] w-full border-0 lg:h-full lg:min-h-[34rem]"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="flex flex-col justify-center bg-kom-charcoal-deep p-7 text-white sm:p-10">
+          <MapPin class="size-8 text-kom-sage" aria-hidden="true" />
+          <h2 class="mt-5 text-3xl font-black tracking-tight text-white text-balance">The map is a guide, not a boundary.</h2>
+          <p class="mt-4 leading-relaxed text-white/75">Our coverage is Metro Detroit-wide. Actual scheduling depends on the type of job, crew availability, site access, and travel—not whether a map pin lands inside a drawn outline.</p>
+          <p class="mt-6 text-sm font-bold text-kom-sage">Include your address or ZIP for the fastest answer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-pad bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <h2 class="text-4xl font-black tracking-tight text-kom-charcoal-deep text-balance sm:text-5xl">Local pages for major Metro Detroit communities</h2>
+        <p class="mt-4 text-lg leading-relaxed text-kom-charcoal/70">These pages give homeowners a local starting point and connect directly to relevant services. They do not limit where KOM USA works.</p>
+      </div>
+      <ul class="mt-10 grid border-t border-kom-charcoal/15 md:grid-cols-2 lg:grid-cols-3">
+        {featuredServiceAreas.map((area) => (
+          <li class="border-b border-kom-charcoal/15 md:odd:pr-6 md:even:pl-6 lg:px-6 lg:first:pl-0 lg:nth-[3n+1]:pl-0 lg:nth-[3n]:pr-0">
+            <a href={`/service-areas/${area.slug}/`} class="group block py-6 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/35">
+              <span class="flex items-center justify-between gap-4">
+                <span class="text-xl font-black text-kom-charcoal-deep transition-colors group-hover:text-kom-field">{area.city}</span>
+                <ArrowRight class="size-5 text-kom-field transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </span>
+              <span class="mt-2 block text-sm leading-relaxed text-kom-charcoal/65">{area.heroIntro}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-sage-tint">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl"><h2 class="text-3xl font-black tracking-tight text-kom-charcoal-deep sm:text-4xl">How we confirm your location</h2><p class="mt-3 leading-relaxed text-kom-charcoal/70">You do not have to figure out the service boundary yourself.</p></div>
+      <ol class="mt-10 grid gap-8 md:grid-cols-3">
+        {steps.map((step, index) => (
+          <li class="border-t-2 border-kom-field pt-6">
+            <div class="flex items-center gap-3"><span class="flex size-11 items-center justify-center rounded-md bg-kom-field text-white"><step.icon class="size-5" aria-hidden="true" /></span><span class="text-sm font-black text-kom-field">Step {index + 1}</span></div>
+            <h3 class="mt-5 text-xl font-black text-kom-charcoal-deep">{step.title}</h3>
+            <p class="mt-2 leading-relaxed text-kom-charcoal/70">{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-pad bg-kom-warm-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <AdaptiveRequestForm heading="Check Your Metro Detroit Address" intro="Include the property location and what needs attention. KOM USA will confirm coverage, timing, and the right team." />
+    </div>
+  </section>
 </BaseLayout>

@@ -11,7 +11,8 @@
     "Nunito Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 
-  /* KOM USA brand colors exposed as Tailwind utilities (bg-kom-sage, text-kom-steel, …) */
+  /* KOM USA core palette. Dark field green and charcoal carry the brand;
+     white and the pale green tint provide breathing room and UI states. */
   --color-kom-sage: #78a866;
   --color-kom-field: #2f6b3b;
   --color-kom-field-hover: #275a32;
@@ -22,22 +23,12 @@
   --color-kom-warm-white: #f7f7f2;
   --color-kom-concrete: #e6e3da;
   --color-kom-steel: #5e7480;
-  --color-kom-brass: #c59a42;
   --color-kom-sage-tint: #eaf0e2;
-
-  /* Editorial layer from the homepage mockup: cream page, tan quote panel,
-     warm ink for footer/testimonial cards */
-  --color-kom-cream: #f2ede1;
-  --color-kom-cream-deep: #eae3d2;
-  --color-kom-cream-border: #ddd4be;
-  --color-kom-tan: #c9b183;
-  --color-kom-tan-light: #d9c596;
-  --color-kom-ink: #262520;
 
   /* Semantic aliases used across page markup */
   --color-primary: #2f6b3b;
   --color-primary-foreground: #ffffff;
-  --color-muted-foreground: #6b6a5e;
+  --color-muted-foreground: #5e7480;
   --color-error: #c10007;
   --color-border: #e6e3da;
 
@@ -58,9 +49,9 @@
   --text-h2: clamp(1.875rem, 3.2vw, 2.5rem);
   --text-display: clamp(2.65rem, 5.8vw, 4.7rem);
 
-  /* The selected starter uses restrained elevation on cards and photography. */
-  --shadow-card: 0 10px 30px rgb(38 37 32 / 0.07);
-  --shadow-card-hover: 0 16px 38px rgb(38 37 32 / 0.11);
+  /* Restrained charcoal elevation on cards and photography. */
+  --shadow-card: 0 10px 30px rgb(51 56 62 / 0.07);
+  --shadow-card-hover: 0 16px 38px rgb(51 56 62 / 0.11);
 }
 
 @layer base {
@@ -130,4 +121,53 @@
 
 @utility section-pad {
   padding-block: var(--spacing-section);
+}
+
+@layer components {
+  .article-body {
+    max-width: 72ch;
+    text-wrap: pretty;
+  }
+
+  .article-body h2 {
+    margin-top: 2.25rem;
+    color: var(--color-kom-charcoal-deep);
+    font-size: clamp(1.5rem, 3vw, 1.875rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+
+  .article-body h3 {
+    margin-top: 1.75rem;
+    color: var(--color-kom-charcoal-deep);
+    font-size: 1.25rem;
+    font-weight: 900;
+  }
+
+  .article-body p,
+  .article-body ul,
+  .article-body ol {
+    margin-top: 0.875rem;
+    line-height: 1.75;
+  }
+
+  .article-body ul,
+  .article-body ol {
+    padding-left: 1.25rem;
+  }
+
+  .article-body ul {
+    list-style: disc;
+  }
+
+  .article-body ol {
+    list-style: decimal;
+  }
+
+  .article-body a {
+    color: var(--color-kom-field);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
 }

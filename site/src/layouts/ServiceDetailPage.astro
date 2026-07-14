@@ -68,7 +68,7 @@ const jsonLd = JSON.stringify({
 <BaseLayout title={`${service.title} in Metro Detroit | KOM USA`} description={service.summary} serviceLine={service.line}>
   <script is:inline type="application/ld+json" set:html={jsonLd} />
 
-  <section class:list={["border-b", isMaintenance ? "bg-kom-warm-white" : "bg-kom-ink text-white"]}>
+  <section class:list={["border-b", isMaintenance ? "bg-kom-warm-white" : "bg-kom-charcoal-deep text-white"]}>
     <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
       <nav aria-label="Breadcrumb" class:list={["text-sm font-bold", isMaintenance ? "text-kom-charcoal/65" : "text-white/65"]}>
         <ol class="flex flex-wrap items-center gap-2">
@@ -80,10 +80,10 @@ const jsonLd = JSON.stringify({
     </div>
     <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-14 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8 lg:pb-18">
       <div>
-        <p class:list={["font-extrabold", isMaintenance ? "text-kom-field" : "text-kom-tan"]}>{lineTitle} · Metro Detroit</p>
-        <h1 class:list={["mt-3 max-w-3xl text-4xl font-black leading-[1.05] tracking-[-0.03em] text-balance sm:text-5xl lg:text-6xl", isMaintenance ? "text-kom-ink" : "text-white"]}>{service.h1}</h1>
+        <p class:list={["font-extrabold", isMaintenance ? "text-kom-field" : "text-kom-sage"]}>{lineTitle} · Metro Detroit</p>
+        <h1 class:list={["mt-3 max-w-3xl text-4xl font-black leading-[1.05] tracking-[-0.03em] text-balance sm:text-5xl lg:text-6xl", isMaintenance ? "text-kom-charcoal-deep" : "text-white"]}>{service.h1}</h1>
         <p class:list={["mt-5 max-w-2xl text-lg leading-relaxed", isMaintenance ? "text-kom-charcoal/75" : "text-white/75"]}>{service.problem}</p>
-        <p class:list={["mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-black", isMaintenance ? "bg-kom-sage-tint text-kom-field" : "bg-white/10 text-kom-tan"]}>
+        <p class:list={["mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-black", isMaintenance ? "bg-kom-sage-tint text-kom-field" : "bg-white/10 text-kom-sage"]}>
           <AlertCircle class="size-4" aria-hidden="true" />{service.pricingLabel}
         </p>
         <div class="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -102,26 +102,26 @@ const jsonLd = JSON.stringify({
   <section class="section-pad bg-white">
     <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
       <div>
-        <h2 class="text-kom-ink text-3xl font-black text-balance sm:text-4xl">What this service can include</h2>
+        <h2 class="text-kom-charcoal-deep text-3xl font-black text-balance sm:text-4xl">What this service can include</h2>
         <ul class="mt-6 grid gap-3 sm:grid-cols-2">
           {service.included.map((item) => <li class="flex items-start gap-3 border-b border-kom-charcoal/10 pb-3 font-bold text-kom-charcoal"><CircleCheck class="text-kom-field mt-0.5 size-5 shrink-0" aria-hidden="true" />{item}</li>)}
         </ul>
 
         {service.slug === "handyman-services" && (
           <div class="mt-10 grid gap-5 sm:grid-cols-3">
-            <article id="shelf-installation" class="scroll-mt-28 border-t-4 border-kom-field bg-kom-warm-white p-5"><h3 class="text-kom-ink text-lg font-black">Shelf installation</h3><p class="mt-2 text-sm leading-relaxed text-kom-charcoal/75">Wall-mounted shelves, supplied systems, placement review, and attachment planning based on the wall and expected load.</p></article>
-            <article id="closet-systems" class="scroll-mt-28 border-t-4 border-kom-field bg-kom-warm-white p-5"><h3 class="text-kom-ink text-lg font-black">Closet systems</h3><p class="mt-2 text-sm leading-relaxed text-kom-charcoal/75">Assembly, disassembly, reconfiguration, and installation requests for compatible closet-system components.</p></article>
-            <article id="painting-touch-ups" class="scroll-mt-28 border-t-4 border-kom-field bg-kom-warm-white p-5"><h3 class="text-kom-ink text-lg font-black">Painting and touch-ups</h3><p class="mt-2 text-sm leading-relaxed text-kom-charcoal/75">Small-area painting, patch blending, and touch-up scopes. Full rooms and larger projects route to Construction Painting.</p></article>
+            <article id="shelf-installation" class="scroll-mt-28 border-t-4 border-kom-field bg-kom-warm-white p-5"><h3 class="text-kom-charcoal-deep text-lg font-black">Shelf installation</h3><p class="mt-2 text-sm leading-relaxed text-kom-charcoal/75">Wall-mounted shelves, supplied systems, placement review, and attachment planning based on the wall and expected load.</p></article>
+            <article id="closet-systems" class="scroll-mt-28 border-t-4 border-kom-field bg-kom-warm-white p-5"><h3 class="text-kom-charcoal-deep text-lg font-black">Closet systems</h3><p class="mt-2 text-sm leading-relaxed text-kom-charcoal/75">Assembly, disassembly, reconfiguration, and installation requests for compatible closet-system components.</p></article>
+            <article id="painting-touch-ups" class="scroll-mt-28 border-t-4 border-kom-field bg-kom-warm-white p-5"><h3 class="text-kom-charcoal-deep text-lg font-black">Painting and touch-ups</h3><p class="mt-2 text-sm leading-relaxed text-kom-charcoal/75">Small-area painting, patch blending, and touch-up scopes. Full rooms and larger projects route to Construction Painting.</p></article>
           </div>
         )}
 
-        {service.slug === "demolition-debris-removal" && <div id="junk-removal" class="scroll-mt-28 mt-10 border-t-4 border-kom-field bg-kom-warm-white p-5"><h3 class="text-kom-ink text-lg font-black">Junk removal</h3><p class="mt-2 text-sm leading-relaxed text-kom-charcoal/75">List the materials, approximate volume, location, stairs, and loading access. Hazardous materials must be identified before the request can be reviewed.</p></div>}
+        {service.slug === "demolition-debris-removal" && <div id="junk-removal" class="scroll-mt-28 mt-10 border-t-4 border-kom-field bg-kom-warm-white p-5"><h3 class="text-kom-charcoal-deep text-lg font-black">Junk removal</h3><p class="mt-2 text-sm leading-relaxed text-kom-charcoal/75">List the materials, approximate volume, location, stairs, and loading access. Hazardous materials must be identified before the request can be reviewed.</p></div>}
       </div>
 
       <aside class="bg-kom-sage-tint self-start p-6 sm:p-8" style="border-radius: 14px;">
-        <h2 class="text-kom-ink text-2xl font-black">Scope guidance</h2>
+        <h2 class="text-kom-charcoal-deep text-2xl font-black">Scope guidance</h2>
         <p class="mt-3 leading-relaxed text-kom-charcoal/80">{service.guidance}</p>
-        <h3 class="text-kom-ink mt-7 font-black">Not included by default</h3>
+        <h3 class="text-kom-charcoal-deep mt-7 font-black">Not included by default</h3>
         <ul class="mt-3 space-y-2 text-sm text-kom-charcoal/75">
           {service.excluded.map((item) => <li class="flex gap-2"><span aria-hidden="true">—</span>{item}</li>)}
         </ul>
@@ -130,9 +130,9 @@ const jsonLd = JSON.stringify({
   </section>
 
   {service.scopeItems && (
-    <section class="section-pad bg-kom-cream">
+    <section class="section-pad bg-kom-warm-white">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="max-w-3xl"><h2 class="text-kom-ink text-3xl font-black text-balance sm:text-4xl">Available service scope</h2><p class="mt-3 leading-relaxed text-kom-charcoal/75">These options are available to select and discuss. Prices are not shown until KOM USA confirms the current service conditions and approved pricing.</p></div>
+        <div class="max-w-3xl"><h2 class="text-kom-charcoal-deep text-3xl font-black text-balance sm:text-4xl">Available service scope</h2><p class="mt-3 leading-relaxed text-kom-charcoal/75">These options are available to select and discuss. Prices are not shown until KOM USA confirms the current service conditions and approved pricing.</p></div>
         <ul class="mt-8 columns-1 gap-8 sm:columns-2 lg:columns-3">
           {service.scopeItems.map((item) => <li class="mb-3 break-inside-avoid border-b border-kom-charcoal/15 pb-3 font-bold text-kom-charcoal">{item}</li>)}
         </ul>
@@ -140,13 +140,13 @@ const jsonLd = JSON.stringify({
     </section>
   )}
 
-  <section class="section-pad bg-kom-ink text-white">
+  <section class="section-pad bg-kom-charcoal-deep text-white">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 class="max-w-2xl text-3xl font-black text-balance sm:text-4xl">A clear next step, without guesswork</h2>
       <ol class="mt-9 grid gap-8 md:grid-cols-3">
-        <li><span class="text-kom-tan text-lg font-black">1. Share the request</span><p class="mt-2 leading-relaxed text-white/70">Choose the service, provide the location and timing, and add photos or dimensions when useful.</p></li>
-        <li><span class="text-kom-tan text-lg font-black">2. KOM USA reviews the scope</span><p class="mt-2 leading-relaxed text-white/70">The appropriate team considers access, condition, materials, and the details that affect the work.</p></li>
-        <li><span class="text-kom-tan text-lg font-black">3. Discuss the next step</span><p class="mt-2 leading-relaxed text-white/70">KOM USA contacts you to clarify the project and explain service, estimate, or scheduling needs.</p></li>
+        <li><span class="text-kom-sage text-lg font-black">1. Share the request</span><p class="mt-2 leading-relaxed text-white/70">Choose the service, provide the location and timing, and add photos or dimensions when useful.</p></li>
+        <li><span class="text-kom-sage text-lg font-black">2. KOM USA reviews the scope</span><p class="mt-2 leading-relaxed text-white/70">The appropriate team considers access, condition, materials, and the details that affect the work.</p></li>
+        <li><span class="text-kom-sage text-lg font-black">3. Discuss the next step</span><p class="mt-2 leading-relaxed text-white/70">KOM USA contacts you to clarify the project and explain service, estimate, or scheduling needs.</p></li>
       </ol>
     </div>
   </section>
@@ -154,22 +154,22 @@ const jsonLd = JSON.stringify({
   <section class="section-pad bg-kom-warm-white">
     <div class="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_0.85fr] lg:px-8">
       <div>
-        <h2 class="text-kom-ink text-3xl font-black sm:text-4xl">Questions about {service.shortTitle.toLowerCase()}</h2>
+        <h2 class="text-kom-charcoal-deep text-3xl font-black sm:text-4xl">Questions about {service.shortTitle.toLowerCase()}</h2>
         <div class="mt-6 divide-y divide-kom-charcoal/15 border-y border-kom-charcoal/15">
-          {service.faqs.map((faq) => <details class="group py-5"><summary class="text-kom-ink flex cursor-pointer list-none items-center justify-between gap-4 font-black">{faq.question}<span class="text-kom-field text-xl group-open:rotate-45" aria-hidden="true">+</span></summary><p class="mt-3 max-w-[68ch] leading-relaxed text-kom-charcoal/75">{faq.answer}</p></details>)}
+          {service.faqs.map((faq) => <details class="group py-5"><summary class="text-kom-charcoal-deep flex cursor-pointer list-none items-center justify-between gap-4 font-black">{faq.question}<span class="text-kom-field text-xl group-open:rotate-45" aria-hidden="true">+</span></summary><p class="mt-3 max-w-[68ch] leading-relaxed text-kom-charcoal/75">{faq.answer}</p></details>)}
         </div>
       </div>
       <aside>
-        <h2 class="text-kom-ink text-2xl font-black">Related services</h2>
+        <h2 class="text-kom-charcoal-deep text-2xl font-black">Related services</h2>
         <ul class="mt-4 divide-y divide-kom-charcoal/10 border-y border-kom-charcoal/10">
           {service.related.map((related) => <li><a href={relatedPath(service, related)} class="text-kom-charcoal hover:text-kom-field flex items-center justify-between gap-4 py-4 font-extrabold">{relatedLabel(related)}<ArrowRight class="size-5" aria-hidden="true" /></a></li>)}
         </ul>
-        <p class="mt-8 text-sm leading-relaxed text-kom-charcoal/70">Serving Metro Detroit, including communities across Wayne, Oakland, and Macomb counties.</p>
+        <p class="mt-8 text-sm leading-relaxed text-kom-charcoal/70">Serving homes and properties throughout Metro Detroit.</p>
       </aside>
     </div>
   </section>
 
-  <section class="section-pad bg-kom-cream">
+  <section class="section-pad bg-kom-warm-white">
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
       <AdaptiveRequestForm line={service.line} service={service.slug} intent={intent} heading={ctaLabel} />
     </div>

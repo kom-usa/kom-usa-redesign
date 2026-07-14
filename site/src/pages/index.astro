@@ -41,22 +41,22 @@ const popularMaintenance = popularServiceSpecs.map(({ slug, icon }) => ({
   description="KOM USA provides home maintenance, handyman, remodeling, construction, and project support across Metro Detroit for homeowners and contractors."
   includeBusinessGraph
 >
-  <section class="overflow-hidden bg-kom-sage-tint">
+  <section class="overflow-hidden bg-kom-field text-white">
     <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-2 lg:gap-14 lg:px-8 lg:py-20">
       <div class="order-2 lg:order-1">
-        <h1 class="max-w-3xl text-[clamp(2.7rem,5.5vw,4.65rem)] font-black leading-[0.98] tracking-[-0.045em] text-balance text-kom-ink">One Local Team for Home Maintenance and Construction</h1>
-        <p class="mt-6 max-w-xl text-lg leading-relaxed text-kom-charcoal/72">From everyday repairs and handyman work to remodeling and new construction, KOM USA makes it easy to get your project started.</p>
+        <h1 class="max-w-3xl text-[clamp(2.7rem,5.5vw,4.65rem)] font-black leading-[0.98] tracking-[-0.035em] text-balance text-white">One Local Team for Home Maintenance and Construction</h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/82">From everyday repairs and handyman work to remodeling and new construction, KOM USA makes it easy to get your project started.</p>
         <div class="mt-7 flex flex-col gap-3 sm:flex-row">
-          <a href="/request-service/?line=maintenance&intent=service" class="inline-flex min-h-12 items-center justify-center rounded-md bg-kom-field px-7 text-base font-extrabold text-white shadow-sm transition-colors hover:bg-kom-field-hover focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/40">Request Service</a>
-          <a href="/request-service/?line=construction&intent=estimate" class="inline-flex min-h-12 items-center justify-center rounded-md border-2 border-kom-field px-7 text-base font-extrabold text-kom-field transition-colors hover:bg-kom-field hover:text-white focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/40">Request an Estimate</a>
+          <a href="/request-service/?line=maintenance&intent=service" class="inline-flex min-h-12 items-center justify-center rounded-md bg-white px-7 text-base font-extrabold text-kom-field shadow-sm transition-colors hover:bg-kom-warm-white focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white/60">Request Service</a>
+          <a href="/request-service/?line=construction&intent=estimate" class="inline-flex min-h-12 items-center justify-center rounded-md border-2 border-white/60 px-7 text-base font-extrabold text-white transition-colors hover:border-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-white/60">Request an Estimate</a>
         </div>
         <a href={googleReviews.url} target="_blank" rel="noopener" class="mt-7 inline-flex items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/35">
-          <span class="flex text-kom-brass" aria-hidden="true">{Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}</span>
-          <span class="text-sm font-bold text-kom-charcoal"><span data-g-rating>{reviews.rating}</span> from <span data-g-count>{reviews.count}</span> Google reviews</span>
+          <span class="flex text-white/90" aria-hidden="true">{Array.from({ length: 5 }).map(() => <StarFilled class="size-4" />)}</span>
+          <span class="text-sm font-bold text-white"><span data-g-rating>{reviews.rating}</span> from <span data-g-count>{reviews.count}</span> Google reviews</span>
         </a>
-        <div class="mt-7 grid gap-4 border-t border-kom-charcoal/10 pt-6 sm:grid-cols-2">
-          <a href={business.maintenancePhoneHref} class="group flex items-center gap-3"><span class="flex size-10 items-center justify-center rounded-md bg-white text-kom-field"><Phone class="size-5" aria-hidden="true" /></span><span><span class="block text-xs font-bold text-kom-charcoal/55">Maintenance</span><span class="font-black text-kom-field group-hover:underline">{business.maintenancePhone}</span></span></a>
-          <a href={business.constructionPhoneHref} class="group flex items-center gap-3"><span class="flex size-10 items-center justify-center rounded-md bg-white text-kom-field"><Phone class="size-5" aria-hidden="true" /></span><span><span class="block text-xs font-bold text-kom-charcoal/55">Construction</span><span class="font-black text-kom-field group-hover:underline">{business.constructionPhone}</span></span></a>
+        <div class="mt-7 grid gap-4 border-t border-white/20 pt-6 sm:grid-cols-2">
+          <a href={business.maintenancePhoneHref} class="group flex items-center gap-3"><span class="flex size-10 items-center justify-center rounded-md bg-white text-kom-field"><Phone class="size-5" aria-hidden="true" /></span><span><span class="block text-xs font-bold text-white/65">Maintenance</span><span class="font-black text-white group-hover:underline">{business.maintenancePhone}</span></span></a>
+          <a href={business.constructionPhoneHref} class="group flex items-center gap-3"><span class="flex size-10 items-center justify-center rounded-md bg-white text-kom-field"><Phone class="size-5" aria-hidden="true" /></span><span><span class="block text-xs font-bold text-white/65">Construction</span><span class="font-black text-white group-hover:underline">{business.constructionPhone}</span></span></a>
         </div>
       </div>
       <figure class="order-1 overflow-hidden rounded-2xl shadow-xl lg:order-2">
@@ -65,27 +65,27 @@ const popularMaintenance = popularServiceSpecs.map(({ slug, icon }) => ({
     </div>
   </section>
 
-  <section aria-label="Trust highlights" class="bg-kom-field">
+  <section aria-label="Trust highlights" class="bg-kom-charcoal-deep">
     <ul class="mx-auto flex max-w-7xl flex-col justify-center gap-1 px-4 sm:flex-row sm:gap-14 sm:px-6 lg:px-8">
-      <li class="flex min-h-16 items-center gap-3 text-sm font-extrabold text-white sm:justify-center"><MapPin class="size-5 shrink-0 text-kom-tan-light" aria-hidden="true" />Locally owned in Metro Detroit</li>
-      <li class="flex min-h-16 items-center gap-3 text-sm font-extrabold text-white sm:justify-center"><Clock class="size-5 shrink-0 text-kom-tan-light" aria-hidden="true" />{business.availability}</li>
+      <li class="flex min-h-16 items-center gap-3 text-sm font-extrabold text-white sm:justify-center"><MapPin class="size-5 shrink-0 text-kom-sage" aria-hidden="true" />Locally owned in Metro Detroit</li>
+      <li class="flex min-h-16 items-center gap-3 text-sm font-extrabold text-white sm:justify-center"><Clock class="size-5 shrink-0 text-kom-sage" aria-hidden="true" />{business.availability}</li>
     </ul>
   </section>
 
   <section class="section-pad bg-kom-warm-white">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-2xl text-center">
-        <h2 class="text-3xl font-black tracking-tight text-kom-ink sm:text-4xl">How can we help?</h2>
+        <h2 class="text-3xl font-black tracking-tight text-kom-charcoal-deep sm:text-4xl">How can we help?</h2>
         <p class="mt-3 text-lg leading-relaxed text-kom-charcoal/70">Start with the kind of work—not a long list of unfamiliar categories.</p>
       </div>
       <div class="mt-10 grid gap-6 lg:grid-cols-2">
         <article class="group grid overflow-hidden rounded-xl border border-kom-charcoal/10 bg-white shadow-card transition-shadow hover:shadow-card-hover sm:grid-cols-[0.85fr_1.15fr]">
           <Image src={crewAtWork} alt="KOM USA crew members installing tile on a Metro Detroit job" class="h-full min-h-64 w-full object-cover" widths={[420, 620]} sizes="(min-width: 1024px) 22vw, 100vw" loading="lazy" />
-          <div class="flex flex-col justify-center p-7 sm:p-8"><h3 class="text-3xl font-black text-kom-field">Maintenance</h3><p class="mt-3 leading-relaxed text-kom-charcoal/70">Repairs, property upkeep, home systems, and handyman needs handled through one practical service path.</p><div class="mt-6 flex flex-wrap gap-x-5 gap-y-3"><a href="/maintenance/" class="inline-flex items-center gap-2 font-black text-kom-field">Explore Maintenance<ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></a><a href={business.maintenancePhoneHref} class="inline-flex items-center gap-2 font-black text-kom-ink"><Phone class="size-4" aria-hidden="true" />{business.maintenancePhone}</a></div></div>
+          <div class="flex flex-col justify-center p-7 sm:p-8"><h3 class="text-3xl font-black text-kom-field">Maintenance</h3><p class="mt-3 leading-relaxed text-kom-charcoal/70">Repairs, property upkeep, home systems, and handyman needs handled through one practical service path.</p><div class="mt-6 flex flex-wrap gap-x-5 gap-y-3"><a href="/maintenance/" class="inline-flex items-center gap-2 font-black text-kom-field">Explore Maintenance<ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></a><a href={business.maintenancePhoneHref} class="inline-flex items-center gap-2 font-black text-kom-charcoal-deep"><Phone class="size-4" aria-hidden="true" />{business.maintenancePhone}</a></div></div>
         </article>
         <article class="group grid overflow-hidden rounded-xl border border-kom-charcoal/10 bg-white shadow-card transition-shadow hover:shadow-card-hover sm:grid-cols-[0.85fr_1.15fr]">
           <Image src={constructionFraming} alt="New wall framing on a KOM USA construction project" class="h-full min-h-64 w-full object-cover" widths={[420, 620]} sizes="(min-width: 1024px) 22vw, 100vw" loading="lazy" />
-          <div class="flex flex-col justify-center p-7 sm:p-8"><h3 class="text-3xl font-black text-kom-field">Construction</h3><p class="mt-3 leading-relaxed text-kom-charcoal/70">Remodeling, building, materials, and larger project scopes for homeowners and contractors.</p><div class="mt-6 flex flex-wrap gap-x-5 gap-y-3"><a href="/construction/" class="inline-flex items-center gap-2 font-black text-kom-field">Explore Construction<ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></a><a href={business.constructionPhoneHref} class="inline-flex items-center gap-2 font-black text-kom-ink"><Phone class="size-4" aria-hidden="true" />{business.constructionPhone}</a></div></div>
+          <div class="flex flex-col justify-center p-7 sm:p-8"><h3 class="text-3xl font-black text-kom-field">Construction</h3><p class="mt-3 leading-relaxed text-kom-charcoal/70">Remodeling, building, materials, and larger project scopes for homeowners and contractors.</p><div class="mt-6 flex flex-wrap gap-x-5 gap-y-3"><a href="/construction/" class="inline-flex items-center gap-2 font-black text-kom-field">Explore Construction<ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></a><a href={business.constructionPhoneHref} class="inline-flex items-center gap-2 font-black text-kom-charcoal-deep"><Phone class="size-4" aria-hidden="true" />{business.constructionPhone}</a></div></div>
         </article>
       </div>
     </div>
@@ -93,13 +93,13 @@ const popularMaintenance = popularServiceSpecs.map(({ slug, icon }) => ({
 
   <section class="section-pad bg-kom-sage-tint">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl text-center"><h2 class="text-3xl font-black tracking-tight text-kom-ink sm:text-4xl">Popular Maintenance services</h2><p class="mt-3 leading-relaxed text-kom-charcoal/70">Choose a starting point, call to confirm scope, or send one short request.</p></div>
+      <div class="mx-auto max-w-2xl text-center"><h2 class="text-3xl font-black tracking-tight text-kom-charcoal-deep sm:text-4xl">Popular Maintenance services</h2><p class="mt-3 leading-relaxed text-kom-charcoal/70">Choose a starting point, call to confirm scope, or send one short request.</p></div>
       <ul class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {popularMaintenance.map(({ service, icon }) => (
           <li>
             <a href={servicePath(service)} class="group flex h-full items-center gap-4 rounded-xl border border-kom-field/15 bg-white p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-kom-field/35 hover:shadow-card-hover">
               <span class="flex size-12 shrink-0 items-center justify-center rounded-lg bg-kom-sage-tint text-kom-field transition-colors group-hover:bg-kom-field group-hover:text-white"><Icon name={icon} class="size-6" /></span>
-              <span class="flex-1"><h3 class="text-lg font-black text-kom-ink">{service.title}</h3><span class="mt-1 inline-flex items-center gap-1.5 text-sm font-black text-kom-field">Learn more<ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span></span>
+              <span class="flex-1"><h3 class="text-lg font-black text-kom-charcoal-deep">{service.title}</h3><span class="mt-1 inline-flex items-center gap-1.5 text-sm font-black text-kom-field">Learn more<ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" /></span></span>
             </a>
           </li>
         ))}
@@ -111,7 +111,7 @@ const popularMaintenance = popularServiceSpecs.map(({ slug, icon }) => ({
   <section class="section-pad bg-kom-warm-white">
     <div class="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-14 lg:px-8">
       <Image src={porchConstruction} alt="New front porch framed and built by the KOM USA crew" class="aspect-[4/3] w-full rounded-xl object-cover shadow-lg" widths={[560, 800, 1100]} sizes="(min-width: 1024px) 50vw, 100vw" loading="lazy" />
-      <div><h2 class="text-3xl font-black tracking-tight text-kom-ink text-balance sm:text-4xl">Why choose KOM USA</h2><ul class="mt-6 space-y-5 text-kom-charcoal"><li class="flex gap-3"><Icon name="circle-check" class="mt-0.5 size-5 shrink-0 text-kom-field" /><span><strong>We're local.</strong> The person you call knows the crew that shows up.</span></li><li class="flex gap-3"><Icon name="circle-check" class="mt-0.5 size-5 shrink-0 text-kom-field" /><span><strong>We keep it simple.</strong> One call or one short request, and the right team takes it from there.</span></li><li class="flex gap-3"><Icon name="circle-check" class="mt-0.5 size-5 shrink-0 text-kom-field" /><span><strong>Our work speaks for itself.</strong> Every photo on this site is from a real KOM USA job.</span></li></ul><a href="/about/" class="mt-7 inline-flex items-center gap-2 font-black text-kom-field">Learn more about KOM USA<ArrowRight class="size-4" aria-hidden="true" /></a></div>
+      <div><h2 class="text-3xl font-black tracking-tight text-kom-charcoal-deep text-balance sm:text-4xl">Why choose KOM USA</h2><ul class="mt-6 space-y-5 text-kom-charcoal"><li class="flex gap-3"><Icon name="circle-check" class="mt-0.5 size-5 shrink-0 text-kom-field" /><span><strong>We're local.</strong> The person you call knows the crew that shows up.</span></li><li class="flex gap-3"><Icon name="circle-check" class="mt-0.5 size-5 shrink-0 text-kom-field" /><span><strong>We keep it simple.</strong> One call or one short request, and the right team takes it from there.</span></li><li class="flex gap-3"><Icon name="circle-check" class="mt-0.5 size-5 shrink-0 text-kom-field" /><span><strong>Our work speaks for itself.</strong> Every photo on this site is from a real KOM USA job.</span></li></ul><a href="/about/" class="mt-7 inline-flex items-center gap-2 font-black text-kom-field">Learn more about KOM USA<ArrowRight class="size-4" aria-hidden="true" /></a></div>
     </div>
   </section>
 

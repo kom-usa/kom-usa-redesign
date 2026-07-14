@@ -1,79 +1,70 @@
 ---
+import ArrowRight from "@tabler/icons/outline/arrow-right.svg";
 import MapPin from "@tabler/icons/outline/map-pin.svg";
+import Phone from "@tabler/icons/outline/phone.svg";
 
-import SectionHeader from "../common/SectionHeader.astro";
-import Roofline from "../common/Roofline.astro";
-import { business, serviceAreaCities, serviceAreaCounties } from "../../data/business";
-import { getLocations } from "../../lib/sanity";
+import { business } from "../../data/business";
+import { featuredServiceAreas } from "../../data/service-areas";
 
-const countiesSentence = serviceAreaCounties.join(", ").replace(/, ([^,]*)$/, ", and $1");
-
-// Location pages exist per city in Sanity; linking each chip back to its page
-// keeps internal links flowing to the location content for SEO.
-const locations = await getLocations();
-const locationPath = (city: string) => {
-  const match = locations.find((location) => location.city.toLowerCase() === city.toLowerCase());
-  return match ? `/locations/${match.slug}/` : undefined;
-};
-
-// Google Map of the service area. With an API key we use the official Maps
-// Embed API (pin on the KOM USA listing); without one we fall back to the
-// keyless embed so the build never ships a broken map.
 const embedKey = import.meta.env.GOOGLE_MAPS_EMBED_KEY ?? import.meta.env.GOOGLE_MAPS_API_KEY;
 const mapSrc = embedKey
-  ? `https://www.google.com/maps/embed/v1/place?key=${embedKey}&q=${encodeURIComponent("KOM USA, Metro Detroit, MI")}&center=42.383,-83.102&zoom=9`
+  ? `https://www.google.com/maps/embed/v1/view?key=${embedKey}&center=42.383,-83.102&zoom=9&maptype=roadmap`
   : "https://maps.google.com/maps?ll=42.383,-83.102&z=9&output=embed";
 ---
 
-<section id="service-area" class="section-pad scroll-mt-16 bg-kom-warm-white">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6">
-    <SectionHeader
-      title="Our Service Area"
-      lead={`Based in Metro Detroit and working across it — serving homes throughout ${countiesSentence}.`}
-    />
+<section id="service-area" class="section-pad scroll-mt-16 bg-kom-charcoal-deep text-white">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14">
+      <div>
+        <p class="inline-flex items-center gap-2 text-sm font-extrabold text-kom-sage">
+          <MapPin class="size-5" aria-hidden="true" />
+          Local to Metro Detroit
+        </p>
+        <h2 class="mt-4 max-w-2xl text-4xl font-black tracking-[-0.035em] text-white text-balance sm:text-5xl">
+          Serving all of Metro Detroit.
+        </h2>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-white/75">
+          If your home, rental, or project is in Metro Detroit, start with KOM USA. The local pages below are helpful starting points—not the edge of our service area.
+        </p>
 
-    <div class="mt-12 grid items-stretch gap-6 lg:grid-cols-2">
-      <div class="reveal border-border overflow-hidden rounded-xl border bg-white shadow-card">
+        <ul class="mt-9 grid border-t border-white/15 sm:grid-cols-2">
+          {featuredServiceAreas.map((area) => (
+            <li class="border-b border-white/15 sm:odd:pr-4 sm:even:pl-4">
+              <a
+                href={`/service-areas/${area.slug}/`}
+                class="group flex min-h-13 items-center justify-between gap-3 py-3 font-extrabold text-white transition-colors hover:text-kom-sage focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-sage"
+              >
+                <span>{area.city}</span>
+                <ArrowRight class="size-4 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+          <a href="/service-areas/" class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-white px-6 font-extrabold text-kom-field transition-colors hover:bg-kom-warm-white">
+            Explore our service area
+            <ArrowRight class="size-4" aria-hidden="true" />
+          </a>
+          <a href={business.maintenancePhoneHref} class="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border-2 border-white/35 px-6 font-extrabold text-white transition-colors hover:border-white hover:bg-white/10">
+            <Phone class="size-5" aria-hidden="true" />
+            Check your location
+          </a>
+        </div>
+      </div>
+
+      <div class="overflow-hidden rounded-xl bg-white shadow-lg">
         <iframe
           src={mapSrc}
-          title="Google Map of the KOM USA service area across Metro Detroit"
-          class="h-full min-h-80 w-full border-0"
+          title="Map centered on the KOM USA Metro Detroit service area"
+          class="h-[28rem] w-full border-0 lg:h-[36rem]"
           loading="lazy"
           allowfullscreen
           referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-
-      <div class="reveal flex flex-col justify-center" style="--rd: 100ms">
-        <ul class="flex flex-wrap gap-2.5">
-          {
-            serviceAreaCities.map((city) => {
-              const href = locationPath(city);
-              return (
-                <li>
-                  {href ? (
-                    <a href={href} class="border-border text-kom-ink hover:border-kom-field/40 hover:text-kom-field flex items-center gap-1.5 rounded-full border bg-white px-3.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-kom-field/40">
-                      <MapPin class="text-kom-field size-3.5" aria-hidden="true" />
-                      {city}
-                    </a>
-                  ) : (
-                    <span class="border-border text-kom-ink flex items-center gap-1.5 rounded-full border bg-white px-3.5 py-1.5 text-sm font-medium">
-                      <MapPin class="text-kom-field size-3.5" aria-hidden="true" />
-                      {city}
-                    </span>
-                  )}
-                </li>
-              );
-            })
-          }
-          <li class="text-muted-foreground flex items-center px-2 py-1.5 text-sm font-medium">
-            …and surrounding Metro Detroit communities
-          </li>
-        </ul>
-
-        <Roofline class="text-kom-tan mt-8" />
-        <p class="text-muted-foreground mt-4 max-w-xl text-sm leading-relaxed">
-          Not sure whether a property or job site is in range? Include the city or ZIP in your request, call <a href={business.maintenancePhoneHref} class="text-kom-field font-bold hover:underline">Maintenance at {business.maintenancePhone}</a>, or call <a href={business.constructionPhoneHref} class="text-kom-field font-bold hover:underline">Construction at {business.constructionPhone}</a>.
-        </p>
+        <div class="bg-white p-5 text-kom-charcoal">
+          <p class="font-black text-kom-charcoal-deep">Not sure whether your address is covered?</p>
+          <p class="mt-1 text-sm leading-relaxed text-kom-charcoal/70">Send the city or ZIP with your project details. We will confirm travel and timing before anything is scheduled.</p>
+        </div>
       </div>
     </div>
   </div>

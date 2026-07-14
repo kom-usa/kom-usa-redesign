@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { business } from "../data/business";
+---
+
+<!-- Working website terms. A Michigan business attorney should approve these before public launch. -->
+<BaseLayout title="Website Terms of Use | KOM USA" description="Terms governing use of the KOM USA website, online service requests, website content, and links to third-party services.">
+  <section class="section-pad bg-kom-warm-white">
+    <div class="mx-auto max-w-3xl px-4 sm:px-6">
+      <p class="font-extrabold text-kom-field">Last updated July 14, 2026</p>
+      <h1 class="mt-3 text-4xl font-black tracking-tight text-kom-charcoal-deep sm:text-5xl">Website Terms of Use</h1>
+      <p class="mt-6 text-lg leading-relaxed text-kom-charcoal/75">These terms apply to kom-usa.com, operated by {business.legalName} under the {business.name} service brand.</p>
+
+      <div class="article-body mt-10 text-kom-charcoal/75">
+        <h2>Website information</h2>
+        <p>This website provides general information about KOM USA, its service area, and the types of work the company may review. Website content is not a project-specific recommendation, inspection, quote, warranty, or promise that a particular service is available at a particular time.</p>
+
+        <h2>Service and estimate requests</h2>
+        <p>Submitting a form, leaving a message, or calling KOM USA starts a request review. It does not create an appointment, authorize work, guarantee dispatch, reserve a time, or form a service contract. Scope, pricing, payment terms, materials, timing, and any warranty are confirmed separately in the applicable estimate, work order, invoice, or service agreement.</p>
+
+        <h2>Emergencies</h2>
+        <p>Do not rely on this website or an online form for an emergency involving immediate danger, fire, gas, electrical hazards, flooding, crime, or medical needs. Contact the appropriate emergency service or utility provider.</p>
+
+        <h2>Permitted use</h2>
+        <p>You may use this website to learn about KOM USA and submit legitimate inquiries. You may not attempt to disrupt the site, bypass security, submit false or unlawful material, misuse contact forms, scrape personal information, or use website content in a way that violates law or another party's rights.</p>
+
+        <h2>Copyright and trademarks</h2>
+        <p>Unless otherwise identified, original website text, photographs, graphics, logos, and design are owned by or licensed to {business.legalName}. You may view the site for personal or business evaluation, but you may not republish, sell, copy, or create commercial derivatives from protected content without written permission. Company and product names owned by other parties remain the property of their respective owners.</p>
+
+        <h2>Third-party services and links</h2>
+        <p>The website may display or link to maps, reviews, social networks, and other services operated by third parties. KOM USA does not control those services and is not responsible for their availability, content, security, or privacy practices.</p>
+
+        <h2>Website availability</h2>
+        <p>KOM USA may update, remove, or correct website content at any time. We work to keep the site useful and accurate, but the website is provided on an “as available” basis and may occasionally contain errors or be unavailable.</p>
+
+        <h2>Governing law</h2>
+        <p>These website terms are governed by the laws of the State of Michigan, without regard to conflict-of-law rules. Project-specific agreements may include additional or different terms.</p>
+
+        <h2>Changes and contact</h2>
+        <p>KOM USA may update these terms by posting a revised version and changing the date above. Questions about the website or permission to use content can be sent to <a href={business.emailHref}>{business.email}</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

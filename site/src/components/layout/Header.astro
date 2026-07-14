@@ -69,7 +69,7 @@ const currentPath = Astro.url.pathname;
 const isActive = (href: string) => href === "/" ? currentPath === "/" : currentPath.startsWith(href);
 ---
 
-<header class="sticky top-0 z-40 w-full border-b border-kom-charcoal/10 bg-kom-warm-white/95 backdrop-blur-sm">
+<header class="sticky top-0 z-40 w-full border-b border-kom-charcoal/10 bg-white/95 backdrop-blur-sm">
   <div class="relative mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
     <a href="/" aria-label="KOM USA home" class="shrink-0 rounded-sm focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/40">
       <img src={logo.src} alt="KOM USA" class="h-11 w-auto sm:h-12" width="132" height="48" />
@@ -86,7 +86,7 @@ const isActive = (href: string) => href === "/" ? currentPath === "/" : currentP
                 "inline-flex items-center gap-1 rounded-md px-2.5 py-2 text-sm font-extrabold transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/35 xl:px-3",
                 isActive(item.href)
                   ? "bg-kom-sage-tint text-kom-field"
-                  : "text-kom-charcoal/75 hover:bg-kom-sage-tint hover:text-kom-ink",
+                  : "text-kom-charcoal/75 hover:bg-kom-sage-tint hover:text-kom-charcoal-deep",
               ]}
             >
               {item.label}
@@ -121,7 +121,7 @@ const isActive = (href: string) => href === "/" ? currentPath === "/" : currentP
                     </a>
                   )}
                   {item.phone && (
-                    <a href={item.phone.href} data-phone-line={item.phone.line} class="inline-flex items-center gap-1.5 text-sm font-black text-kom-ink transition-colors hover:text-kom-field">
+                    <a href={item.phone.href} data-phone-line={item.phone.line} class="inline-flex items-center gap-1.5 text-sm font-black text-kom-charcoal-deep transition-colors hover:text-kom-field">
                       <Phone class="size-4 text-kom-field" aria-hidden="true" />
                       {item.phone.label}: {item.phone.number}
                     </a>
@@ -138,7 +138,7 @@ const isActive = (href: string) => href === "/" ? currentPath === "/" : currentP
               "rounded-md px-2.5 py-2 text-sm font-extrabold transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-kom-field/35 xl:px-3",
               isActive(item.href)
                 ? "bg-kom-sage-tint text-kom-field"
-                : "text-kom-charcoal/75 hover:bg-kom-sage-tint hover:text-kom-ink",
+                : "text-kom-charcoal/75 hover:bg-kom-sage-tint hover:text-kom-charcoal-deep",
             ]}
           >
             {item.label}
@@ -151,7 +151,7 @@ const isActive = (href: string) => href === "/" ? currentPath === "/" : currentP
       <a
         href={business.maintenancePhoneHref}
         data-phone-line="maintenance"
-        class="hidden items-center gap-1.5 text-sm font-black text-kom-ink transition-colors hover:text-kom-field xl:flex"
+        class="hidden items-center gap-1.5 text-sm font-black text-kom-charcoal-deep transition-colors hover:text-kom-field xl:flex"
       >
         <Phone class="size-4 text-kom-field" aria-hidden="true" />
         {business.maintenancePhone}
@@ -166,7 +166,7 @@ const isActive = (href: string) => href === "/" ? currentPath === "/" : currentP
     </div>
   </div>
 
-  <nav id="mobile-menu" aria-label="Mobile" class="hidden max-h-[calc(100vh-4.5rem)] overflow-y-auto border-t border-kom-charcoal/10 bg-kom-warm-white lg:hidden">
+  <nav id="mobile-menu" aria-label="Mobile" class="hidden max-h-[calc(100vh-4.5rem)] overflow-y-auto border-t border-kom-charcoal/10 bg-white lg:hidden">
     <div class="mx-auto max-w-3xl px-4 py-4 sm:px-6">
       {nav.map((item) =>
         item.children ? (
@@ -174,7 +174,7 @@ const isActive = (href: string) => href === "/" ? currentPath === "/" : currentP
             <summary
               class:list={[
                 "flex cursor-pointer list-none items-center justify-between rounded-md px-3 py-3 font-extrabold [&::-webkit-details-marker]:hidden",
-                isActive(item.href) ? "bg-kom-sage-tint text-kom-field" : "text-kom-ink hover:bg-kom-sage-tint/60",
+                isActive(item.href) ? "bg-kom-sage-tint text-kom-field" : "text-kom-charcoal-deep hover:bg-kom-sage-tint/60",
               ]}
             >
               {item.label}
@@ -205,7 +205,7 @@ const isActive = (href: string) => href === "/" ? currentPath === "/" : currentP
             aria-current={isActive(item.href) ? "page" : undefined}
             class:list={[
               "block rounded-md px-3 py-3 font-extrabold",
-              isActive(item.href) ? "bg-kom-sage-tint text-kom-field" : "text-kom-ink hover:bg-kom-sage-tint/60",
+              isActive(item.href) ? "bg-kom-sage-tint text-kom-field" : "text-kom-charcoal-deep hover:bg-kom-sage-tint/60",
             ]}
           >
             {item.label}
@@ -213,10 +213,10 @@ const isActive = (href: string) => href === "/" ? currentPath === "/" : currentP
         ),
       )}
       <div class="mt-3 grid gap-2 border-t border-kom-charcoal/10 pt-4 sm:grid-cols-2">
-        <a href={business.maintenancePhoneHref} data-phone-line="maintenance" class="flex min-h-12 items-center justify-center gap-2 rounded-md border border-kom-charcoal/15 font-black text-kom-ink">
+        <a href={business.maintenancePhoneHref} data-phone-line="maintenance" class="flex min-h-12 items-center justify-center gap-2 rounded-md border border-kom-charcoal/15 font-black text-kom-charcoal-deep">
           <Phone class="size-4 text-kom-field" aria-hidden="true" />Maintenance {business.maintenancePhone}
         </a>
-        <a href={business.constructionPhoneHref} data-phone-line="construction" class="flex min-h-12 items-center justify-center gap-2 rounded-md border border-kom-charcoal/15 font-black text-kom-ink">
+        <a href={business.constructionPhoneHref} data-phone-line="construction" class="flex min-h-12 items-center justify-center gap-2 rounded-md border border-kom-charcoal/15 font-black text-kom-charcoal-deep">
           <Phone class="size-4 text-kom-field" aria-hidden="true" />Construction {business.constructionPhone}
         </a>
       </div>
