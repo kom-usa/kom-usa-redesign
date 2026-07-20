@@ -73,6 +73,10 @@ Postgres on Supabase. Every table gets RLS enabled with owner-only policies
   `web`), `servicem8_job_id text null`, timestamps. v1 writes `submitted`
   rows from the logged-in request form and lists them read-only in the
   dashboard; staff move statuses in the Supabase dashboard.
+  **Note on service catalog scope:** KOM USA offers approximately 50 services
+  across maintenance and construction. The current `service-catalog.ts` covers
+  ~25 — the file must be expanded to the full catalog before the service
+  request form launches in Phase 4 (see Blockers).
 - **`subscriptions`** — Stripe mirror, 1 row per Stripe subscription:
   `user_id`, `stripe_customer_id`, `stripe_subscription_id` (unique),
   `stripe_price_id`, `status` (Stripe's own status vocabulary), 
@@ -159,14 +163,19 @@ Endpoints:
 
 ## Blockers — owner inputs required before implementation
 
-1. **Membership definition:** tier name(s), monthly/annual price(s), and the
+1. **Complete service list:** KOM USA offers approximately 50 services but
+   `service-catalog.ts` currently covers ~25. The full list — with slugs,
+   titles, and which line (maintenance vs construction) each belongs to —
+   must be provided and added to the catalog before the service request form
+   can go live. Aran to supply.
+2. **Membership definition:** tier name(s), monthly/annual price(s), and the
    concrete benefit list (visit cadence, discount %, priority scheduling?).
    Nothing is defined today; the subscription page is a placeholder.
-2. Stripe account (business verification takes a day or two — start early).
-3. Supabase project + region; keys into Netlify env
+3. Stripe account (business verification takes a day or two — start early).
+4. Supabase project + region; keys into Netlify env
    (`SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
    `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, price IDs).
-4. Accountant confirmation that the membership isn't subject to Michigan
+5. Accountant confirmation that the membership isn't subject to Michigan
    sales tax.
 
 ## Out of scope (v1)
