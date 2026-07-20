@@ -675,6 +675,18 @@ The API integration only works while KOM USA is on the MAX plan. If the subscrip
 
 As part of Phase 1 we add a scheduled Netlify Function (`hcp-healthcheck.mts`) that runs once per week, makes a lightweight call to the HCP API (`GET /customers?page_size=1`), and sends an alert email via Brevo if it fails. This reuses the Brevo integration already in place and takes roughly an hour to build. It ensures the team finds out about a broken API key before a client does.
 
+### Data export before leaving HCP
+
+The portal reads job history live from HCP on every page load — there is no separate copy of that data stored anywhere in the portal. This means if KOM USA cancels HCP or loses API access, the historical job records that power the portal become inaccessible.
+
+**Before cancelling HCP or downgrading away from the MAX plan, KOM USA must export all job and customer data out of HCP first.** HCP supports a full data export from the account settings. That export should be taken and stored safely before any cancellation is processed.
+
+What happens after export depends on what KOM USA moves to:
+- If moving to a new field service platform (ServiceTitan, Jobber, etc.), the migration team typically handles importing historical records as part of the transition.
+- If building an internal system, the historical data would need to be imported into that system's database so the portal can continue showing complete history.
+
+The code migration itself is straightforward (see "Designing for HCP migration" below). Data continuity is the part that requires advance planning — it cannot be done after HCP access is already gone.
+
 ### API rate limiting
 
 The `/api/my-account/history` endpoint has no rate limiting by default. A user with a valid JWT could make rapid repeated requests, unnecessarily hammering the HCP API and potentially hitting HCP's own rate limits.
