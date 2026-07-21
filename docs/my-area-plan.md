@@ -1,8 +1,12 @@
-# "My Area" Client Portal — Technical Plan
+# "My Area" Client Portal — Technical Plan (Proposed — Netlify Option)
 
 **Prepared by:** Ovidiu Marina  
 **Date:** July 20, 2026  
+**Updated:** July 21, 2026  
+**Status:** Proposed — pending Michael's decision on overall development site and environment  
 **For review by:** Gabe (architecture validation), Aran Segal (scope approval), Michael (final approval)
+
+> **Note (July 21, 2026):** Michael has indicated he wants to reconsider the overall development site and environment before committing to a direction. This document presents the Netlify-based approach as one option. No implementation should begin until Michael's environment decision is made and this plan is approved.
 
 ---
 
@@ -22,7 +26,7 @@
 12. [What does NOT change](#12-what-does-not-change)
 13. [Phase breakdown](#13-phase-breakdown)
 14. [Questions for Gabe](#14-questions-for-gabe)
-15. [Questions for Aran](#15-questions-for-aran)
+15. [Questions for Aran / Michael](#15-questions-for-aran--michael)
 16. [Questions for Michael](#16-questions-for-michael)
 17. [Questions for House Call Pro call](#17-questions-for-house-call-pro-call)
 18. [Local development setup](#18-local-development-setup)
@@ -30,6 +34,8 @@
 ---
 
 ## 1. What we're building
+
+> **This section describes the proposed Netlify-based implementation.** The overall environment and hosting approach is under review by Michael — this is one option, not a decided direction.
 
 A password-protected "My Area" section on kom-usa.com. Clients create an account or log in, and see a list of all maintenance and service jobs that KOM USA has completed for them, pulled in real-time from the House Call Pro system (the job management software KOM USA already uses internally).
 
@@ -809,9 +815,11 @@ Two related things to check:
 
 The existing `netlify.toml` config is straightforward, but Gabe knows if there are dashboard-side settings that might interact unexpectedly. This is the one thing that could add time to the estimate if it surfaces a conflict.
 
+**Update (July 21, 2026):** Gabe suggested connecting to the Netlify MCP to look up the adapter documentation directly and verify compatibility before making any changes. This should be the first step — use the Netlify MCP to confirm how `@astrojs/netlify` interacts with a manually managed `netlify/functions/` directory, and whether any `netlify.toml` changes are needed. This replaces the need to ask Gabe to check it manually.
+
 ---
 
-## 15. Questions for Aran
+## 15. Questions for Aran / Michael
 
 **1. Open sign-up or invite-only?**
 
@@ -821,6 +829,8 @@ Should clients be able to create their own account freely on the website (they e
 - Invite-only: requires someone to send each invite from Netlify after a job closes, but the email always matches.
 
 We can start invite-only and open it up later.
+
+**Note (July 21, 2026):** HCP already has a Customer Portal available that can be embedded into the current site via a button to direct customers to the HCP login. This means a lightweight client-facing portal option exists today without any development work — relevant context for Aran when deciding on sign-up flow and urgency of the full My Area build.
 
 **2. What history should be visible?**
 
@@ -852,9 +862,17 @@ Clients will be creating password-protected accounts on kom-usa.com and viewing 
 
 API access — which is what powers this entire feature — requires the MAX plan. If KOM USA ever downgrades, the portal breaks for every logged-in client. The weekly healthcheck function will catch this within a week, but clients will see errors in the meantime. This is not a reason to not build it, but it is a dependency worth acknowledging as a business commitment. It also affects how much to invest in Phase 2 and Phase 3: if there's a realistic chance of moving off HCP or downgrading within the next 12–18 months, that changes the calculus on further development.
 
-**3. Go/no-go on the feature**
+**3. Development environment decision (new — July 21, 2026)**
 
-Is this the right time to build this, and does the scope described here match what was discussed? Any concerns about timeline, cost, or direction should be raised before development begins — changes after implementation starts are significantly more expensive.
+Michael has indicated he wants to reconsider the overall development site and environment before committing to this plan. This document describes the Netlify-based approach in full — Netlify Identity for auth, Netlify Functions for the HCP proxy, and the Netlify adapter for SSR. If the environment changes (e.g. moving to a different host, a standalone backend, or a different auth provider), the core architecture of the portal (the `toJob()` translation layer, the generic `Job` shape, the `/my-account` page structure) carries over, but the specific Netlify pieces would need to be substituted.
+
+**Until Michael's environment decision is made, no implementation work should begin.**
+
+**4. Go/no-go on the feature**
+
+Does the scope described here match what was discussed? Any concerns about timeline, cost, or direction should be raised before development begins — changes after implementation starts are significantly more expensive.
+
+**Context (July 21, 2026):** HCP already has a built-in Customer Portal with an embeddable login button available for KOM USA's org. It can be dropped into the current site today to give clients access to job history, invoices, payments, estimates, and booking — all on HCP's domain (`client.housecallpro.com`). The case for building My Area is that it puts the client relationship permanently on kom-usa.com, gives KOM full control over what clients see, and survives any future move away from HCP. The HCP portal is the faster path; My Area is the right long-term path given KOM's intention to leave the platform.
 
 ---
 
@@ -880,7 +898,11 @@ Phase 2 of this feature (property history) requires showing all jobs ever perfor
 
 **5. Does HCP have a built-in client-facing portal?**
 
-Worth understanding what exists natively before the meeting with Aran and Michael. If HCP already has a customer portal, it's almost certainly generic and unbranded — but knowing what it looks like helps articulate why a custom-built portal on kom-usa.com is a better client experience. Ask: is there a customer-facing portal in HCP, and if so what does it show?
+**Answered (July 21, 2026) — no need to ask on the call.**
+
+HCP has a Customer Portal at `client.housecallpro.com`. It includes job history, invoices, payments, estimates, booking/rescheduling, and referrals. An embeddable login button is available for KOM USA's org and can be injected into the current site today to direct customers to the HCP portal with no development work required.
+
+This finding has been added as context to Michael's go/no-go question (Section 16) and Aran's sign-up flow question (Section 15 Q1). Remove this from the HCP call agenda.
 
 ---
 
