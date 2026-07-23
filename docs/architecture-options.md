@@ -1,7 +1,7 @@
 # KOM USA — Architecture Options: Trade-Off Summary
 
 **Prepared for:** Michael (Owner), Ovidiu (Developer)
-**Date:** 2026-07-22
+**Date:** 2026-07-23 (updated from 2026-07-22)
 **Purpose:** Decide the hosting and development environment before any new client-facing features are built.
 
 ---
@@ -10,10 +10,34 @@
 
 Every feature on the roadmap — the client portal ("My Area"), the membership/subscription club, and the AI maintenance triage — depends on this choice. Changing environments mid-project is expensive and disruptive. Choosing now costs nothing; choosing wrong after six months of development costs a full rebuild.
 
-Two principles drive this evaluation:
+Three principles drive this evaluation:
 
 1. **Security and vendor trust** — the platform holding customer data should be a large, established company.
-2. **Consolidation over cost-cutting** — Michael is willing to pay a premium for a platform that covers the full stack under one roof. The cost of stitching together multiple cheap tools shows up later as maintenance burden, security gaps between integrations, and rebuilds when a vendor shuts down or changes pricing.
+2. **Consolidation over cost-cutting** — the cost of stitching together multiple cheap tools shows up later as maintenance burden, security gaps between integrations, and rebuilds when a vendor changes pricing.
+3. **Portability over convenience** — the platform should never be the reason a migration takes months. The right architecture makes switching cloud providers a one-day task, not a multi-week rebuild.
+
+---
+
+## Why Containers — The Core Argument
+
+Before comparing options, it helps to understand the principle behind Options 3 and 4 — and why it matters more than any individual vendor choice.
+
+**The idea in plain terms:**
+
+Think of the application as goods packed inside a standardised shipping container. The container holds everything the application needs to run — the code, the settings, the dependencies — sealed and labelled with a version number. Just like a physical shipping container, it can be loaded onto any ship without repacking. The container does not care which ship it is on.
+
+- **The factory (GitHub Actions):** When a developer saves new code, the factory automatically packages it into a new, numbered container — for example, `my-website:1.3` — and sends it to the warehouse.
+- **The warehouse (DockerHub):** Stores every version of the container. Version 1.0, 1.1, 1.3 are all there, ready to be deployed or restored.
+- **The yard (Kubernetes):** Manages which containers are running and on which servers. It restarts containers that crash, scales up when traffic increases, and replaces old versions with new ones.
+- **The reception desk (Traefik):** When a visitor arrives at `komusa.com`, Traefik reads the request and routes it to the right container — the website, the client portal, the API — without the visitor seeing any of this.
+- **The automated dock worker (ArgoCD):** Watches the warehouse. When a new container version arrives, it loads it onto the yard automatically. To roll back to a previous version, you point it at `my-website:1.0` — the previous version is live in under a minute.
+- **The security checkpoint (Cloudflare):** Every visitor passes through Cloudflare before reaching the yard. Bots, scrapers, and attackers are filtered out before they ever touch the application.
+
+**Why this matters:**
+
+With this setup, a deployment is a single version number change. A rollback is the same. And if KOM ever needs to move to a different cloud provider — because of pricing, reliability, or a business decision — the containers move with it. Nothing inside them is tied to any specific vendor.
+
+This is the reason most mid-size and large technology companies run this way. It is also the reason integrated managed services like Firebase create long-term risk: with Firebase, the database, the auth system, and the deployment pipeline are all Google-specific. There is no equivalent of changing a version number.
 
 ---
 
@@ -22,282 +46,322 @@ Two principles drive this evaluation:
 ### Option 1 — Current Stack (Astro + Netlify + Sanity)
 *Already documented in `my-area-plan.md`. Included here for reference only.*
 
-**Vendor trust:** Netlify is a well-funded startup (~1,000 employees, Series D, $200M+ raised) but is not a Fortune 500 company. Sanity is smaller still. Michael has already expressed concern about this.
+**Vendor trust:** Netlify is a well-funded startup (~1,000 employees, Series D, $200M+ raised) but is not a Fortune 500 company. Sanity is smaller still. Vendor stability is a stated priority for this project, and neither meets that bar.
 
 **Security posture:** SOC 2 Type II certified. HTTPS/TLS everywhere. But authentication for a client portal would rely on Netlify Identity, a product that has not received major investment in several years.
 
 **Limitations for the roadmap:**
-- AI triage would require routing to a third-party AI provider (added complexity, added vendor)
-- Subscription/membership requires a separate platform — **WooCommerce** (WordPress-based) is a proven option for this and has been validated on a similar project. It handles recurring billing, membership tiers, and integrates with Stripe/PayPal under the hood. Trade-off: requires running a WordPress instance, which adds WordPress as an additional vendor and attack surface to manage alongside Astro and Netlify
-- As the site evolves from static to dynamic (client portal, AI, real-time data), Astro's "static-first" design becomes a friction point
+- AI triage would require routing to a third-party AI provider — added complexity, added vendor
+- Subscription/membership requires a separate platform; WooCommerce handles recurring billing and integrates with Stripe but adds WordPress as an additional vendor and attack surface alongside Astro and Netlify
+- As the site evolves from static to dynamic (client portal, AI, real-time data), Astro's static-first design becomes a friction point
 
-**Best suited for:** A marketing-only site with minimal dynamic features. The current landing page phase.
+**Verdict: Does not meet the bar.** Built for a marketing site. The roadmap has outgrown it.
 
 ---
 
 ### Option 2 — Google Ecosystem (Firebase + Google Cloud)
 
-**What it is:** Firebase is Google's application development platform. It covers hosting, authentication, database, serverless functions, and AI — all under the Google Cloud umbrella. Firebase has been a Google product since 2014.
+**What it is:** Firebase is Google's application development platform. It covers hosting, authentication, database, serverless functions, and AI — all under the Google Cloud umbrella.
 
-**Vendor trust:** Google (Alphabet) is a top-five company by market cap. Firebase infrastructure runs on the same data centers that power Google Search, Gmail, and YouTube. This is the opposite of "small random company" risk. Firebase has survived as a revenue-generating enterprise product since 2014 — unlike Google's consumer experiments, it serves paying business customers and has continued to receive investment.
+**Vendor trust:** Google (Alphabet) is a top-five company by market cap. Firebase infrastructure runs on the same data centers as Gmail and YouTube.
 
-**Security posture:**
-- SOC 2 Type II, ISO 27001, PCI DSS Level 1, HIPAA-eligible
-- Firebase Auth is built on Google Identity Platform — production-grade, the same underlying technology stack Google uses for its enterprise identity products
-- All data encrypted at rest and in transit by default
-- Google Cloud Armor provides DDoS protection and WAF capabilities at the infrastructure level
+**Security posture:** SOC 2 Type II, ISO 27001, PCI DSS Level 1, HIPAA-eligible. Firebase Auth, App Check, and Security Rules provide layered protection.
 
 **What it covers for KOM USA:**
 
 | Requirement | Google Service | Notes |
 |---|---|---|
 | Hosting | Firebase Hosting | CDN-backed, HTTPS automatic |
-| Authentication (My Area) | Firebase Auth | Email/password, Google sign-in, MFA — production grade |
+| Authentication | Firebase Auth | Email/password, Google sign-in, MFA |
 | Customer data storage | Cloud Firestore | Real-time NoSQL database |
-| Serverless business logic | Cloud Functions | Node.js/TypeScript, scales to zero |
-| AI maintenance triage | Gemini API / Vertex AI | Native Google AI — no third-party vendor needed |
-| Email / notifications | No built-in option | Would still need Brevo, SendGrid, or similar |
-| Payments (subscription club) | Stripe via Firebase Extension | Google has no native payment processor — the official Firebase solution is the "Run Payments with Stripe" extension, which syncs subscription status to Firestore and Firebase Auth automatically |
+| Application backend | Cloud Functions | Runs server-side logic — Node.js/TypeScript |
+| AI maintenance triage | Gemini API / Vertex AI | Native — no third-party vendor |
+| Payments | Stripe via Firebase Extension | No native Google payment processor |
 
-**Trade-offs and limitations:**
+**Why this option is no longer recommended:**
 
-*Advantages:*
-- **Single vendor, one relationship.** Hosting, auth, database, serverless functions, and AI all live under one Google account, one billing statement, one support contract. This is the strongest consolidation story of any option.
-- **Preferred by Michael (owner) — and aligns with his full development vision.** Michael's stated preference is to work entirely within the Google ecosystem: Google AI Studio to prototype and test the AI triage prompts, Gemini Code Assist (Google's coding assistant for VS Code) to write application code with Gemini's built-in awareness of Google Cloud and Firebase APIs, and Firebase Studio (Google's browser-based IDE with Gemini built in) as an option for development without local setup. This is a coherent, consolidated vision where the same Google account, the same AI model, and the same tooling covers every stage from development to deployment.
-- **Firebase Security Rules** add a layer of access control at the database itself, not just in application code. Even if a Cloud Function has a bug, a malformed or unauthorized write can be blocked by the rules before it touches the data. This is a meaningful extra security layer that other options don't provide out of the box.
-- **Firebase Extensions marketplace** provides officially Google-curated, maintained integrations for common needs — Stripe payments, SendGrid email, Twilio SMS, Algolia search. These are not third-party npm packages; they are reviewed integrations that are tested to work correctly with Firestore and Firebase Auth.
-- **Firebase App Check** verifies that requests to your backend actually come from your app — not bots, scrapers, or abusers. Protects both your data and your Firestore billing.
-- **Single console for everything.** Firebase Console + Google Cloud Console covers all monitoring, logging, alerting, IAM, and billing in one place. No context switching between vendor dashboards.
-- **Firestore's document model fits KOM's data naturally.** A customer record has attached jobs; each job has line items, technician notes, timestamps. This is a natural document structure — not a forced fit.
-- **Gemini AI is native** — building the maintenance triage feature requires no third-party AI vendor, no separate API key management, and no integration work. It is part of the same Google Cloud account.
-- **Free tier is generous; at KOM's scale, infrastructure cost is negligible.** See Cost at Scale section.
-- **Cloud Run as an escape hatch.** If Cloud Functions ever feel limiting, Google Cloud Run runs any containerised workload on the same billing account, same IAM, same monitoring. The exit ramp is within Google, not outside it.
+Firebase offers real convenience, and Google is a credible vendor. The problem is not Google's stability. The problem is what happens if KOM ever needs to leave — and what happens on an ordinary bad day in production.
 
-*Disadvantages:*
-- **Data layer lock-in is real.** Firestore's data model is proprietary — if KOM ever leaves Google, migrating Firestore data requires export and transformation work. Firebase Auth user records also require migration to a new auth provider. The frontend and Cloud Functions code (standard JS/TypeScript) move freely; it is the data and auth layers that create the dependency.
-- **Firestore is less forgiving of bad data modeling than a relational database.** All databases require upfront modeling, but with a relational database you can write an ad-hoc JOIN later to compensate for a structural mistake. With Firestore, if the document structure is wrong, fixing it means migrating data — there are no joins, and querying across collections is limited. This means getting the data model right before writing code matters more here than it would with SQL.
-- **Firebase is a specialised skillset.** Most JavaScript developers are more fluent in traditional SQL databases and REST APIs than in Firestore's document model and security rules. Hiring or onboarding future developers requires some Firebase-specific ramp-up.
-- **Google has sunset products before** — though Firebase's enterprise revenue and 10+ year track record make this lower risk than a consumer product, it is worth acknowledging.
+*Scenario 1 — A bug breaks the client portal at 2am.*
 
-**Framework flexibility:** Firebase is backend-as-a-service. The frontend can be built in any modern framework (Next.js, React, Vue). Only the backend services — Firestore, Firebase Auth, and Cloud Functions — are Google-specific. The frontend code and business logic in Cloud Functions are standard JavaScript/TypeScript and move freely if the platform ever changes.
+With containers: point ArgoCD at the previous version. The site is restored in under a minute.
+
+With Firebase: redeploy the previous version of the server code (3–5 minutes). Then check whether any data written since the bad deploy is compatible with the restored code. If it is not — and with Firebase's database model, this can happen — you now have a data problem on top of a code problem. There is no equivalent of "restore the previous version."
+
+*Scenario 2 — Google changes Firebase pricing.*
+
+This has precedent. Google reduced Firebase's free tier limits in 2022. Earlier that year, Google Maps API pricing increased by over 1,000% for certain usage patterns, catching businesses that had no abstraction layer between themselves and Google's pricing. If Firebase pricing changes after KOM has 5,000 customer records in Firestore, the options are: absorb the new rate, or spend weeks migrating data out of a format that only Google uses.
+
+*Scenario 3 — The team needs a new developer.*
+
+Firebase requires specialised knowledge of its own database model, its own security rule language, and its own deployment triggers — skills that do not transfer from standard web development. Hiring is harder and onboarding takes longer. With a containerised Node.js or PHP application, any backend developer can read the code and get started.
+
+*Scenario 4 — Google discontinues Firebase.*
+
+Google has shut down over 270 products since 2006, including products with millions of active users: Google Reader, Google+, Stadia, Google Domains. Firebase has survived since 2014 because it generates enterprise revenue. But if it is discontinued, KOM's customer data is in a proprietary format, the auth records are in Google's systems, and the migration timeline is Google's to set — not KOM's.
+
+*Scenario 5 — A business report that was not anticipated.*
+
+Firebase's database cannot run certain types of queries. If the data was structured one way and the business later needs a report that requires a different structure — for example, "all jobs completed in the last 30 days across all customers" — the fix may require rewriting every record in the database. With a standard relational database (PostgreSQL or MySQL), the same need is handled by writing a different query.
+
+**Verdict: Not recommended.** The convenience is real in the short term. The constraints compound over time.
 
 ---
 
-### Option 3 — Self-Hosted Kubernetes (k3s + Laravel or Node.js)
+### Option 3 — Self-Hosted Kubernetes on Oracle Cloud (Free Tier)
 
-**What it is:** Rather than relying on a managed platform, this approach runs the entire application inside Docker containers orchestrated by k3s — a lightweight Kubernetes distribution — on Oracle Cloud's Always Free tier VMs. The application is built in Laravel (PHP) or Node.js, Cloudflare sits in front as CDN and cache, Stripe handles all subscription billing, and a full GitOps CI/CD pipeline (GitHub Actions → DockerHub → ArgoCD) automates deployments.
+**What it is and what role it plays:**
 
-**Why this architecture:** The case for this option is about infrastructure ownership. Managed platforms like Firebase abstract away the server — you trade control for convenience. Kubernetes trades that convenience back for complete transparency: you own the runtime, the networking, the deployment pipeline, and secrets management. Nothing is hidden inside a vendor's black box. This is the preferred pattern in larger engineering organisations precisely because the same skills and tooling transfer across every future project, and it has been validated in production on the same stack at no infrastructure cost.
+This is the starting point — the environment where the full stack gets built, tested, and demonstrated, at no cost. Oracle Cloud offers a permanent free tier with enough server capacity to run the entire KOM application. The technology is the same as Option 4 (containers, Kubernetes, the full deployment pipeline), but it runs on a single free server rather than a managed cloud environment.
 
-**Vendor trust:**
-- **Oracle Cloud** (NYSE: ORCL): enterprise-grade infrastructure, publicly traded. The Always Free tier provides up to 4 ARM cores and 24GB RAM at no cost — real production capacity, not a trial.
-- **Cloudflare** (NYSE: NET): sits in front of the self-hosted application as the CDN, cache, and DDoS mitigation layer. The origin server is never directly exposed to the internet — all traffic passes through Cloudflare's network first.
-- **Stripe**: the industry standard for subscription and recurring billing. Privately held, processes hundreds of billions per year — used by Amazon, Google, and most major SaaS companies.
-- **GitHub / DockerHub / Amazon SSM**: all widely adopted, enterprise-grade platforms with proven track records.
+The purpose of this phase is to have something working and demonstrable before committing to a paid cloud provider. Once Michael has seen the system in action, the conversation about long-term hosting becomes a business decision — cost, preference, support — rather than a technical unknown.
 
-**Security posture:**
-- Cloudflare sits in front of everything — the origin server is never directly exposed to the internet.
-- Secrets managed via Amazon SSM Parameters Store + External Secrets Operator (ESO) — secrets are never stored in code or environment files, injected directly into Kubernetes pods at runtime.
-- Kubernetes RBAC controls what each service can access internally.
-- Container isolation — each component runs in its own pod with defined resource limits.
-- Full control over security patches and dependency updates — nothing is managed for you by a platform without your knowledge.
+**How a visitor reaches the site:**
 
-**What it covers for KOM USA:**
+1. A client types `komusa.com` into their browser
+2. Cloudflare (the security checkpoint) receives the request, filters out any threats, and forwards it to the Oracle server
+3. Traefik (the reception desk, running on the server) reads the request and routes it to the correct container — the website, the client portal, or the API
+4. The container handles the request and sends the page back to the client
 
-| Requirement | Service | Notes |
+The client sees a website. Everything in between is invisible to them.
+
+**Vendors involved:**
+
+| Role | Vendor | Notes |
 |---|---|---|
-| Hosting / runtime | k3s on Oracle Cloud (free) | Self-managed containers on Always Free ARM VMs |
-| CDN / cache | Cloudflare (NYSE: NET) | Origin protected, global DDoS mitigation, publicly traded infrastructure company |
-| Asset / file storage | Cloudflare R2 | S3-compatible object storage, no egress fees |
-| Backend framework | Laravel (PHP) or Node.js | Laravel has mature packages for auth, subscriptions, REST APIs |
-| Authentication | Google Auth + Microsoft Auth via Laravel Socialite | OAuth2, covers residential (Google) and commercial clients (Microsoft 365) |
-| Subscription billing | Stripe via Laravel Cashier | Handles recurring billing, failed payments, invoices, trials out of the box |
-| Database | PostgreSQL or MySQL (containerised) | Relational, standard SQL, fully portable |
-| Secret storage | Amazon SSM Parameters Store (free tier) + ESO | Secrets injected into pods at deploy time, never in source code |
-| CI/CD pipeline | GitHub Actions → DockerHub → ArgoCD | GitOps: push to repo → image built and pushed → ArgoCD auto-deploys to cluster |
+| Server (hosting) | Oracle Cloud (NYSE: ORCL) | Always Free tier — 4 cores, 24GB RAM, no cost |
+| Security / CDN / DNS | Cloudflare (NYSE: NET) | All traffic passes through Cloudflare before reaching the server |
+| Routing | Traefik | Directs traffic to the correct container; handles HTTPS certificates automatically |
+| Application | Node.js or Laravel (PHP) | Standard, widely used backend frameworks |
+| Login | Google OAuth + Microsoft OAuth | Clients sign in with their existing Google or Microsoft account — no new password to remember |
+| Payments | Stripe | Handles recurring billing, trials, failed payment retries, invoices |
+| Database | PostgreSQL or MySQL | Standard relational database — the same type used across most of the web |
+| Deployment pipeline | GitHub Actions → DockerHub → ArgoCD | Code change → factory builds container → warehouse stores it → dock worker deploys it |
 
-**Trade-offs and limitations:**
+**Limitations at this tier:**
 
-*Advantages:*
-- **Zero infrastructure cost.** Oracle Cloud Always Free tier covers enough capacity for KOM's full stack. The only ongoing costs are Stripe's transaction fees (2.9% + $0.30 per charge — standard for any payment option) and optional Cloudflare paid features.
-- **No runtime vendor lock-in.** The application runs in standard Docker containers. If Oracle changes its free tier, the same containers move to any cloud provider or VPS in hours.
-- **Full transparency.** Every layer is visible, auditable, and controllable. No platform hiding what happens to customer data or requests.
-- **Enterprise-grade deployment pipeline.** GitOps via ArgoCD is the standard in larger engineering organisations — the skills and patterns learned here transfer directly to any future employer or client.
-- **Stripe + Laravel Cashier is best-in-class for subscriptions.** Handles proration, dunning (failed payment retries), trial periods, tier upgrades, and invoicing — all the edge cases that matter for a real membership business.
-- **Google + Microsoft auth** covers all client types: residential clients signing in with Google, commercial clients using Microsoft 365 accounts.
+This is a single server. If Oracle restarts that server for maintenance, the site goes offline briefly until it recovers. This is acceptable for a demo and early stage, not for a production system with a reliability commitment. That is what Option 4 addresses.
 
-*Disadvantages:*
-- **Highest operational complexity of any option.** This requires working knowledge of: Kubernetes, Docker, GitHub Actions, ArgoCD, External Secrets Operator, Amazon SSM, Cloudflare configuration, and either Laravel/PHP or a Node.js framework. Each is its own learning curve.
-- **Infrastructure maintenance is your responsibility.** Certificate renewals, node failures, pod crashes, dependency CVEs — there is no support tier to call. You own the fix at any hour.
-- **ARM architecture constraint.** Oracle's free tier runs on ARM (Ampere A1) processors. All Docker images must be built for ARM or multi-architecture. Some packages and base images behave differently on ARM than on standard x86 servers.
-- **Single-node availability risk.** A k3s cluster on a single free VM has no high availability. A VM restart or hardware failure takes the site offline until the cluster recovers. Multi-node HA requires additional VMs.
-- **Slowest path to first feature.** The entire infrastructure stack — k3s, ArgoCD, ESO, CI/CD pipeline, containerised database — must be built and validated before a single line of business logic ships. For a solo developer, this is weeks of infrastructure work before the portal or subscription club can be built.
-- **Laravel is PHP.** If the current developer's background is JavaScript/TypeScript, this adds a language and framework shift on top of the infrastructure complexity.
-
-**Who this is right for:** A developer or team with existing Kubernetes and DevOps experience building toward enterprise-scale, where infrastructure ownership and zero lock-in outweigh time-to-market. This is the architecture to grow into — not necessarily to start with.
+**Verdict: The right place to build and prove the stack.** Not the permanent home.
 
 ---
 
-## Head-to-Head on Michael's Priorities
+### Option 4 — Managed Kubernetes (AKS or EKS) — Production
 
-| Priority | Option 1 (Astro + Netlify) | Option 2 (Google / Firebase) | Option 3 (k3s + Laravel) |
-|---|---|---|---|
-| **Vendor trust / size** | Startup — legitimate concern | Google (Fortune 5) | Oracle (NYSE) + Cloudflare (NYSE) + Stripe (private, S-1 filed 2026) |
-| **Security baseline** | SOC 2, adequate for marketing | Enterprise-grade, HIPAA-eligible, App Check, Security Rules | Highest control — every layer owned; responsibility falls on the developer |
-| **Vendor consolidation** | Low — 4+ vendors | High — one Google relationship | Medium — several vendors, all well-established |
-| **Client portal (My Area)** | Possible but limited | Excellent (Firebase Auth + Security Rules) | Excellent (Laravel Socialite — Google + Microsoft OAuth) |
-| **AI maintenance triage** | Requires third-party vendor | Gemini native — no extra vendor | Any external API (OpenAI, Gemini, etc.) via standard HTTP |
-| **Long-term flexibility** | Low | Medium — data layer tied to Google | Highest — standard Docker containers, portable anywhere |
-| **Who to call when it breaks** | Netlify support (community-tier only on free plan) | Google Cloud paid support — Production tier ~$100/month for 1-hour critical response, 24/7 phone | No vendor to call — developer owns every fix at any hour |
-| **Data ownership** | KOM owns data; Netlify and Sanity act as processors | KOM owns data; Google acts as processor — DPA available, data stays in US region of your choice | KOM owns data; stored on your own Oracle VM — maximum ownership |
-| **Backup & disaster recovery** | Managed by Netlify / Sanity | Must be explicitly configured — not automatic; point-in-time recovery available for a fee | Developer must build and maintain backup system; no managed option |
-| **Cost to switch platforms** | Low — static site, limited data | 1–2 weeks at current scale (auth export + Firestore migration script) | Hours — Docker containers move to any cloud provider |
-| **Developer availability** | Moderate (Astro is niche) | Moderate (Firebase is specialised) | High (Laravel and Node.js widely known) — but DevOps/Kubernetes skills required on top |
-| **Path to full web app** | Significant rework required | Natural evolution within Firebase | Natural — Kubernetes scales horizontally without architecture changes |
-| **Infrastructure cost** | Netlify free tier | Firebase free tier | $0 (Oracle Always Free) |
-| **Time to first feature** | Fast — already partially built | Medium | Slow — full infrastructure stack must be built before any business logic ships |
-| **Current team familiarity** | High (existing codebase) | Low | Low — requires Kubernetes, Docker, ArgoCD, PHP/Laravel or Node.js |
+**What it is:**
+
+The same application. The same containers. The same deployment pipeline. The difference is where the Kubernetes yard runs: instead of a single self-managed Oracle server, it runs on a professionally managed cluster operated by Microsoft (Azure Kubernetes Service — AKS) or Amazon (Elastic Kubernetes Service — EKS).
+
+The cloud provider takes responsibility for the infrastructure: server health, software updates, availability across multiple physical locations. The development team manages the application. Neither party manages the other's domain.
+
+**What changes moving from Option 3 to Option 4:**
+
+Nothing in the application code changes. The containers are identical. The deployment pipeline is identical. The only change is the address the pipeline points at — one configuration field updated to the new cluster. This is the portability argument made concrete: the work done in Option 3 transfers entirely to Option 4.
+
+**Why Azure or AWS, and not Google (GKE):**
+
+All three providers offer managed Kubernetes and are technically equivalent for KOM's needs. The distinction is adoption: Azure and AWS account for the majority of enterprise Kubernetes deployments. The developer community, tooling ecosystem, and available talent pool are larger around both. GCP (Google Cloud) is a valid option — it is included in the pricing comparison below — but it is less commonly adopted outside organisations already running on Google infrastructure.
+
+**Database at this tier:**
+
+At the production stage, the database should be managed by the cloud provider rather than run as a container. A managed database (Amazon RDS or Azure Database for PostgreSQL) includes automated daily backups, point-in-time recovery, and automatic failover. The cost is predictable and the reliability is handled. A self-managed database inside a container is cheaper but requires the development team to maintain backups, patches, and recovery procedures.
+
+| Database option | Monthly cost | Who manages backups and failover |
+|---|---|---|
+| Container (self-managed) | ~$0 additional | Developer |
+| Amazon RDS for PostgreSQL | ~$25–50 | Amazon — automated |
+| Azure Database for PostgreSQL | ~$25–50 | Microsoft — automated |
+
+For a system holding real client data, the managed option is the right choice.
 
 ---
 
-## Cost at Scale
+## Cloud Provider Comparison
 
-*Pricing sourced directly from [Firebase pricing](https://firebase.google.com/pricing) and [Oracle Cloud Always Free tier](https://www.oracle.com/cloud/free/) as of July 2026.*
+Once the stack is proven on Oracle and Michael has seen it working, the only remaining decision is which cloud provider hosts it long-term. All three run the same Kubernetes technology and support the same containers — the differentiators are price, support preference, and ecosystem familiarity.
 
-### Assumptions
+*Estimates for a small production cluster: 2-node setup, managed Kubernetes, managed PostgreSQL. Sourced from provider pricing calculators, July 2026. Exact costs depend on usage — these are representative starting points.*
 
-- **10% monthly active rate** — residential service clients check the portal after a job, not daily
-- **2 sessions/month** per active user; each session triggers ~12 DB reads (auth check + profile + 10 job history records)
-- **Maintenance requests** — 10% of active users submit one per month; each triggers 2 DB writes and 1 AI triage call (~300 input / ~100 output tokens)
-- Marketing site pages are CDN-cached — no per-request DB cost
-
-### Monthly usage at each scale
-
-| | 500 clients (now) | 5,000 clients | 50,000 clients |
+| | AWS (EKS) | Azure (AKS) | GCP (GKE) |
 |---|---|---|---|
-| Active users/month | 50 | 500 | 5,000 |
-| Portal sessions | 100 | 1,000 | 10,000 |
-| DB reads | 1,200 | 12,000 | 120,000 |
-| DB writes | 10 | 100 | 1,000 |
-| Function invocations | 105 | 1,050 | 10,500 |
-| AI triage calls | 5 | 50 | 500 |
+| **Kubernetes management fee** | ~$73/mo | Free | Free |
+| **Servers (2× small nodes)** | ~$30–60/mo | ~$30–60/mo | ~$25–50/mo |
+| **Managed PostgreSQL (small)** | ~$25–50/mo | ~$25–50/mo | ~$20–45/mo |
+| **Estimated monthly total** | **~$130–180/mo** | **~$55–110/mo** | **~$45–95/mo** |
+| **Enterprise market share** | Largest (~32%) | Second (~22%) | Third (~12%) |
+| **Basic paid support** | ~$29/mo | ~$29/mo | ~$29/mo |
 
-### Option 2 — Firebase (Blaze pay-as-you-go)
+**Key notes:**
+- AWS costs more at this scale because it charges a management fee for Kubernetes; Azure and GCP do not
+- Azure and GCP are more cost-competitive for a deployment of KOM's size
+- All three providers use the same containers and deployment tooling — moving between them costs roughly one day of reconfiguration
+- This decision can wait until after the demo. It is a business and cost preference, not a technical one
 
-Firebase's free tier resets daily: **50K Firestore reads/day** (≈1.5M/month), **20K writes/day** (≈600K/month), **2M Cloud Function invocations/month**, **50K Firebase Auth MAUs**.
+---
 
-At every scale above, usage falls entirely within those free tiers.
+## Head-to-Head Comparison
 
-| | 500 clients | 5,000 clients | 50,000 clients |
-|---|---|---|---|
-| Firestore reads | $0 (1,200 of 1.5M free) | $0 (12K of 1.5M free) | $0 (120K of 1.5M free) |
-| Firestore writes | $0 | $0 | $0 |
-| Cloud Functions | $0 | $0 | $0 |
-| Firebase Auth | $0 (under 50K MAU) | $0 | $0 |
-| Gemini 2.5 Flash AI | $0.002 | $0.02 | $0.17 |
-| **Monthly total** | **~$0** | **~$0** | **~$0.17** |
-
-**The billing risk:** Firebase has no hard spending cap by default. The per-read cost ($0.06 per 100K) sounds trivial, but a single misconfigured real-time listener, an inefficient query that reads every document instead of filtering server-side, or a security misconfiguration that allows scraping can silently generate millions of billable reads. This is well-documented and has caught many teams off guard. Google Cloud budget alerts can notify when thresholds are hit, and a Cloud Function can be configured to disable billing automatically at a hard ceiling — though disabling billing suspends the entire project, so it is a last-resort safeguard rather than a routine control. Firebase App Check significantly reduces the scraping risk by blocking unauthorized clients from reaching the backend at all.
-
-### Option 3 — k3s on Oracle Cloud
-
-Oracle Cloud Always Free tier includes 4 ARM cores and 24GB RAM — enough to run the full application stack. No base infrastructure cost.
-
-| | 500 clients | 5,000 clients | 50,000 clients |
-|---|---|---|---|
-| Oracle Cloud (k3s host) | $0 | $0 | $0 (may need paid tier at this scale) |
-| Cloudflare CDN + R2 | $0 (free tier) | $0 | ~$5 |
-| Amazon SSM (secrets) | $0 (free tier) | $0 | $0 |
-| DockerHub | $0 (free tier) | $0 | $0 |
-| Stripe transaction fees | 2.9% + $0.30/charge | 2.9% + $0.30/charge | 2.9% + $0.30/charge |
-| **Monthly total** | **~$0** | **~$0** | **~$5** |
-
-Stripe's transaction fees apply to any payment option regardless of architecture — they are not an infrastructure cost.
-
-### Bottom line
-
-**Infrastructure cost is not a meaningful differentiator at KOM's scale.** Firebase runs free; Option 3 runs at $0. Neither is a budget concern.
-
-The real cost question is **developer time** — a platform that delays the first feature by weeks costs far more than any infrastructure bill. The meaningful financial risk with Firebase is unpredictable billing spikes from inefficient queries; Firebase App Check and budget alerts mitigate this. Option 3 has zero infrastructure cost but the highest setup investment before anything ships.
+| | Option 1 (Current Stack) | Option 2 (Firebase) | Option 3 (Oracle Free) | Option 4 (AKS, EKS, or GKE) |
+|---|---|---|---|---|
+| **Vendor size** | Startup | Google (Fortune 5) | Oracle (NYSE) | Microsoft or Amazon (NYSE) |
+| **Security** | SOC 2, adequate for marketing | Enterprise-grade | Cloudflare in front; developer manages everything behind it | Cloud provider manages infrastructure security |
+| **Portability** | Low | Very low — tied to Google's formats | High — containers move to any provider | High — same containers, one day to switch providers |
+| **Rollback a bad deployment** | Full redeploy | Full redeploy, with data compatibility risk | Restore previous container version — under a minute | Restore previous container version — under a minute |
+| **Client portal** | Possible but limited | Excellent | Excellent | Excellent |
+| **AI triage** | Third-party vendor required | Google Gemini — native | Any AI service via standard connection | Any AI service via standard connection |
+| **Availability** | Managed by Netlify | Managed by Google | Single server — no redundancy | Managed redundancy across multiple servers |
+| **Support when something breaks** | Netlify community forums | Google Cloud paid support | Developer handles everything | Cloud provider paid support available |
+| **Cost to switch providers** | Low — static site | Weeks of developer time | Hours | Hours |
+| **Monthly infrastructure cost** | Free | Free | $0 | ~$55–180/mo depending on provider |
+| **Time before first feature ships** | Fast — partially built | Medium | Slower — infrastructure built first | After Option 3 demo |
 
 ---
 
 ## Architectural Considerations
 
-### Incident Response and Support
+### Two Business Branches — Data Architecture
 
-**Option 2 (Firebase):** Google Cloud support is tiered and paid. The free tier provides documentation and community forums only — no response SLA. The Production support tier ($100/month or 3% of monthly bill, whichever is higher) includes 1-hour response time for critical issues and 24/7 phone support. For a business-critical system, budget for this from day one. The infrastructure itself is managed and monitored by Google — most failures are Google's responsibility to fix, not KOM's.
+KOM USA operates two distinct lines of business, and the data architecture must treat them separately from the start.
 
-**Option 3 (k3s):** No vendor support tier exists. When something breaks, the developer owns the diagnosis and fix at any hour. There is no support contract to escalate to. This is the principal operational risk of Option 3.
+**Services branch** (maintenance work — chimney care, lock changes, HVAC, and related): This side is managed through HCP. HCP holds all job history, scheduling, and technician records for services. The new platform does not replicate or store this data — when a client views their job history in the portal, it is fetched live from the HCP system. The new platform stores only the client's login credentials and membership status.
 
----
+**Construction materials branch** (separate business line): HCP does not cover this side. The construction materials branch has its own requirements — inventory, orders, project records, quotes — that are entirely separate from the services workflow. This branch needs its own data design, independent from the HCP integration. The scope of this side needs to be defined before the database is built.
 
-### Data Architecture and the HCP Relationship
-
-A key architectural advantage that simplifies both options: **HCP remains the source of truth for all job history data.** The new platform does not need to import or migrate historical job records. Firebase (Option 2) or the k3s database (Option 3) stores only two things: client identity (auth) and membership status. Job history is fetched from the HCP API at request time.
-
-This means:
-- No bulk data migration from HCP when the portal launches
-- Clients create new accounts on the new platform; their job history appears automatically via the HCP API
-- If KOM ever leaves HCP, the job history layer is replaced by swapping one API integration — the rest of the platform is unaffected
-
-The only data that lives permanently in the new platform is auth credentials and subscription records.
-
----
+In practice, a client may have one login that gives them access to both — their service history on one side, their materials orders on the other. But the data behind each comes from a different source and must be designed separately.
 
 ### Data Residency and Compliance
 
-**Where customer data is stored:** Both options store data in the United States by default. Firebase/Google Cloud allows explicit region selection (e.g., `us-central1`). The k3s option stores data on Oracle Cloud's US-based ARM VMs.
+Options 3 and 4 store data in the United States by default. AWS, Azure, and GCP all support explicit US region selection. Oracle Cloud's Always Free servers are US-based. Option 1 (Netlify/Sanity) also stores data in the US, but Sanity's CDN distributes content globally by default.
 
-**Compliance obligations:** KOM collects client names, addresses, and service history. A privacy policy update is required regardless of which platform is chosen — this is a legal requirement, not a technical one. For Michigan-based residential clients, CCPA applies to California residents in the client base. Google Cloud provides a Data Processing Agreement (DPA) for Firebase projects on the Blaze plan. Oracle Cloud provides equivalent agreements for enterprise use.
-
-**Who owns the data:** In all options, KOM owns its customer data. Google and Oracle act as data processors, not owners. This should be confirmed in the signed DPA before going live.
-
----
+KOM collects client names, addresses, and service history. A privacy policy update is required regardless of which platform is chosen — this is a legal requirement, not a technical one. The chosen cloud provider's Data Processing Agreement should be signed before any client data is written.
 
 ### Backup and Disaster Recovery
 
-**Option 2 (Firebase):** Firestore does NOT automatically back up data by default. Daily exports to Google Cloud Storage must be explicitly configured — this is a setup task that should happen before any client data is written. Google also offers point-in-time recovery (PITR), which allows restoring Firestore to any second within the past seven days. PITR costs extra but is strongly recommended for a production client portal. Without either of these configured, an accidental deletion is permanent.
+**Option 3 (Oracle free tier):** Database backups are the developer's responsibility. Automated jobs must be configured to export the database on a schedule and store copies off the server. This must be in place and tested before the system goes live.
 
-**Option 3 (k3s):** Database backups (PostgreSQL or MySQL) are entirely the developer's responsibility. Automated backup jobs must be written and scheduled, restore procedures must be tested, and backup files must be stored off-node (Cloudflare R2 or Oracle Object Storage). This is additional infrastructure work that must be completed before going live. The upside: full control over backup frequency, retention, and restore speed.
-
----
-
-### Cost of Leaving Option 2
-
-If KOM chose Option 2 and later needed to migrate off Google, the realistic scope at KOM's scale:
-
-- **Auth migration:** Firebase provides a bulk export of user records in JSON format with hashed passwords. Importing into a new auth provider (Auth0, Clerk, etc.) is a documented process. Some users may need to reset passwords depending on the target system. At 500–5,000 clients, this is a day or two of developer work.
-- **Database migration:** Firestore exports to Google Cloud Storage in JSON format. Transforming that into a relational schema for a SQL database requires a migration script. At KOM's data volume, this is days, not months.
-- **Code changes:** Cloud Functions are standard Node.js/TypeScript — they move to any serverless platform with minimal changes. The frontend is standard JavaScript — no changes needed.
-- **Total realistic estimate at KOM's current scale:** 1–2 weeks of developer time. The lock-in concern is real but not catastrophic at this size. It becomes more significant as the Firestore data model grows in complexity over years.
+**Option 4 (managed database — RDS or Azure DB):** Automated daily backups and point-in-time recovery are included by default. No manual configuration required beyond enabling the feature.
 
 ---
 
 ## Recommendation
 
-### In plain terms
+### The architecture direction
 
-Think of this as a build vs. buy decision.
+The recommendation is containers and Kubernetes. The portability case is straightforward: the same code moves between providers in hours, every deployment and rollback is a version number change, and the tooling used is the same standard that most mid-size and enterprise companies already run on.
 
-**Option 2 (Google)** is buying a fully managed service. Google handles the infrastructure, the security updates, the scaling, and the monitoring. You pay Google — indirectly through their pricing — for that convenience. The platform works out of the box and gets KOM to market faster. The trade-off is that KOM is a tenant in Google's ecosystem. If Google raises Firebase prices, changes its terms, or discontinues a service, KOM adapts to Google's decision or rebuilds. That is not a reason to avoid Option 2 — Google has strong incentives to keep Firebase running — but it is the nature of the relationship.
+Firebase's convenience is real but comes at a cost that grows over time — proprietary data formats, no clean rollback model, and specialised knowledge requirements that narrow the future developer pool.
 
-**Option 3 (self-hosted)** is building and owning the infrastructure. KOM's application runs on KOM's servers (via Oracle Cloud). Nobody can raise the price. Nobody can change the terms. The platform doesn't disappear because a vendor made a business decision. The trade-off is that ownership comes with responsibility — the developer maintains the infrastructure, handles failures, and builds features that Option 2 provides out of the box. This takes longer to set up and requires more technical expertise to operate.
+### The two-phase approach
 
-**For a business owner, the question is not which option is more technically elegant. It is: how much do you value independence from a vendor versus speed to market?** Option 2 gets something in front of clients sooner. Option 3 means KOM owns its platform permanently, with no single company able to disrupt it.
+**Phase 1 — Build and demonstrate on Oracle (starting now)**
 
----
+The full application stack — client portal, login, database, billing, deployment pipeline — gets built and validated on Oracle's free tier. The goal is a working, demonstrable system that Michael can see before any money is spent on cloud infrastructure.
 
-### Technical summary
+This phase proves the technology, establishes the development workflow, and gives Michael something concrete to respond to.
 
-**Option 1 does not meet the bar.** Even with WooCommerce added for subscriptions, it remains multiple vendors stitched together (Astro, Netlify, Sanity, WooCommerce/WordPress, a third-party AI service). It made sense as a starting point, not as a long-term platform.
+**Phase 2 — Michael chooses the long-term cloud home**
 
-**Option 2 (Google / Firebase) is the strongest choice for where KOM is right now.** It satisfies both of Michael's stated principles: Google is Fortune 5, and one vendor covers hosting, auth, database, functions, and AI under a single relationship. Michael — the owner and final decision-maker — has expressed a preference for it. Firebase Security Rules and App Check add security layers that the other options don't provide without additional tooling. The trade-off is data layer lock-in: Firestore and Firebase Auth are not easily portable if KOM ever leaves Google. The frontend and business logic code, however, remain in standard JavaScript and move freely.
+Once the demo is done, the cloud provider decision is a business choice: which company do you want hosting KOM's data, and what does it cost? The cloud comparison table above has the numbers. The application itself does not change — only the address it runs on.
 
-**Option 3 (k3s + Laravel) is the right architecture to grow into, not to start with.** It offers the most infrastructure ownership, zero platform lock-in, and the cheapest runtime cost. The trade-off is weeks of DevOps setup before the first feature ships — and ongoing responsibility for every layer of the stack. For a team with existing Kubernetes experience this is the natural home. For a team building toward that expertise, Option 2 ships faster and grows the business while the skills develop.
-
-**The core question:** How much time can the team invest in infrastructure before the first feature needs to ship? Option 2 minimises that time and satisfies Michael's priorities today. Option 3 is the longer-term play.
+Industry experience favours AWS or Azure for long-term production use. GCP is technically equivalent and is included in the comparison. The final decision belongs to Michael.
 
 ---
 
-*Related document: `my-area-plan.md` (portal scope and HCP findings)*
+## Common Questions
+
+**Why can't we just put Firebase inside a container?**
+
+A container holds the application — the code we write. Firebase is a service that application calls, like a phone call to a third party. You can containerise the phone; you cannot containerise the person on the other end. When the application sends data to Firebase's database or asks Firebase to authenticate a user, that data goes into Google's systems, in Google's format. The container wrapping our code does not change that. The lock-in is in where the data lives and what format it is stored in — not in how the application is packaged.
+
+---
+
+**Can't we just export our data from Firebase later if we ever need to leave?**
+
+Firebase does allow data exports — but what comes out is in Firestore's own format, not a standard database format. Think of it like a filing cabinet where all the folders are labelled in a language only that cabinet manufacturer uses. You can take the files out, but before they work anywhere else, someone has to go through them and relabel everything. At KOM's current scale that is manageable — days to weeks of developer work. At a larger scale with years of customer history, it becomes a significant project. The point is not that leaving is impossible; it is that the cost and timeline of leaving is Google's to define, not ours.
+
+---
+
+**What if we start with Firebase now and switch to containers once we grow?**
+
+The challenge is that switching means rebuilding, not migrating. Firebase's database structure, its authentication system, and its server functions are all designed around Firebase's model. A containerised application uses a different database type, a different auth approach, and a different deployment system. They are not the same thing in different packaging — they are fundamentally different architectures. Moving from one to the other after the fact means rebuilding the application from scratch while it is already serving real customers. Starting with containers now avoids that entirely.
+
+---
+
+**Doesn't Google Cloud run containers too? Can we use Google but avoid the Firebase lock-in?**
+
+Yes — and this is an important distinction worth making. Google Cloud offers a managed Kubernetes service called GKE (Google Kubernetes Engine). Running containers on GKE is completely different from using Firebase. With GKE, the application code and data are portable — the same containers that run on Google Cloud today can move to AWS or Azure tomorrow. The lock-in risk in Firebase comes specifically from Firebase's proprietary database, auth system, and deployment model — not from using Google's servers. GKE is included in the cloud provider comparison table as a valid option for production hosting. If Michael's preference is to keep money with Google, GKE with a managed database is a reasonable choice that does not carry Firebase's constraints.
+
+---
+
+**We already use Google for email, Drive, and everything else. Doesn't it make sense to keep it all in one place?**
+
+Google Workspace — Gmail, Drive, Meet, Docs — has no connection to Firebase or Google Cloud. They are entirely separate products that happen to share a brand. Choosing Kubernetes over Firebase does not affect Google Workspace at all. The team keeps using Gmail and Drive exactly as they do today. The decision here is only about where the website application and customer data are hosted — and that is a separate question from which tools the business uses day to day.
+
+---
+
+**What if we use Firebase for the simpler parts and containers for the more complex parts?**
+
+Mixing the two creates a system that is harder to manage than either one alone. The application would have two different databases that need to stay in sync, two different deployment systems, and two different sets of rules for how data is secured. When something breaks, it is harder to diagnose because the problem could be in either half. The cost savings of using Firebase for "the easy parts" disappear quickly when you account for the extra complexity of keeping both halves working together. The cleaner path is one consistent approach throughout.
+
+---
+
+**I've never heard of Oracle for web hosting. Is it actually reliable?**
+
+Oracle is one of the largest enterprise technology companies in the world — publicly traded on the New York Stock Exchange, with over $50 billion in annual revenue. They are best known for database software used by banks, governments, and major corporations, not consumer web hosting. The Always Free tier is a real infrastructure product, not a trial or promotional offer — it has been running since 2019 with the same terms.
+
+The important context here is that Option 3 is not the permanent home. It is where the application gets built and proven at no cost. The servers running the demo are Oracle's; the containers running on those servers belong entirely to KOM and move anywhere. When the system transitions to production under Option 4, Oracle is no longer in the picture.
+
+---
+
+**Why go through Oracle at all if we're just going to move to AWS or Azure?**
+
+Two reasons. First, it costs nothing — building on Oracle's free tier means the full application can be developed, tested, and demonstrated before a single dollar is committed to a cloud provider. Second, it proves the portability argument in practice: when the same containers move from Oracle to AWS or Azure and everything keeps working, it demonstrates that the architecture is not tied to any one vendor. The Oracle phase is not wasted work — it is the entire application, already built, ready to be pointed at a new address.
+
+---
+
+**What if Amazon or Microsoft raises their prices the same way Google did?**
+
+This is the right question to ask, and the answer is in the architecture. With Firebase, a price increase means absorbing the new rate or rebuilding — because the data, auth, and deployment system are all Google-specific. With containers on AWS or Azure, a price increase means pointing the same containers at a different provider. The migration is a configuration change, not a rebuild. The leverage stays with KOM because nothing in the application is tied to Amazon's or Microsoft's proprietary formats. That is the entire point of the container approach.
+
+---
+
+**We're dealing with a lot of different companies here — Oracle, Cloudflare, Stripe, DockerHub. Isn't that the fragmentation you warned about?**
+
+The warning against fragmentation was specifically about stitching together multiple vendors to cover functionality that should be handled by one — for example, adding WordPress for billing and a separate AI vendor on top of an already-fragmented current stack. The vendors in Options 3 and 4 serve distinct, non-overlapping roles: Cloudflare handles security and traffic, the cloud provider runs the servers, Stripe handles payments, DockerHub stores container images. None of them are substitutes for each other, and none of them create lock-in — every one can be swapped without touching the application code. The distinction is between vendors that own your data and vendors that provide a commodity service. Here, KOM owns all the data. The vendors are utilities, not landlords.
+
+---
+
+**Google is a large, trusted company. Why not build on Firebase?**
+
+Google the company is absolutely trustworthy. The concern is specific to Firebase as a product. Google has a pattern of building excellent tools for developers and later discontinuing them when they no longer fit the business strategy — Google Reader, Google+, Stadia, Google Domains, and many others. Firebase has survived since 2014 because it generates enterprise revenue, which is a good sign. But the deeper issue is not discontinuation — it is that with Firebase, Google sets the rules: pricing, terms, and feature changes all happen on Google's timeline, not KOM's. With a containerised setup on any of the major cloud providers, KOM is never in a position where a vendor's internal decision forces a rebuild.
+
+---
+
+**Firebase puts everything under one roof. Isn't that simpler?**
+
+It is simpler at the start — that is a genuine advantage worth acknowledging. The trade-off is that "everything under one roof" means everything is tied to that roof. A useful comparison: Firebase is like a fully serviced office where the building owner handles maintenance, utilities, and security. Convenient on move-in day. But the building owner also sets the lease terms, controls access, and can change both. The approach recommended here is closer to owning the building. More to set up initially, but no landlord.
+
+The simplicity gap narrows significantly once the Kubernetes infrastructure is established. At that point, the operational overhead is comparable — and the flexibility is substantially greater.
+
+---
+
+**Can Gemini (Google's AI) still be used if we go with Kubernetes?**
+
+Yes. Gemini is available as a standard web API — the application sends it a request and receives a response, exactly like any other connected service. This has nothing to do with whether the application runs on Firebase or Kubernetes. KOM can use Google's AI for the maintenance triage feature without building on Google's infrastructure platform. The two are entirely independent.
+
+---
+
+**If Firebase turns out to be the preferred direction, what would that look like?**
+
+Firebase is a viable path, and if it is the chosen direction, the implementation would focus on minimising the constraints identified above:
+
+- Write server code in standard Node.js, avoiding Firebase-specific patterns where a standard approach works equally well — this keeps more of the codebase portable if the platform ever changes
+- Design the database structure carefully before any code is written — in Firebase's database model, structural mistakes require migrating the data to fix, whereas in a standard relational database they require only a different query
+- Configure automated database exports from day one, before any client data is written — without this, an accidental deletion cannot be recovered
+- Set budget alerts from day one — Firebase has no hard spending cap, and a misconfigured query can generate unexpected charges
+
+The recommendation in this document favours Kubernetes for the reasons outlined. Either path can be executed well, and the final decision belongs to Michael.
+
+---
+
+*Related document: `docs/superpowers/specs/2026-07-13-customer-accounts-design.md` (portal scope and HCP findings)*
