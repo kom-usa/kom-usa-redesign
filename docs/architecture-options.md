@@ -301,55 +301,57 @@ For ongoing application support, Google Cloud offers paid support tiers starting
 
 ---
 
-**Why Google OAuth, and when would Microsoft OAuth be added?**
+**Do my existing clients need to create a new account, or can they use their Google account?**
 
-Google OAuth is the right choice for KOM's client base. The distinction comes down to who the client is.
-
-Residential clients (homeowners calling about chimney care, lock changes, HVAC) use personal email. The majority are on Gmail or have a Google account tied to their phone. Google sign-in for them is one click — they are already logged into Google on their device.
-
-Commercial clients — contractors, property managers, office buildings, businesses — often run on Microsoft 365. Their company email is `@theircompany.com` managed through Outlook, and their IT departments typically want employees signing into external systems with their work account, not a personal Google account.
-
-Microsoft OAuth becomes relevant when the commercial side of the business grows — specifically the construction materials branch, which is more likely to serve contractors and property managers than individual homeowners. It is not a day-one requirement. Adding it later is straightforward: it follows the same pattern in the same container, and results in a second login option on the page alongside Google. Build it when there is a concrete commercial client segment that needs it.
+They use their existing Google account — one click, no new password. Google OAuth means the client clicks "Sign in with Google," approves the connection, and they are in. For a customer who has been with KOM for 10 years, the experience is no different from signing into any other app with Google. No registration form, no new credentials to remember.
 
 ---
 
-**Firebase was discussed earlier — how is using Google Cloud different?**
+**Can Google see my customer data?**
 
-Firebase and Google Cloud are two products from the same company that share almost nothing in common. Firebase is a bundled toolkit with its own proprietary database, its own authentication system, and its own deployment model — all tightly coupled to Google's platform. Google Cloud is raw infrastructure: servers, networking, and managed services that you use on your own terms with your own stack. GKE is just Google's version of Kubernetes — it runs the same standard containers as AWS or Azure. Cloud SQL is just Google's managed PostgreSQL — the same standard database format. None of the Firebase constraints apply here.
+No. Google operates the servers the data lives on, but their engineers do not have routine access to the contents of your database. It is the same relationship as any hosting provider — they run the infrastructure, not the application. A Data Processing Agreement signed before launch formalises this: Google processes your data on KOM's behalf, under KOM's terms. The data itself is in standard PostgreSQL — exportable in full at any time.
 
 ---
 
-**If we go with Google Cloud now, are we locked in the same way?**
+**How does the membership club work on the backend?**
 
-No. The lock-in concern with Firebase came from its proprietary database format and non-container deployment model. With GKE and Cloud SQL, the data is standard PostgreSQL — exportable as plain SQL files — and the application runs in standard containers. If Google Cloud's pricing or terms ever become unfavorable, the same containers and the same database schema move to AWS or Azure. That migration takes roughly one day, not weeks. The architecture is designed so that the cloud provider is interchangeable from day one.
+A client signs up through the portal, chooses a tier, and pays via Stripe. Stripe handles the recurring charge every month. On a successful payment, Stripe notifies the application, which updates the client's membership status in Cloud SQL. When the client logs in, the portal reads that status and unlocks the features or pricing that belong to their tier. Cancellations, failed payments, and upgrades are all handled by Stripe automatically — the application just reflects whatever Stripe reports. No manual processing required.
 
 ---
 
 **Why Google Cloud over AWS or Azure?**
 
-At KOM's scale, Google Cloud is the most cost-competitive of the three — no per-cluster Kubernetes management fee and slightly lower compute costs. If there is already a preference for working within the Google ecosystem, it also means a single vendor relationship covering the AI feature (Gemini), the infrastructure (GKE), and the database (Cloud SQL). AWS and Azure are equally valid technically — the difference is price, support preference, and business relationship. All three are covered in the comparison table above.
+At KOM's scale, Google Cloud is the most cost-competitive of the three — no per-cluster Kubernetes management fee and the lowest compute costs. It also means one vendor relationship covers the infrastructure (GKE), the database (Cloud SQL), and the AI triage (Gemini). AWS and Azure are equally valid — the containers run identically on all three. The comparison table above has the numbers.
+
+---
+
+**What if Google raises prices down the line?**
+
+The containers on GKE are standard Docker containers. If Google's pricing becomes unfavorable, the same containers move to AWS or Azure — a configuration change, not a rebuild. The database exports as a standard SQL file and restores anywhere. The cloud provider is interchangeable by design.
 
 ---
 
 **Why Oracle first if we're going to Google Cloud anyway?**
 
-Oracle's free tier lets the entire application get built, tested, and demonstrated before committing to a paid cloud provider. The containers built on Oracle are identical to the ones that run on Google Cloud — nothing is rebuilt or rewritten when the move happens. It is a free proving ground, not a detour.
+Oracle's free tier lets the full application get built and demonstrated before any money goes to Google. The containers built on Oracle are identical to the ones that run on Google Cloud — nothing is rewritten when the move happens. It is a free proving ground, not a detour.
 
-**Is Oracle reliable enough for this?**
+---
 
-Oracle is one of the largest enterprise technology companies in the world — over $50 billion in annual revenue, publicly traded. Their cloud infrastructure is used by large enterprises globally. The free tier has been running with the same terms since 2019. That said, Phase 1 runs on a single server with no redundancy — appropriate for building and demonstrating, not for a production commitment. That is exactly why Phase 2 moves to Google Cloud.
+**Is Oracle reliable enough for the demo phase?**
 
-**What if Google raises prices down the line?**
+Oracle is one of the largest enterprise technology companies in the world — publicly traded, over $50 billion in annual revenue. Phase 1 runs on a single server with no redundancy, which is appropriate for building and demonstrating. Production reliability is Google's responsibility in Phase 2.
 
-The containers running on GKE are standard Docker containers. If Google's pricing ever becomes unfavorable, the same containers move to AWS or Azure — the migration is a configuration change, not a rebuild. This is the fundamental difference from Firebase: with Firebase, a price change forces a rebuild because the data and architecture are Google-specific. With GKE and Cloud SQL, the data exports as standard SQL and the containers run anywhere.
+---
 
-**We already use Gmail and Drive — does this connect to those?**
+**Why Google OAuth, and when would Microsoft OAuth be added?**
 
-Google Workspace (Gmail, Drive, Meet, Docs) and Google Cloud (GKE, Cloud SQL) share a brand but are separate products. The team continues using Workspace exactly as today. The only connection is that clients can sign in to the portal with their existing Google account — which works with or without any particular cloud provider.
+Residential clients are already on Google — it is one click for them. Microsoft OAuth becomes relevant when commercial clients using Microsoft 365 company accounts need access, primarily through the construction materials branch. It is not a day-one need and is straightforward to add later.
 
-**Can we still use Google's AI (Gemini) for the maintenance triage feature?**
+---
 
-Yes. Gemini is a standard web API — the application sends it a request and receives a response over HTTPS, like any other connected service. It is independent of which cloud provider the application runs on. Using Gemini does not require Firebase or any specific Google Cloud product.
+**Where does Google AI Studio fit into this?**
+
+AI Studio is Google's browser-based tool for designing and testing Gemini prompts — it is the workbench, not the production system. The developer uses AI Studio to write and refine the instructions that tell Gemini how to handle a maintenance request: what questions to ask, how to categorise urgency, how to phrase the response to the client. Once those instructions are right, they get written into the application code inside the Node.js container. In production, the container calls the Gemini API directly — AI Studio is not involved at runtime. The same Google account covers AI Studio, the Gemini API, GKE, and Cloud SQL, so there is no separate login or billing relationship to manage.
 
 ---
 
