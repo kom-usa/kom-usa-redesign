@@ -268,6 +268,39 @@ A client may have one login giving access to both branches — service history o
 
 ## Common Questions
 
+**If we're going to Google Cloud in the end, why start on Oracle at all?**
+
+The Oracle phase has nothing to do with saving money. It is about not paying for a production environment while the application is still being built. You do not move into a new office before the furniture is ready. Oracle's free tier lets the entire system — the client portal, login, payments, database, deployment pipeline — get built and validated before a dollar goes to Google. When the move to Google happens, the containers are already built, already tested, and already working. It is not a detour. It is just not paying for production infrastructure during development.
+
+---
+
+**What exactly am I paying Google for — is it a subscription, servers, what?**
+
+Google Cloud bills like a utility — you pay for what you use, monthly, with no upfront cost and no long-term contract. Two main costs:
+
+- The server cluster (GKE): the machines running the application containers — approximately $25–50/month for a small two-node setup
+- The database (Cloud SQL): Google's managed PostgreSQL — approximately $20–45/month
+
+Total infrastructure cost: roughly $45–95/month, starting when the system moves to Google Cloud after the Oracle demo. Stripe's transaction fees (2.9% + $0.30 per charge) are separate and apply regardless of which cloud provider is used.
+
+---
+
+**You said I own my data — but it's on Google's servers. What does that actually mean?**
+
+It means the data is in a standard format that you control and can access at any time. Cloud SQL is standard PostgreSQL — a common database format used across most of the web. If you wanted every customer record exported tomorrow, one command produces a file you can open, move, or import into any other system. Google hosts the database; they do not own what is in it. Before any client data is written, a Data Processing Agreement is signed with Google that formalises this — they process your data on your behalf, under your terms.
+
+---
+
+**What happens if something breaks at 2am and the developer is not available?**
+
+Two separate scenarios. If a server goes down — Google brings it back up. That is what managed infrastructure means. Google is responsible for the health of the machines running the application; most infrastructure failures are theirs to fix, not ours.
+
+If there is a bug in the application code, the container rollback model means the previous working version is restored in under a minute by anyone with access to the deployment tool — it does not require the original developer to be present or even available. The system is designed so that recovering from a bad deployment is a one-person, one-minute operation.
+
+For ongoing application support, Google Cloud offers paid support tiers starting at approximately $29/month that include guaranteed response times. For a production system holding real client data, budgeting for that from day one is the right call.
+
+---
+
 **Why Google OAuth, and when would Microsoft OAuth be added?**
 
 Google OAuth is the right choice for KOM's client base. The distinction comes down to who the client is.
