@@ -7,15 +7,15 @@
 
 ---
 
-## The Core Problem
+## The Core Problem — Single Point of Failure
 
-When something goes wrong — a bug in production, a Google outage, a security incident — the ability to respond fast is everything. That means deploying a fix, or rolling back to the last working version, within minutes.
+If the application, the pipeline, the image storage, and the CDN all run on Google, then Google is a single point of failure. One Google outage takes all of them down simultaneously. There is no independent layer left to absorb the problem or respond to it.
 
-If the tools that build, store, and deploy the application are all on Google, and Google is the thing having the problem, none of those tools are available when they are needed most. The ability to respond is entirely dependent on Google recovering first.
+The solution is to separate the layers so that failures are isolated rather than cascading. Google goes down — the application is affected, but the pipeline still runs, DockerHub still serves images, Cloudflare still serves the site. Each layer can fail independently without taking everything else with it.
 
-The solution is to keep those tools independent. Not because Google is unreliable — but because no single provider should be able to take away the ability to respond to a crisis.
+This is a standard engineering principle, not a statement against Google. No well-architected system puts everything on a single provider. GKE stays on Google — the cluster is Google. But the tools that deliver code to that cluster are kept independent so that a Google problem does not also become a response problem.
 
-**This is not theoretical.** In June 2019, Google Cloud had a major outage lasting several hours that took down networking and Cloud CDN across the US. Companies whose entire stack — CDN, pipeline, and application — was on Google lost the ability to deploy fixes or roll back while the outage lasted. Companies with independent delivery tools kept operating.
+**This is not theoretical.** In June 2019, Google Cloud had a major outage lasting several hours that took down networking and Cloud CDN across the US. Companies with everything on Google lost the ability to deploy fixes or roll back while the outage lasted. Companies with independent delivery tools kept operating.
 
 ---
 
@@ -23,11 +23,11 @@ The solution is to keep those tools independent. Not because Google is unreliabl
 
 The CI/CD pipeline is what turns a code update into a running deployment — automatically, no manual steps.
 
-**Why not Google Cloud Build:** Cloud Build runs inside Google's infrastructure and uses Google's authentication. If Google is having an outage, Cloud Build is unavailable. If a bug needs to be deployed urgently and Cloud Build is down, there is no way to deploy it. The pipeline is hostage to the same problem it is supposed to help fix.
+Google Cloud Build runs on Google. If Google is the problem, the pipeline to fix it is also the problem — a single point of failure. GitHub Actions runs on GitHub's own infrastructure, separate from Google. If Google goes down, the pipeline keeps running. A fix can still be built and deployed while the outage is ongoing.
 
-**Why GitHub Actions:** Runs on GitHub's own infrastructure, completely separate from Google. If Google has an outage, GitHub Actions keeps running. A fix can still be built and deployed while the outage is ongoing. It is also the industry standard — the vast majority of companies use it regardless of which cloud they run on, precisely because it is not tied to any one provider.
+**This is the industry standard.** Every company — regardless of which cloud they run on — keeps the CI/CD pipeline off the cloud it deploys to. The pipeline should never share a single point of failure with the infrastructure it is managing.
 
-**What if GitHub Actions goes down?** GitHub has had its own outages. If GitHub Actions is unavailable, new deployments pause — but the application on GKE keeps running and serving customers unaffected. No new versions can go out until GitHub recovers, but nothing breaks for existing users. Compare that to Cloud Build going down as part of a Google outage: the pipeline is down AND the application may be down AND the CDN may be down, all simultaneously. One failure vs. everything failing at once.
+**What if GitHub Actions goes down?** The application on GKE keeps running and serving customers — nothing breaks for existing users. Deployments pause until GitHub recovers. Compare that to Cloud Build going down as part of a Google outage: the pipeline is down AND the application may be down, all at once. One layer failing vs. everything failing together.
 
 ---
 

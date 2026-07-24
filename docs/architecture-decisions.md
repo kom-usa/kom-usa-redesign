@@ -29,11 +29,11 @@ These are not options — they are the choices agreed on.
 | Secrets management | Google Secret Manager — stores API keys, database passwords, and OAuth credentials securely (Phase 2 only) |
 | AI triage | Gemini API — under the same Google account |
 
-**A note on secrets management:** The application needs credentials to operate — database passwords, QuickBooks API keys, OAuth secrets. Google Secret Manager stores these the same way Keeper stores passwords for people: securely vaulted, never written in plain text, and injected automatically when the application needs them. No developer has to type them out, and they never appear in the codebase.
+**Secrets management:** Google Secret Manager stores API keys, database passwords, and OAuth credentials securely. Credentials are never written in plain text or stored in the codebase.
 
-**A note on the delivery tools — these were intentionally kept off Google for one reason.** GKE runs standard Kubernetes — migrating to another provider is a configuration change, not a rebuild. The delivery tooling around it is different: Google Cloud Build, Artifact Registry, and Cloud CDN are designed to work within Google's ecosystem. If Google has an outage, a pricing problem, or a compliance issue, migrating them takes weeks. GitHub Actions deploys to any cloud without touching the pipeline. DockerHub serves images to any cluster. Cloudflare routes to any origin IP. If GKE ever moves, these tools follow without any changes.
+**Delivery tools (CI/CD, registry, CDN):** Kept off Google to avoid a single point of failure. A Google outage affects the cluster — it should not also disable the tools used to respond to it.
 
-**Note on billing:** Compute (GKE) is on Google Cloud. The database (Azure Database for PostgreSQL) is on Microsoft Azure — a separate bill. Realistic Phase 2 cost is **$100–300/month** covering the cluster, load balancer, database, and supporting services. GitHub Actions, DockerHub, and Cloudflare are either free or a few dollars a month. Google and Azure both offer committed use savings plans — paying 1 or 3 years in advance can reduce costs by up to 70%, worth revisiting once the system is live and usage is established.
+**Billing:** Phase 2 cost is **$100–300/month** (cluster, load balancer, database, supporting services). GitHub Actions, DockerHub, and Cloudflare are free or minimal cost. Google and Azure both offer committed use savings plans — 1–3 years in advance reduces costs by up to 70%.
 
 ---
 
@@ -59,9 +59,7 @@ Firebase is Google's bundled product suite: Firestore (proprietary database), Fi
 
 ### Phase 1 — Build on Oracle Cloud (Free Tier)
 
-**This is the right place to start.** There is no reason to pay $100–300/month for a production environment while the application is still being built. Oracle Cloud's Always Free tier provides enough capacity — currently 2 OCPU cores and 12GB RAM for new accounts (reduced from 4 OCPU / 24GB in early 2026; verify current allocation on sign-up) — to build and validate the entire system at zero cost.
-
-The technology used here is identical to Phase 2. The same containers, the same deployment pipeline, the same database structure. When Phase 2 begins, the containers move to Google Cloud. Nothing inside them changes. Oracle is not a detour — it is a free proving ground.
+Oracle Cloud's Always Free tier (currently 2 OCPU cores and 12GB RAM — verify current allocation on sign-up) is sufficient to build and validate the full system at zero cost. The same containers, pipeline, and database structure are used in Phase 2 — nothing inside the containers changes when the system moves to GKE.
 
 **What runs on the Oracle server:**
 
@@ -82,7 +80,7 @@ The technology used here is identical to Phase 2. The same containers, the same 
 
 ### Phase 2 — Production on Google Cloud (GKE) + Azure Database
 
-Once the system is built and demonstrated on Oracle, it moves to managed cloud providers. Google Cloud handles the container cluster and monitoring. GitHub Actions handles the CI/CD pipeline. Cloudflare handles security and CDN. Azure handles the database.
+Google Cloud runs the container cluster and monitoring. GitHub Actions runs the CI/CD pipeline. Cloudflare handles security and CDN. Azure handles the database.
 
 **What changes from Phase 1 to Phase 2:**
 
